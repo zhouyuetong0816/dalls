@@ -82,7 +82,7 @@ function mount(){
  // Offset the collecting room forward, preserving its contents as one group.
  const existingRoomObjects=new Set(root.children);
  // Open vintage collecting room extends the cafe to the left.
- box(3.7,.42,6,-5.85,-.21,0,cream);box(3.58,.06,5.88,-5.85,.03,0,material('#795033',{map:timberTexture}));
+ box(3.7,.42,6,-5.85,-.21,0,cream);box(3.58,.06,5.88,-5.85,.03,0,material('#879368'));
  box(.16,4.1,6,-7.68,2.05,0,wall);box(3.7,4.1,.16,-5.85,2.05,-2.96,wall);
  // Remove the entire dividing wall so the offset rooms connect openly.
  const dividingWall=root.children.find(o=>o.geometry?.type==='BoxGeometry'&&o.position.x===-3.96&&o.position.y===2.05);if(dividingWall){root.remove(dividingWall);dividingWall.geometry.dispose();}
