@@ -1,4 +1,4 @@
-import {cloudEnabled,canManage,loadSharedMember} from './shared-family.js?compact1';
+import {cloudEnabled,canManage,loadSharedMember} from './shared-family.js?compact3';
 import {FinalRender} from './final-render.js?compact1';
 import {updateFamilyRender,updateFamilyPreview} from './family-store.js?compact1';
 import {restoreArchive} from './archive-edit.js';
