@@ -18,7 +18,7 @@ function mount(){
  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});
  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setClearColor(0xffffff,0);
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
- renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.78;
+ renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.94;
  host.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','SOFT THINGS CAFÉ 三维场景');
  const root=new THREE.Group();scene.add(root);
  const material=(color,extras={})=>new THREE.MeshStandardMaterial({color,roughness:.95,...extras});
@@ -78,7 +78,26 @@ function mount(){
  function plant(x,z,level,size=1){const g=new THREE.Group();g.position.set(x,level,z);g.scale.setScalar(size);root.add(g);cylinder(.23,.38,0,.19,0,pot,g,.17);cylinder(.18,.02,0,.39,0,material('#574a36'),g);for(let i=0;i<7;i++){const a=i*2.4;const tip=new THREE.Vector3(Math.cos(a)*.3,.65+(i%3)*.18,Math.sin(a)*.3);const stem=new THREE.Vector3(0,.37,0),dir=tip.clone().sub(stem);const stalk=mesh(new THREE.CylinderGeometry(.012,.012,dir.length(),8),green,...stem.clone().add(tip).multiplyScalar(.5).toArray(),g);stalk.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());const leaf=ball(1,tip.x,tip.y,tip.z,green,g);leaf.scale.set(.13,.025,.27);leaf.rotation.set(.25,a,-.2);}return g;}
  plant(-3.35,-1.8,0,1.3);plant(1.35,1.4,0,.9);
  // Two pendant lights, supported from the surviving back walls.
- for(const [x,z,h] of [[-.35,-.9,3.5],[2.45,-.5,3.9]]){cylinder(.013,.9,x,h+.4,z,pot);mesh(new THREE.ConeGeometry(.25,.22,32,1,true),cream,x,h-.08,z);cylinder(.23,.02,x,h-.2,z,material('#ffe2a2',{emissive:0xffbb55,emissiveIntensity:.45}));const glow=new THREE.PointLight(0xffc078,9,7,2);glow.position.set(x,h-.24,z);scene.add(glow);}
+ for(const [x,z,h] of [[-.35,-.9,3.5],[2.45,-.5,3.9]]){cylinder(.013,.9,x,h+.4,z,pot);mesh(new THREE.ConeGeometry(.25,.22,32,1,true),cream,x,h-.08,z);cylinder(.23,.02,x,h-.2,z,material('#ffe2a2',{emissive:0xffbb55,emissiveIntensity:.45}));const glow=new THREE.PointLight(0xffcc8c,15,8,2);glow.position.set(x,h-.24,z);scene.add(glow);}
+ // Open vintage collecting room extends the cafe to the left.
+ box(3.7,.42,6,-5.85,-.21,0,cream);box(3.58,.06,5.88,-5.85,.03,0,pale);
+ box(.16,4.1,6,-7.68,2.05,0,wall);box(3.7,4.1,.16,-5.85,2.05,-2.96,wall);
+ // A wide opening joins both rooms; retain the original wall as two short piers.
+ const dividingWall=root.children.find(o=>o.geometry?.type==='BoxGeometry'&&o.position.x===-3.96&&o.position.y===2.05);if(dividingWall){root.remove(dividingWall);dividingWall.geometry.dispose();}
+ box(.16,4.1,.9,-3.96,2.05,-2.55,wall);box(.16,4.1,.7,-3.96,2.05,2.65,wall);box(.16,.55,4.4,-3.96,3.825,.1,wall);
+ // Remove the mustard infill across the newly opened doorway.
+ const oldSkirt=root.children.find(o=>o.position.x===-3.865&&o.position.y===.67);if(oldSkirt){root.remove(oldSkirt);oldSkirt.geometry.dispose();}
+ // Cream open display cabinet with wooden shelves and small collectibles.
+ box(2.35,.13,.75,-6.05,.14,-2.36,pale);box(2.35,.1,.75,-6.05,1.52,-2.36,pale);for(const x of [-7.2,-4.9])box(.09,1.4,.75,x,.84,-2.36,wall);box(2.3,1.37,.06,-6.05,.83,-2.7,wall);
+ for(const y of [.62,1.08])box(2.25,.065,.73,-6.05,y,-2.36,pale);
+ function littleDoll(x,y,z,color,size=.34){const g=new THREE.Group();root.add(g);g.position.set(x,y,z);g.scale.setScalar(size);const fabric=material(color);const belly=ball(.28,0,.55,0,fabric,g);belly.scale.set(1,1.25,.65);ball(.26,0,1.05,0,fabric,g);for(const sign of [-1,1]){ball(.095,sign*.2,1.25,0,fabric,g);const arm=ball(.105,sign*.32,.67,0,fabric,g);arm.scale.y=1.6;ball(.12,sign*.14,.2,.02,fabric,g);ball(.025,sign*.085,1.1,.235,material('#30291f'),g);}ball(.045,0,1.01,.255,material('#30291f'),g);return g;}
+ for(const [x,y,c] of [[-6.9,.21,'#a7aa85'],[-5.4,.21,'#c4a481'],[-6.4,.66,'#c9b6a3'],[-5.2,1.12,'#ab9276']])littleDoll(x,y,-2.2,c,.3);
+ for(const [x,y,c] of [[-6.85,2.25,'#78816c'],[-5.75,2.55,'#bca078'],[-4.75,2.1,'#8e7364']]){box(.02,.18,.02,x,y+.57,-2.81,pot);littleDoll(x,y,-2.75,c,.43);}
+ for(const x of [-6.95,-6.7,-5.8])box(.14,.25,.22,x,1.23,-2.35,material(x===-6.7?'#8e9d92':'#c4ad86'));
+ // Low vintage display table leaves a clear passage through the room.
+ box(1.6,.12,.85,-6.2,.91,.9,wood);for(const x of [-6.9,-5.5])for(const z of [.57,1.23])box(.09,.85,.09,x,.44,z,wood);littleDoll(-6.55,.99,.85,'#b8a58c',.35);box(.35,.05,.3,-5.9,1.01,.95,wall);box(.3,.04,.26,-5.9,1.06,.95,pale);
+ plant(-7.1,1.9,0,.85);
+ cylinder(.012,.8,-5.85,4.05,-.6,pot);mesh(new THREE.ConeGeometry(.28,.22,32,1,true),pale,-5.85,3.55,-.6);ball(.09,-5.85,3.42,-.6,material('#ffe3a5',{emissive:0xffc578,emissiveIntensity:1}));const roomLight=new THREE.PointLight(0xffcc8c,17,8,2);roomLight.position.set(-5.85,3.35,-.6);scene.add(roomLight);
  // Quiet branded poster; only a small graphic canvas, no realistic textures.
  const poster=document.createElement('canvas');poster.width=512;poster.height=640;const ctx=poster.getContext('2d');ctx.fillStyle='#f4eee3';ctx.fillRect(0,0,512,640);ctx.fillStyle='#687963';ctx.beginPath();ctx.arc(256,236,88,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ece2d2';ctx.beginPath();ctx.arc(256,214,58,0,Math.PI*2);ctx.fill();ctx.fillStyle='#393e36';ctx.textAlign='center';ctx.font='32px Arial';ctx.fillText('SOFT THINGS',256,425);ctx.font='42px Arial';ctx.fillText('CAFÉ',256,484);ctx.font='18px Arial';ctx.fillText('a little place for little things.',256,540);
  const texture=new THREE.CanvasTexture(poster);texture.colorSpace=THREE.SRGBColorSpace;
@@ -87,9 +106,9 @@ function mount(){
  // A small freestanding sign, with room for a figure beside it.
  box(.4,.5,.06,-1.76,.3,-.1,pale);box(.34,.44,.067,-1.76,.3,-.06,wall);
  for(let i=0;i<5;i++){const leaf=ball(.095,3.35+Math.sin(i)*.08,3.25-i*.17,-2.6,green);leaf.scale.set(.7,1.4,.55);}cylinder(.16,.24,3.35,3.52,-2.6,pot);
- scene.add(new THREE.HemisphereLight(0xffe4bc,0x685847,.8));const light=new THREE.DirectionalLight(0xffd49b,.95);light.position.set(-3,9,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:.1,far:30});light.shadow.normalBias=.035;light.shadow.bias=-.00015;scene.add(light);
- const shadow=mesh(new THREE.PlaneGeometry(14,12),new THREE.ShadowMaterial({opacity:.075}),0,-.58,0,scene);shadow.rotation.x=-Math.PI/2;shadow.castShadow=false;
- let yaw=0,pitch=0;const target=new THREE.Vector3(0,1.65,0);
+ scene.add(new THREE.HemisphereLight(0xffe9cd,0x95816b,1.65));const light=new THREE.DirectionalLight(0xffdfb2,1.25);light.position.set(0,12,1);light.castShadow=true;light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-11,right:11,top:9,bottom:-9,near:.1,far:30});light.shadow.normalBias=.035;light.shadow.bias=-.00015;scene.add(light);
+ const shadow=mesh(new THREE.PlaneGeometry(22,14),new THREE.ShadowMaterial({opacity:.075}),0,-.58,0,scene);shadow.rotation.x=-Math.PI/2;shadow.castShadow=false;
+ let yaw=0,pitch=0;const target=new THREE.Vector3(-1.8,1.65,0);
  function cameraPose(){const angle=Math.PI/4+yaw,up=Math.PI/5+pitch;camera.position.set(Math.sin(angle)*14*Math.cos(up),target.y+14*Math.sin(up),Math.cos(angle)*14*Math.cos(up));camera.lookAt(target);camera.updateMatrixWorld();}
  function resize(){const w=host.clientWidth||900,h=host.clientHeight||620,aspect=w/h;const bounds=new THREE.Box3().setFromObject(root),corners=[];for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z])corners.push(new THREE.Vector3(x,y,z));cameraPose();const view=camera.matrixWorldInverse;let maxX=0,maxY=0;for(const v of corners){v.applyMatrix4(view);maxX=Math.max(maxX,Math.abs(v.x));maxY=Math.max(maxY,Math.abs(v.y));}const half=Math.max(maxY,maxX/aspect)*1.09;camera.left=-half*aspect;camera.right=half*aspect;camera.top=half;camera.bottom=-half;camera.updateProjectionMatrix();renderer.setSize(w,h,false);for(const spot of photoSpots){const p=new THREE.Vector3(...spot.position).project(camera);spot.percent={x:(p.x+1)*50,y:(1-p.y)*50};spot.occlusion="scene-depth";}renderer.render(scene,camera);}
  cameraPose();resize();
