@@ -1,9 +1,9 @@
-import {cloudEnabled,canManage} from './shared-family.js';
-import {FinalRender} from './final-render.js?v=familyrender1';
-import {updateFamilyRender,updateFamilyPreview} from './family-store.js';
+import {cloudEnabled,canManage} from './shared-family.js?mobileupload1';
+import {FinalRender} from './final-render.js?mobileupload1';
+import {updateFamilyRender,updateFamilyPreview} from './family-store.js?mobileupload1';
 import {restoreArchive} from './archive-edit.js';
 import {matchesArchive} from './archive-state.js';
-import {familyMembers,removeFamilyMember} from './family-store.js';
+import {familyMembers,removeFamilyMember} from './family-store.js?mobileupload1';
 import {PlushView} from './plush3d.js?v=alphapreview1';
 import {loadDesign,savedDesigns} from './design-storage.js?v=recover1';
 import * as THREE from './vendor/three.module.js';
