@@ -18,11 +18,14 @@ function mount(){
  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});
  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setClearColor(0xffffff,0);
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
- renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.92;
+ renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.78;
  host.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','SOFT THINGS CAFÉ 三维场景');
  const root=new THREE.Group();scene.add(root);
  const material=(color,extras={})=>new THREE.MeshStandardMaterial({color,roughness:.95,...extras});
  const cream=material('#eee6d8'),wall=material('#f5efe5'),wood=material('#ae713d'),pale=material('#c6965a'),green=material('#536c44'),pot=material('#986340'),stone=material('#ded2be'),cake=material('#e8c99a'),pink=material('#caa998'),mustard=material('#d6b149'),seat=material('#aa5038');
+ // Small procedural textures keep materials lightweight and avoid external downloads.
+ function surfaceTexture(kind){const c=document.createElement('canvas');c.width=c.height=256;const t=c.getContext('2d');t.fillStyle=kind==='wood'?'#b78250':'#efe5d2';t.fillRect(0,0,256,256);let seed=17;const rand=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};if(kind==='wood'){for(let i=0;i<65;i++){t.strokeStyle=i%3?'rgba(80,43,18,.08)':'rgba(255,235,190,.12)';t.lineWidth=.5+rand();t.beginPath();const y=rand()*256;for(let x=0;x<=256;x+=8){const yy=y+Math.sin(x*.026+i)*2.5;x?t.lineTo(x,yy):t.moveTo(x,yy);}t.stroke();}}else{for(let i=0;i<1800;i++){t.fillStyle=i%2?'rgba(125,104,72,.055)':'rgba(255,255,255,.16)';t.fillRect(rand()*256,rand()*256,1,1);}for(let x=16;x<256;x+=32){t.strokeStyle='rgba(148,123,80,.05)';t.beginPath();t.moveTo(x,0);t.lineTo(x,256);t.stroke();}}const texture=new THREE.CanvasTexture(c);texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(kind==='wood'?2:3,kind==='wood'?2:3);return texture;}
+ const timberTexture=surfaceTexture('wood');wood.map=timberTexture;pale.map=timberTexture;wood.color.set('#d9b78b');pale.color.set('#f0d6ad');wall.map=surfaceTexture('wall');wall.color.set('#ffffff');
  function mesh(geometry,mat,x,y,z,parent=root){const o=new THREE.Mesh(geometry,mat);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
  const box=(w,h,d,x,y,z,mat=cream,parent=root)=>mesh(new THREE.BoxGeometry(w,h,d),mat,x,y,z,parent);
  const cylinder=(r,h,x,y,z,mat=wood,parent=root,r2=r)=>mesh(new THREE.CylinderGeometry(r,r2,h,32),mat,x,y,z,parent);
@@ -43,6 +46,8 @@ function mount(){
  // Raised lounge and the six short connecting steps.
  box(2.85,1.2,4.1,2.48,.6,-.85,cream);box(2.85,.06,4.1,2.48,1.23,-.85,material('#879368'));
  for(let i=0;i<6;i++)box(1.02,.2*(i+1),.3,2.92,.1*(i+1),2.85-i*.3,cream);
+ // Stair-side timber railing follows the six-step slope.
+ for(const side of [2.38,3.46]){for(let i=0;i<6;i++)box(.065,.72,.065,side,.2*(i+1)+.36,2.85-i*.3,wood);const start=new THREE.Vector3(side,.96,2.99),end=new THREE.Vector3(side,2.16,1.2),direction=end.clone().sub(start);const rail=mesh(new THREE.CylinderGeometry(.055,.055,direction.length(),12),wood,...start.clone().add(end).multiplyScalar(.5).toArray());rail.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),direction.normalize());}
  // Low side rail leaves lounge visible; front stays open for future figures.
  for(const z of [-1.5,-.5,.5])box(.055,.68,.055,1.08,1.57,z,pale);
  box(.065,.07,2.4,1.08,1.94,-.6,pale);
@@ -73,7 +78,7 @@ function mount(){
  function plant(x,z,level,size=1){const g=new THREE.Group();g.position.set(x,level,z);g.scale.setScalar(size);root.add(g);cylinder(.23,.38,0,.19,0,pot,g,.17);cylinder(.18,.02,0,.39,0,material('#574a36'),g);for(let i=0;i<7;i++){const a=i*2.4;const tip=new THREE.Vector3(Math.cos(a)*.3,.65+(i%3)*.18,Math.sin(a)*.3);const stem=new THREE.Vector3(0,.37,0),dir=tip.clone().sub(stem);const stalk=mesh(new THREE.CylinderGeometry(.012,.012,dir.length(),8),green,...stem.clone().add(tip).multiplyScalar(.5).toArray(),g);stalk.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());const leaf=ball(1,tip.x,tip.y,tip.z,green,g);leaf.scale.set(.13,.025,.27);leaf.rotation.set(.25,a,-.2);}return g;}
  plant(-3.35,-1.8,0,1.3);plant(1.35,1.4,0,.9);
  // Two pendant lights, supported from the surviving back walls.
- for(const [x,z,h] of [[-.35,-.9,3.5],[2.45,-.5,3.9]]){cylinder(.013,.9,x,h+.4,z,pot);mesh(new THREE.ConeGeometry(.25,.22,32,1,true),cream,x,h-.08,z);cylinder(.23,.02,x,h-.2,z,material('#ffe2a2',{emissive:0xffbb55,emissiveIntensity:.45}));const glow=new THREE.PointLight(0xffc078,5,6,2);glow.position.set(x,h-.24,z);scene.add(glow);}
+ for(const [x,z,h] of [[-.35,-.9,3.5],[2.45,-.5,3.9]]){cylinder(.013,.9,x,h+.4,z,pot);mesh(new THREE.ConeGeometry(.25,.22,32,1,true),cream,x,h-.08,z);cylinder(.23,.02,x,h-.2,z,material('#ffe2a2',{emissive:0xffbb55,emissiveIntensity:.45}));const glow=new THREE.PointLight(0xffc078,9,7,2);glow.position.set(x,h-.24,z);scene.add(glow);}
  // Quiet branded poster; only a small graphic canvas, no realistic textures.
  const poster=document.createElement('canvas');poster.width=512;poster.height=640;const ctx=poster.getContext('2d');ctx.fillStyle='#f4eee3';ctx.fillRect(0,0,512,640);ctx.fillStyle='#687963';ctx.beginPath();ctx.arc(256,236,88,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ece2d2';ctx.beginPath();ctx.arc(256,214,58,0,Math.PI*2);ctx.fill();ctx.fillStyle='#393e36';ctx.textAlign='center';ctx.font='32px Arial';ctx.fillText('SOFT THINGS',256,425);ctx.font='42px Arial';ctx.fillText('CAFÉ',256,484);ctx.font='18px Arial';ctx.fillText('a little place for little things.',256,540);
  const texture=new THREE.CanvasTexture(poster);texture.colorSpace=THREE.SRGBColorSpace;
@@ -82,7 +87,7 @@ function mount(){
  // A small freestanding sign, with room for a figure beside it.
  box(.4,.5,.06,-1.76,.3,-.1,pale);box(.34,.44,.067,-1.76,.3,-.06,wall);
  for(let i=0;i<5;i++){const leaf=ball(.095,3.35+Math.sin(i)*.08,3.25-i*.17,-2.6,green);leaf.scale.set(.7,1.4,.55);}cylinder(.16,.24,3.35,3.52,-2.6,pot);
- scene.add(new THREE.HemisphereLight(0xffe4bc,0x685847,1.45));const light=new THREE.DirectionalLight(0xffd49b,1.7);light.position.set(-3,9,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:.1,far:30});light.shadow.normalBias=.035;light.shadow.bias=-.00015;scene.add(light);
+ scene.add(new THREE.HemisphereLight(0xffe4bc,0x685847,.8));const light=new THREE.DirectionalLight(0xffd49b,.95);light.position.set(-3,9,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:.1,far:30});light.shadow.normalBias=.035;light.shadow.bias=-.00015;scene.add(light);
  const shadow=mesh(new THREE.PlaneGeometry(14,12),new THREE.ShadowMaterial({opacity:.075}),0,-.58,0,scene);shadow.rotation.x=-Math.PI/2;shadow.castShadow=false;
  let yaw=0,pitch=0;const target=new THREE.Vector3(0,1.65,0);
  function cameraPose(){const angle=Math.PI/4+yaw,up=Math.PI/5+pitch;camera.position.set(Math.sin(angle)*14*Math.cos(up),target.y+14*Math.sin(up),Math.cos(angle)*14*Math.cos(up));camera.lookAt(target);camera.updateMatrixWorld();}
