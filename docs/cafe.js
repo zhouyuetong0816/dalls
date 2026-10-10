@@ -100,7 +100,7 @@ function mount(){
  for(const y of [1.0,2.0,3.0]){box(.55,.09,3.7,-7.34,y,-.05,pale);for(const z of [-1.5,1.4]){box(.3,.055,.065,-7.46,y-.22,z,wall);box(.055,.38,.065,-7.55,y-.21,z,wall);}}
  function shelfPicture(z,y,color){box(.075,.53,.43,-7.49,y+.31,z,pale);box(.08,.44,.34,-7.44,y+.31,z,material(color));box(.09,.12,.26,-7.43,y+.22,z,wall);}
  shelfPicture(-1.2,3,'#879d8b');shelfPicture(.3,3,'#c08b78');shelfPicture(1.3,1,'#a2b0aa');for(let i=0;i<3;i++)box(.25,.32,.065,-7.35,1.2,-1.25+i*.08,material(['#b19d7b','#7b9584','#bd9a8b'][i]));
- const dollSlots=[[-7.28,2.055,-1.15],[-7.28,2.055,.02],[-7.28,2.055,1.2],[-7.28,1.055,-.3]];
+ const dollSlots=[[-7.28,2.055,-1.15],[-7.28,2.055,.02],[-7.28,2.055,1.2],[-7.28,1.055,-.3],[-5.35,.94,3.7],[-6.65,1.19,3.75]];
  const shelfDolls=new THREE.Group();root.add(shelfDolls);let shelfCount=0;
  function shelfDoll(url,name){if(!url||shelfCount>=dollSlots.length)return;const pos=dollSlots[shelfCount++];new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;const image=texture.image,ratio=image.width/image.height,h=.76,w=Math.min(.84,h*ratio);const figure=new THREE.Group();const frontMat=new THREE.MeshStandardMaterial({map:texture,transparent:true,alphaTest:.035,roughness:1,side:THREE.DoubleSide});const front=new THREE.Mesh(new THREE.PlaneGeometry(w,h),frontMat);front.position.z=.105;figure.add(front);const back=new THREE.Mesh(new THREE.PlaneGeometry(w,h),frontMat);back.rotation.y=Math.PI;back.position.z=-.105;figure.add(back);
  // Sample the transparent silhouette to create a continuous plush volume and sides.
@@ -109,6 +109,13 @@ function mount(){
  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();figure.add(new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,side:THREE.DoubleSide})));figure.position.set(pos[0],pos[1]+h/2,pos[2]);figure.rotation.y=Math.PI/2;figure.name=name;figure.userData.familyDoll=true;figure.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});shelfDolls.add(figure);renderer.render(scene,camera);});}
  shelfDoll('collection/001/front.webp','泡面头');shelfDoll('collection/002/front.webp','the weekend');
  import('./family-store.js?compact4').then(m=>m.familyMembers({summary:true})).then(members=>{for(const member of members){if(shelfCount>=dollSlots.length)break;shelfDoll(member.thumbnail||member.front,member.name);}}).catch(error=>console.warn('Shelf archive temporarily unavailable',error));
+ // Two freestanding exhibition plinths and quiet labels frame a clear aisle.
+ for(const [x,z,height] of [[-5.35,2.15,.88],[-6.65,2.2,1.13]]){box(.62,height,.62,x,height/2,z,wall);box(.67,.045,.67,x,height+.023,z,pale);box(.25,.12,.02,x,height-.18,z+.32,cream);}
+ function exhibitLabel(x,y,z){box(.22,.075,.025,x,y,z,wall);box(.14,.01,.027,x,y+.015,z+.005,material('#8b806d'));}
+ for(const [x,y,z] of [[-6.9,.52,-1.98],[-6.4,.98,-1.98],[-5.2,1.45,-1.98]])exhibitLabel(x,y,z);
+ littleDoll(-5.9,.21,-2.18,'#d2b4a0',.32);littleDoll(-6.9,1.12,-2.2,'#93a69b',.29);littleDoll(-5.7,.66,-2.2,'#c2ae76',.3);
+ // Wall title uses a small canvas, leaving the surrounding wall uncluttered.
+ const exhibitCanvas=document.createElement('canvas');exhibitCanvas.width=512;exhibitCanvas.height=128;const exhibitCtx=exhibitCanvas.getContext('2d');exhibitCtx.fillStyle='#eee5d2';exhibitCtx.fillRect(0,0,512,128);exhibitCtx.fillStyle='#625848';exhibitCtx.font='27px Arial';exhibitCtx.textAlign='center';exhibitCtx.fillText('LITTLE THINGS · EXHIBITION',256,65);exhibitCtx.font='14px Arial';exhibitCtx.fillText('a collection of soft imaginations',256,94);const exhibitTexture=new THREE.CanvasTexture(exhibitCanvas);exhibitTexture.colorSpace=THREE.SRGBColorSpace;mesh(new THREE.PlaneGeometry(2.5,.625),material('#ffffff',{map:exhibitTexture}),-5.8,3.65,-2.805);
  // Low vintage display table leaves a clear passage through the room.
  box(1.6,.12,.85,-6.2,.91,.9,material('#65856d'));for(const x of [-6.9,-5.5])for(const z of [.57,1.23])box(.09,.85,.09,x,.44,z,wood);littleDoll(-6.55,.99,.85,'#b8a58c',.35);box(.35,.05,.3,-5.9,1.01,.95,wall);box(.3,.04,.26,-5.9,1.06,.95,pale);
  plant(-7.1,1.9,0,.85);
