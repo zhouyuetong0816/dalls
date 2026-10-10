@@ -1,0 +1,3 @@
+import {designForAI} from './design-spec.js';
+function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().filter(key=>!(key==='depth'&&(value[key]??0)===0)).map(key=>[key,canonical(value[key])]));return value;}
+export function matchesArchive(state,archived,renderId){if(!state?.form||state.finalRender?.id!==renderId)return false;try{const current=designForAI(state);if(!state.form.customMask?.some(Boolean))delete current.materials.custom;const saved=JSON.parse(JSON.stringify(archived));if(!saved.expression)delete current.expression;return JSON.stringify(canonical(current))===JSON.stringify(canonical(saved));}catch{return false;}}

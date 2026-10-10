@@ -1,0 +1,11 @@
+{
+  "shared_storage_verified": true,
+  "verification": [
+    "remote anonymous upload and independent read",
+    "visitor cannot become administrator",
+    "SQL RLS test reported PASS by project owner",
+    "mock full-state and rendered replacement integration"
+  ],
+  "published": false,
+  "repository": "zhouyuetong0816/dalls"
+}

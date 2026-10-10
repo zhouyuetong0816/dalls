@@ -1,0 +1,348 @@
+[
+  {
+    "target": "docs/collection/001/scene.json.gz",
+    "size": 4183105,
+    "sha256": "aea762525e342c0a20c390bdc2eacde203a15d1286742bee7ae520614effb86c",
+    "parts": [
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-000.b64",
+        "sha256": "a17d994466d9ed79393a6ab3cb9b41510fe77f98d7366d8275fc0e32573664d6"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-001.b64",
+        "sha256": "7dd95afa07d8230f63439c4fb116f7277945cf1256aa5085d0691b61818d495b"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-002.b64",
+        "sha256": "30bdfa09df906332f07e438bfccb4a1bbdfeb0931e82929c5b4fdd0e2e250ff2"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-003.b64",
+        "sha256": "8a5333f678f002840175e8c54ea97604e40a908b74738b18de4cf85677a78512"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-004.b64",
+        "sha256": "bfeff6cec1e8fb309cebd4e7804a0cb407641a36970a4264a562b2f12f9f0581"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-005.b64",
+        "sha256": "c46731349a6cdd9f1586c9eb2dd189d618d1f7825f75885561b3c536e2a651ad"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-006.b64",
+        "sha256": "6e7f290dc36b7a008b38a867f722061761dd21a8ea8a710984324aa9116a200d"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-007.b64",
+        "sha256": "264d93e572b7f83e77f960652fd88caf677fad3ba86c11c197b7347efc1dfaed"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-008.b64",
+        "sha256": "3df61d3c6642f571f08e35e31679b6b1702f1151c8552553774423013df579b1"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-009.b64",
+        "sha256": "879601c8bf4a6ad48716b9e23cd8e9ced0b4f877040d20c748db717ee01ebdb9"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-010.b64",
+        "sha256": "716c625e6bf26ee84073db888485409cdf66d074f2439f77cac82df97bc0782e"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-011.b64",
+        "sha256": "1b84e69b573825f747ba39e22be5468ab2ff0ca69d4195932be92f9e6c41b6f8"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-012.b64",
+        "sha256": "5ce76a3a5a659771f28466bbcb428951551ec1740322ed00da95a1ae061f750a"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-013.b64",
+        "sha256": "bcf447a072d9a468d7cae1e20bd96637a7947c434dee308905596534d39512ad"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-014.b64",
+        "sha256": "c70689e8241f4f08fa208f0f1b83e6fa222856be1d3b0fbb57a7a0577fdef198"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-015.b64",
+        "sha256": "805e462862753600254ea63e2e645baafe2b13561c8194caf602af9aa8479ee7"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-016.b64",
+        "sha256": "a0677385662ef06dd2b31e153fd0554091d9e34926efdf7d01ab849a1b83c175"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-017.b64",
+        "sha256": "6fa0b665d0ee10b53f9e2fafe6c21a6663e6deccf55b65c1747417bcd5cba72c"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-018.b64",
+        "sha256": "c57a5dcdf618a210e348b60ad544848e3eda7c263951a51dc642d9f59eca66b0"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-019.b64",
+        "sha256": "bc49a044bdff1711621b3620a03a8c6bbf815538619c7e3d9f814498f0236cc4"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-020.b64",
+        "sha256": "30af16df3f6e635b5782150c85d6396fe8d00e430aaeab248adc36eb4e11a648"
+      },
+      {
+        "path": "asset-parts/collection/001/scene.json.gz/part-021.b64",
+        "sha256": "910903c6fef063a390cb52b92f1014086988aa4580d081d77b32b5dfc1dbbeaf"
+      }
+    ]
+  },
+  {
+    "target": "docs/collection/001/front.png",
+    "size": 2640127,
+    "sha256": "d2f8b656a6bea237c8a4a5b4d83e3d5c49b949a42234b71713aefc3e34f6848b",
+    "parts": [
+      {
+        "path": "asset-parts/collection/001/front.png/part-000.b64",
+        "sha256": "04c869b168ec956da9962e74faa48ac223eed24b54fea8f80dbefb48bc45d047"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-001.b64",
+        "sha256": "1ad1a1720ea7e6576ddc31ca14e01c582f5030f6b6ad83032873e60518501afc"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-002.b64",
+        "sha256": "d22291cad27b263cc7766dfaf829ed78488a06c473b2858038aac3dfcb1f4973"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-003.b64",
+        "sha256": "39f6235d7a1df4eb7a1d2ebffe69f0d9e2e0f12f3d51c7ae32b5f0c419a7ed60"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-004.b64",
+        "sha256": "3eda50ee5140c16653f83a158661dc57fb4417fe0ed3eaee749ba5baab411d66"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-005.b64",
+        "sha256": "a3b7105d048d4060fe61fa6ce615be995c4519d5727702c7cc5b9c0722647cf6"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-006.b64",
+        "sha256": "4dac4146c4270c53f928996147a398b20493bcf0eab1f7b022367e3206160842"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-007.b64",
+        "sha256": "451b45c013c81ad60a3c559edf2f08bb60763f11b765269c81870cde8958c570"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-008.b64",
+        "sha256": "2b370e7491287eb5c660c634169c7e3fef9bbb8a7269d13788bac91c079682a5"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-009.b64",
+        "sha256": "9ee455e1664b2ac6a68f520acebdba14121363b5b8a8ebe4242b02b0ebbaa5ef"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-010.b64",
+        "sha256": "f3e6e25d432d56926fc40e10f5cbb8130b32649f083d97d9ad7bbdfcab15e27c"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-011.b64",
+        "sha256": "428508d53155eac6b3e82dd2bcafffe2eceb18d1292e4a030caa19d7d17c55dd"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-012.b64",
+        "sha256": "d888cd3059fc38c06e69bc1ef9d06ff1dde544798561fd324ace6e49b8570600"
+      },
+      {
+        "path": "asset-parts/collection/001/front.png/part-013.b64",
+        "sha256": "7693e21cb2e6b044620b09375127a39078644a1b6f0739b7f23fbc42784e1a80"
+      }
+    ]
+  },
+  {
+    "target": "docs/collection/002/scene.json.gz",
+    "size": 2824383,
+    "sha256": "3ad8a0e4b1e5951f5627c73fe04c290d34562501a0b43de8259eb31234dd5950",
+    "parts": [
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-000.b64",
+        "sha256": "fa6daec56c242a59afae71bbad621c9bec1dacffa272131a754470d48bcb94b3"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-001.b64",
+        "sha256": "63c78f33a7a035659c5eebb484d4412a8828e92a6df60f07dc40ad5df44a89f5"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-002.b64",
+        "sha256": "74fff47bd30edabd7f03c1c71b94996f6d783d0e5b0a8b017c7ccea70a9426b0"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-003.b64",
+        "sha256": "dd9a50919e2f63a1b6c443ea80edca902a8a4874d1dfa4632cb1d1afa8d29d5b"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-004.b64",
+        "sha256": "8562a9bb9d76c1e1560ab5751c3ff525958a26532957008b95ace2fe6f40454a"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-005.b64",
+        "sha256": "7ab0a39bb52188456e676487dd498b857e72092a257a46e568a1e23f72cd7b21"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-006.b64",
+        "sha256": "4350bbb596a65de1a95fa8890c6c27d645f62397faefdf020512ba4661e005c0"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-007.b64",
+        "sha256": "b72e8c36a987e015fbbff45ab48a37c71773b1276f039a1ef2d8c658dc3c31eb"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-008.b64",
+        "sha256": "7cd70a3c07672cba2c57ed7a82cb21621fbf39fa9e4dce2fa3e0eecd2228b0f5"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-009.b64",
+        "sha256": "973f70060579b6c644faf875f8ac7c748579118b7b025cad2702daa467252734"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-010.b64",
+        "sha256": "d1b6086258c59fc56eec134651c0bfc644881b1805433860f5cf2362ce1b34cb"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-011.b64",
+        "sha256": "fdd642b0e50e416abebe16a140152feb45aa77e4b0da24e897b663946141667b"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-012.b64",
+        "sha256": "73600ba0f542e742c135176f00b2ec1c15893a9def9b1354c1121acddaa6a28e"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-013.b64",
+        "sha256": "00fbc0421927d0fed52dc14cfea5941ab5a49aeddef130b3407af0b4372a2289"
+      },
+      {
+        "path": "asset-parts/collection/002/scene.json.gz/part-014.b64",
+        "sha256": "3b8275f1b5b222c13129e9ffd8af2c1d75fd5c51d84933dd69e08dc192c419a7"
+      }
+    ]
+  },
+  {
+    "target": "docs/collection/002/front.png",
+    "size": 2460462,
+    "sha256": "5d66209999c6e45d8858e339aba785300817bd7b8a564b6c4214ac20e9047742",
+    "parts": [
+      {
+        "path": "asset-parts/collection/002/front.png/part-000.b64",
+        "sha256": "1a999cf62c4a35b08c09ba43c4ce59e36407aa2f05aff4c260255f7d598a4088"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-001.b64",
+        "sha256": "c5c111beccf8931b5dc1e98777ca9702c8cc547c1d750b8d86e0837a3adc4324"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-002.b64",
+        "sha256": "bb531ee5e8208e6d19d412fb202cc5024e7529563558cbec65d28e5b8f9a4965"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-003.b64",
+        "sha256": "78051dc7f2d2d703f5bc892815a70ea44daa80f0858440879432c74622862414"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-004.b64",
+        "sha256": "52803ea1f91c9478e24cf53ded2d8a1fc35c544fd34ca14f67c5d5f9eb147400"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-005.b64",
+        "sha256": "710479c77f997a1034017a1bbb1a726ac00b9660356ed2bf0ea559a0870c9484"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-006.b64",
+        "sha256": "d5f9638bd32a746207c479b8750c7006b3857231c09542683d70d0531d34cdb1"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-007.b64",
+        "sha256": "91dc4a327c9640f0af0c41442e9afec78ecbaa95d2df8b7a11be7d247d17e328"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-008.b64",
+        "sha256": "f6a1ca6e15ee7c2d7e64d5cc290c4906a27aa136835de0131f16e9ef9fa6b932"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-009.b64",
+        "sha256": "7a0effb7cf6a909633883ad80fff1aff0f68c669f44331e443279dd3b811290c"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-010.b64",
+        "sha256": "95c7dc40227f4ac09c5075e8b4b6ce5fa0136f7817e512c11a0bf400c1166984"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-011.b64",
+        "sha256": "7d806554eed9f61d59a412e83e27142401476194bc0720c211c3b9d389ff9b24"
+      },
+      {
+        "path": "asset-parts/collection/002/front.png/part-012.b64",
+        "sha256": "51476b257350ef5db5d88f50512c34130a7f36e7d3f11992184a0c9ebb2a80de"
+      }
+    ]
+  },
+  {
+    "target": "docs/vendor/three.module.js",
+    "size": 603113,
+    "sha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
+    "parts": [
+      {
+        "path": "asset-parts/vendor/three.module.js/part-000.b64",
+        "sha256": "26392f8ccaaa84723dddeffd229cd41090bbf4ab489b7df546f2958f6b012ad5"
+      },
+      {
+        "path": "asset-parts/vendor/three.module.js/part-001.b64",
+        "sha256": "9285d5fb3a76f0be40fb156ce2d30df65e0b5b2e84cb1b0df37942a6383e95f5"
+      },
+      {
+        "path": "asset-parts/vendor/three.module.js/part-002.b64",
+        "sha256": "24bb6678da241b122baded8ebf49d26ff8a821bad2c838f46d11d82f7c4761b4"
+      },
+      {
+        "path": "asset-parts/vendor/three.module.js/part-003.b64",
+        "sha256": "80127f9267e4dd0ae98b7422a3b644ca65de158a0ae1e42b1054dec37ff6f5e1"
+      }
+    ]
+  },
+  {
+    "target": "docs/vendor/three.core.js",
+    "size": 1403455,
+    "sha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+    "parts": [
+      {
+        "path": "asset-parts/vendor/three.core.js/part-000.b64",
+        "sha256": "6867ed9825ffa4a8f11ed5bc87868b2069c565530e07dc7103c682a631917c61"
+      },
+      {
+        "path": "asset-parts/vendor/three.core.js/part-001.b64",
+        "sha256": "980a80c172a1a4807555d9452348778ada215a34274993248bfe1f40c5012e78"
+      },
+      {
+        "path": "asset-parts/vendor/three.core.js/part-002.b64",
+        "sha256": "8d1d6460649af02f30267ee1c39255b0f6ee290031a5b9d4ec605806860541af"
+      },
+      {
+        "path": "asset-parts/vendor/three.core.js/part-003.b64",
+        "sha256": "0620bae442356487bd0e036c07afb2602f59a747118d492511a1375a79d235e6"
+      },
+      {
+        "path": "asset-parts/vendor/three.core.js/part-004.b64",
+        "sha256": "c2c4743509904a711ead20d401c6aed6bab7c3de7acbbe317876a5c7fb639e73"
+      },
+      {
+        "path": "asset-parts/vendor/three.core.js/part-005.b64",
+        "sha256": "27095b9d7c732dcc6bba64de14fa61c66c1a2e4d8cd3282de3aea91f3b13fab8"
+      },
+      {
+        "path": "asset-parts/vendor/three.core.js/part-006.b64",
+        "sha256": "610b4bf2e341750676583c40d863d4a09bd9d1f2ffb706310500bb5d8a9ab43b"
+      },
+      {
+        "path": "asset-parts/vendor/three.core.js/part-007.b64",
+        "sha256": "6c072dd2eb793fda9f4db3589c8abed29e92b1373ff8f80330dbaf09d12f95ae"
+      }
+    ]
+  }
+]
