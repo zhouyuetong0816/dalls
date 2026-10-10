@@ -22,12 +22,15 @@ function mount(){
  host.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','SOFT THINGS CAFÉ 三维场景');
  const root=new THREE.Group();scene.add(root);
  const material=(color,extras={})=>new THREE.MeshStandardMaterial({color,roughness:.95,...extras});
- const cream=material('#eee6d8'),wall=material('#f5efe5'),wood=material('#c9ad8c'),pale=material('#dcc5a7'),green=material('#7d9277'),pot=material('#b9a38b'),stone=material('#ded2be'),cake=material('#e8c99a'),pink=material('#caa998');
+ const cream=material('#eee6d8'),wall=material('#f5efe5'),wood=material('#ae713d'),pale=material('#c6965a'),green=material('#536c44'),pot=material('#986340'),stone=material('#ded2be'),cake=material('#e8c99a'),pink=material('#caa998'),mustard=material('#d6b149'),seat=material('#aa5038');
  function mesh(geometry,mat,x,y,z,parent=root){const o=new THREE.Mesh(geometry,mat);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
  const box=(w,h,d,x,y,z,mat=cream,parent=root)=>mesh(new THREE.BoxGeometry(w,h,d),mat,x,y,z,parent);
  const cylinder=(r,h,x,y,z,mat=wood,parent=root,r2=r)=>mesh(new THREE.CylinderGeometry(r,r2,h,32),mat,x,y,z,parent);
  const ball=(r,x,y,z,mat,parent=root)=>mesh(new THREE.SphereGeometry(r,16,12),mat,x,y,z,parent);
- box(8,.42,6,0,-.21,0);box(7.88,.06,5.88,0,.03,0,material('#f4eddf'));
+ box(8,.42,6,0,-.21,0);box(7.88,.06,5.88,0,.03,0,material('#879368'));
+ // Mustard wall skirts echo the reference cafe, above olive floors.
+ box(.025,1.22,5.94,-3.865,.67,0,mustard);box(4.82,1.22,.025,-1.55,.67,-2.865,mustard);
+ box(3.04,.62,.025,2.45,1.57,-2.865,mustard);
  // Two back walls only; all spectator-facing edges stay open.
  box(.16,4.1,6,-3.96,2.05,0,wall);box(4.9,4.1,.16,-1.55,2.05,-2.96,wall);
  box(3.1,.72,.16,2.45,1.56,-2.96,wall);box(3.1,.55,.16,2.45,4.075,-2.96,wall);
@@ -38,16 +41,16 @@ function mount(){
  for(const y of [1.86,3.84])box(2.48,.07,.14,2.4,y,-2.84,pale);
  box(.045,1.98,.08,2.4,2.85,-2.84,pale);box(2.6,.09,.35,2.4,1.84,-2.75,cream);
  // Raised lounge and the six short connecting steps.
- box(2.85,1.2,4.1,2.48,.6,-.85,cream);box(2.85,.06,4.1,2.48,1.23,-.85,material('#e6ddcc'));
+ box(2.85,1.2,4.1,2.48,.6,-.85,cream);box(2.85,.06,4.1,2.48,1.23,-.85,material('#879368'));
  for(let i=0;i<6;i++)box(1.02,.2*(i+1),.3,2.92,.1*(i+1),2.85-i*.3,cream);
  // Low side rail leaves lounge visible; front stays open for future figures.
  for(const z of [-1.5,-.5,.5])box(.055,.68,.055,1.08,1.57,z,pale);
  box(.065,.07,2.4,1.08,1.94,-.6,pale);
  // Wall bench.
  box(2.05,.28,.7,2.43,1.63,-2.08,pale);box(2.05,.72,.16,2.43,1.95,-2.4,wood);
- box(1.92,.15,.62,2.43,1.84,-2.02,material('#c5c0ac'));
+ box(1.92,.15,.62,2.43,1.84,-2.02,material('#aa5038'));
  for(const x of [1.65,3.2])box(.11,.45,.55,x,1.43,-2.08,wood);
- function chair(x,z,level,angle=0){const g=new THREE.Group();g.position.set(x,level,z);g.rotation.y=angle;root.add(g);cylinder(.25,.09,0,.48,0,pale,g);for(const xx of [-.16,.16])for(const zz of [-.16,.16]){const leg=box(.048,.46,.048,xx,.23,zz,wood,g);leg.rotation.z=xx>0?-.06:.06;}for(const xx of [-.2,.2])box(.045,.58,.045,xx,.74,-.18,wood,g);box(.43,.28,.055,0,.9,-.18,pale,g);return g;}
+ function chair(x,z,level,angle=0){const g=new THREE.Group();g.position.set(x,level,z);g.rotation.y=angle;root.add(g);cylinder(.25,.09,0,.48,0,seat,g);for(const xx of [-.16,.16])for(const zz of [-.16,.16]){const leg=box(.048,.46,.048,xx,.23,zz,wood,g);leg.rotation.z=xx>0?-.06:.06;}for(const xx of [-.2,.2])box(.045,.58,.045,xx,.74,-.18,wood,g);box(.43,.28,.055,0,.9,-.18,pale,g);return g;}
  function cup(x,y,z){cylinder(.07,.105,x,y+.052,z,wall);cylinder(.054,.004,x,y+.107,z,material('#867261'));cylinder(.105,.014,x,y+.007,z,wall);const handle=mesh(new THREE.TorusGeometry(.045,.012,8,16),wall,x+.074,y+.066,z);handle.rotation.y=Math.PI/2;}
  function table(x,z,level,decor=true){cylinder(.58,.085,x,level+.88,z,pale);cylinder(.055,.8,x,level+.43,z,wood);cylinder(.28,.045,x,level+.04,z,wood);if(decor){cup(x-.18,level+.93,z+.05);cylinder(.12,.09,x+.18,level+.975,z+.1,cake);cylinder(.15,.015,x+.18,level+.935,z+.1,wall);cylinder(.055,.16,x+.05,level+1.01,z-.2,pot);cylinder(.009,.2,x+.05,level+1.17,z-.2,green);ball(.047,x+.05,level+1.28,z-.2,pink);}}
  table(-2.15,1.15,0);chair(-2.95,1.08,0,-Math.PI/2);chair(-1.9,2.05,0,Math.PI);
