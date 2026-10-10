@@ -1,4 +1,4 @@
-import {joinFamily,joinPreviewFamily} from './family-store.js?compact1';
+import {joinFamily,joinPreviewFamily} from './family-store.js?compact4';
 import {designForAI,designSignature} from './design-spec.js';
 const localHost=()=>['localhost','127.0.0.1','[::1]'].includes(location.hostname);
 const safeImage=url=>typeof url==='string'&&/^\/generated\/[a-f0-9]{32}\.png$/.test(url);

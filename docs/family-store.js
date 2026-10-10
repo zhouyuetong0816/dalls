@@ -1,4 +1,4 @@
-import {cloudEnabled,sharedMembers,sharedIndex,saveShared} from './shared-family.js?compact3';
+import {cloudEnabled,sharedMembers,sharedIndex,saveShared} from './shared-family.js?compact4';
 import {designSignature} from './design-spec.js';
 function db(){return new Promise((resolve,reject)=>{const request=indexedDB.open('soft-things-family',1);let expired=false;const timer=setTimeout(()=>{expired=true;reject(Error('浏览器本地保存未响应，请保留草稿后重试。'));},5000);request.onupgradeneeded=()=>request.result.createObjectStore('members',{keyPath:'id'});request.onsuccess=()=>{clearTimeout(timer);if(expired)request.result.close();else resolve(request.result);};request.onerror=()=>{clearTimeout(timer);reject(request.error);};});}
 export async function localFamilyMembers(){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction('members');const request=tx.objectStore('members').getAll();request.onsuccess=()=>resolve(request.result.sort((a,b)=>a.created-b.created));request.onerror=()=>reject(request.error);tx.oncomplete=()=>database.close();});}

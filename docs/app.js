@@ -1,6 +1,6 @@
 import { sketchToPlush } from './ai-adapter.js?v=holes1';
 import { PlushView } from './plush3d.js?v=alphapreview1';
-import { FinalRender } from './final-render.js?compact1';
+import { FinalRender } from './final-render.js?compact4';
 import {loadDesign,saveDesign,savedDesigns,downloadDesign,validDesign} from './design-storage.js?v=familyedit1';
 import {faceSettings,setEyeSpacing} from './face-settings.js?v=facecustom1';
 const steps=['草稿 / Sketch','白胚 / Form','面料 / Material','装饰 / Craft','成品 / Finish'];
