@@ -94,6 +94,15 @@ function mount(){
  for(const [x,y,c] of [[-6.9,.21,'#a7aa85'],[-5.4,.21,'#c4a481'],[-6.4,.66,'#c9b6a3'],[-5.2,1.12,'#ab9276']])littleDoll(x,y,-2.2,c,.3);
  for(const [x,y,c] of [[-6.85,2.25,'#78816c'],[-5.75,2.55,'#bca078'],[-4.75,2.1,'#8e7364']]){box(.02,.18,.02,x,y+.57,-2.81,pot);littleDoll(x,y,-2.75,c,.43);}
  for(const x of [-6.95,-6.7,-5.8])box(.14,.25,.22,x,1.23,-2.35,material(x===-6.7?'#8e9d92':'#c4ad86'));
+ // Three airy wall shelves on the empty outer wall of the collecting room.
+ for(const y of [1.0,2.0,3.0]){box(.55,.09,3.7,-7.34,y,-.05,wood);for(const z of [-1.5,1.4]){box(.3,.055,.065,-7.46,y-.22,z,wall);box(.055,.38,.065,-7.55,y-.21,z,wall);}}
+ function shelfPicture(z,y,color){box(.075,.53,.43,-7.49,y+.31,z,pale);box(.08,.44,.34,-7.44,y+.31,z,material(color));box(.09,.12,.26,-7.43,y+.22,z,wall);}
+ shelfPicture(-1.2,3,'#879d8b');shelfPicture(.3,3,'#c08b78');shelfPicture(1.3,1,'#a2b0aa');for(let i=0;i<3;i++)box(.25,.32,.065,-7.35,1.2,-1.25+i*.08,material(['#b19d7b','#7b9584','#bd9a8b'][i]));
+ const dollSlots=[[-7.28,2.055,-1.15],[-7.28,2.055,.02],[-7.28,2.055,1.2],[-7.28,1.055,-.3]];
+ const shelfDolls=new THREE.Group();root.add(shelfDolls);let shelfCount=0;
+ function shelfDoll(url,name){if(!url||shelfCount>=dollSlots.length)return;const pos=dollSlots[shelfCount++];new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;const image=texture.image,ratio=image.width/image.height,h=.76,w=Math.min(.84,h*ratio);const figure=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map:texture,transparent:true,alphaTest:.035,roughness:1,side:THREE.DoubleSide}));figure.position.set(pos[0],pos[1]+h/2,pos[2]);figure.rotation.y=Math.PI/2;figure.name=name;figure.userData.familyDoll=true;shelfDolls.add(figure);renderer.render(scene,camera);});}
+ shelfDoll('collection/001/front.webp','泡面头');shelfDoll('collection/002/front.webp','the weekend');
+ import('./family-store.js?compact4').then(m=>m.familyMembers({summary:true})).then(members=>{for(const member of members){if(shelfCount>=dollSlots.length)break;shelfDoll(member.thumbnail||member.front,member.name);}}).catch(error=>console.warn('Shelf archive temporarily unavailable',error));
  // Low vintage display table leaves a clear passage through the room.
  box(1.6,.12,.85,-6.2,.91,.9,wood);for(const x of [-6.9,-5.5])for(const z of [.57,1.23])box(.09,.85,.09,x,.44,z,wood);littleDoll(-6.55,.99,.85,'#b8a58c',.35);box(.35,.05,.3,-5.9,1.01,.95,wall);box(.3,.04,.26,-5.9,1.06,.95,pale);
  plant(-7.1,1.9,0,.85);
