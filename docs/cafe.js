@@ -80,7 +80,7 @@ function mount(){
  // Two pendant lights, supported from the surviving back walls.
  for(const [x,z,h] of [[-.35,-.9,3.5],[2.45,-.5,3.9]]){cylinder(.013,.9,x,h+.4,z,pot);mesh(new THREE.ConeGeometry(.25,.22,32,1,true),cream,x,h-.08,z);cylinder(.23,.02,x,h-.2,z,material('#ffe2a2',{emissive:0xffbb55,emissiveIntensity:.45}));const glow=new THREE.PointLight(0xffcc8c,15,8,2);glow.position.set(x,h-.24,z);scene.add(glow);}
  // Offset the collecting room forward, preserving its contents as one group.
- const roomStart=root.children.length;
+ const existingRoomObjects=new Set(root.children);
  // Open vintage collecting room extends the cafe to the left.
  box(3.7,.42,6,-5.85,-.21,0,cream);box(3.58,.06,5.88,-5.85,.03,0,pale);
  box(.16,4.1,6,-7.68,2.05,0,wall);box(3.7,4.1,.16,-5.85,2.05,-2.96,wall);
@@ -109,7 +109,7 @@ function mount(){
  box(1.6,.12,.85,-6.2,.91,.9,wood);for(const x of [-6.9,-5.5])for(const z of [.57,1.23])box(.09,.85,.09,x,.44,z,wood);littleDoll(-6.55,.99,.85,'#b8a58c',.35);box(.35,.05,.3,-5.9,1.01,.95,wall);box(.3,.04,.26,-5.9,1.06,.95,pale);
  plant(-7.1,1.9,0,.85);
  cylinder(.012,.8,-5.85,4.05,-.6,pot);mesh(new THREE.ConeGeometry(.28,.22,32,1,true),pale,-5.85,3.55,-.6);ball(.09,-5.85,3.42,-.6,material('#ffe3a5',{emissive:0xffc578,emissiveIntensity:1}));const roomLight=new THREE.PointLight(0xffcc8c,17,8,2);roomLight.position.set(-5.85,3.35,-.6);roomLight.position.z+=1.55;scene.add(roomLight);
- const roomObjects=root.children.slice(roomStart).filter(o=>o.position.x<-4||o===shelfDolls);for(const object of roomObjects)object.position.z+=1.55;
+ const roomObjects=root.children.filter(o=>!existingRoomObjects.has(o)&&(o.position.x<-4||o===shelfDolls));for(const object of roomObjects)object.position.z+=1.55;
  // Extend the common platform into the staggered transition.
  box(.3,.42,1.55,-3.95,-.21,3.775,cream);
  // Quiet branded poster; only a small graphic canvas, no realistic textures.
