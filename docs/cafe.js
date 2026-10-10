@@ -82,7 +82,7 @@ function mount(){
  // Offset the collecting room forward, preserving its contents as one group.
  const existingRoomObjects=new Set(root.children);
  // Open vintage collecting room extends the cafe to the left.
- box(3.7,.42,6,-5.85,-.21,0,cream);box(3.58,.06,5.88,-5.85,.03,0,pale);
+ box(3.7,.42,6,-5.85,-.21,0,cream);box(3.58,.06,5.88,-5.85,.03,0,material('#795033',{map:timberTexture}));
  box(.16,4.1,6,-7.68,2.05,0,wall);box(3.7,4.1,.16,-5.85,2.05,-2.96,wall);
  // Remove the entire dividing wall so the offset rooms connect openly.
  const dividingWall=root.children.find(o=>o.geometry?.type==='BoxGeometry'&&o.position.x===-3.96&&o.position.y===2.05);if(dividingWall){root.remove(dividingWall);dividingWall.geometry.dispose();}
@@ -97,7 +97,7 @@ function mount(){
  for(const [x,y,c] of [[-6.85,2.25,'#78816c'],[-5.75,2.55,'#bca078'],[-4.75,2.1,'#8e7364']]){box(.02,.18,.02,x,y+.57,-2.81,pot);littleDoll(x,y,-2.75,c,.43);}
  for(const x of [-6.95,-6.7,-5.8])box(.14,.25,.22,x,1.23,-2.35,material(x===-6.7?'#8e9d92':'#c4ad86'));
  // Three airy wall shelves on the empty outer wall of the collecting room.
- for(const y of [1.0,2.0,3.0]){box(.55,.09,3.7,-7.34,y,-.05,material('#f8f5ed'));for(const z of [-1.5,1.4]){box(.3,.055,.065,-7.46,y-.22,z,wall);box(.055,.38,.065,-7.55,y-.21,z,wall);}}
+ for(const y of [1.0,2.0,3.0]){box(.55,.09,3.7,-7.34,y,-.05,pale);for(const z of [-1.5,1.4]){box(.3,.055,.065,-7.46,y-.22,z,wall);box(.055,.38,.065,-7.55,y-.21,z,wall);}}
  function shelfPicture(z,y,color){box(.075,.53,.43,-7.49,y+.31,z,pale);box(.08,.44,.34,-7.44,y+.31,z,material(color));box(.09,.12,.26,-7.43,y+.22,z,wall);}
  shelfPicture(-1.2,3,'#879d8b');shelfPicture(.3,3,'#c08b78');shelfPicture(1.3,1,'#a2b0aa');for(let i=0;i<3;i++)box(.25,.32,.065,-7.35,1.2,-1.25+i*.08,material(['#b19d7b','#7b9584','#bd9a8b'][i]));
  const dollSlots=[[-7.28,2.055,-1.15],[-7.28,2.055,.02],[-7.28,2.055,1.2],[-7.28,1.055,-.3]];
@@ -110,6 +110,8 @@ function mount(){
  plant(-7.1,1.9,0,.85);
  cylinder(.012,.8,-5.85,4.05,-.6,pot);mesh(new THREE.ConeGeometry(.28,.22,32,1,true),pale,-5.85,3.55,-.6);ball(.09,-5.85,3.42,-.6,material('#ffe3a5',{emissive:0xffc578,emissiveIntensity:1}));const roomLight=new THREE.PointLight(0xffcc8c,17,8,2);roomLight.position.set(-5.85,3.35,-.6);roomLight.position.z+=1.55;scene.add(roomLight);
  const roomObjects=root.children.filter(o=>!existingRoomObjects.has(o)&&(o.position.x<-4||o===shelfDolls));for(const object of roomObjects)object.position.z+=1.55;
+ // Rear return closes the staggered back-wall outline without dividing the rooms.
+ box(.16,4.1,1.55,-4.0,2.05,-2.185,wall);
  // Extend the common platform into the staggered transition.
  box(.3,.42,1.55,-3.95,-.21,3.775,cream);
  // Quiet branded poster; only a small graphic canvas, no realistic textures.
