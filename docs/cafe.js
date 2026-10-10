@@ -134,11 +134,16 @@ function mount(){
  box(.16,4.1,1.55,-4.0,2.05,-2.185,wall);
  // Extend the common platform into the staggered transition.
  box(.3,.42,1.55,-3.95,-.21,3.775,cream);
+ // Shallow pastel stars, deterministically scattered in clear wall areas.
+ const starShape=new THREE.Shape();for(let i=0;i<10;i++){const angle=Math.PI/2+i*Math.PI/5,r=i%2?.045:.105,x=Math.cos(angle)*r,y=Math.sin(angle)*r;i?starShape.lineTo(x,y):starShape.moveTo(x,y);}starShape.closePath();const starGeometry=new THREE.ExtrudeGeometry(starShape,{depth:.018,bevelEnabled:true,bevelThickness:.007,bevelSize:.006,bevelSegments:2,steps:1});const starColors=['#d5a09d','#b9c592','#a0bec3','#c4b0cc','#d8bd7e'];
+ const starSpots=[[-3.2,3.5,-2.82],[-2.45,3.8,-2.82],[-1.75,2.15,-2.82],[-1.2,3.65,-2.82],[.15,2.45,-2.82],[.55,3.55,-2.82],[-7.15,3.25,-1.27],[-6.55,2.75,-1.27],[-5.35,3.15,-1.27],[-4.45,2.4,-1.27]];
+ starSpots.forEach(([x,y,z],i)=>{const star=mesh(starGeometry,material(starColors[i%5]),x,y,z);star.rotation.z=(i*1.7)%1-.5;star.scale.setScalar(.8+(i%3)*.18);});
+ for(const [z,y,i] of [[.15,3.6,0],[2.6,3.45,1],[3.6,2.55,2],[4,3.6,3]]){const star=mesh(starGeometry,material(starColors[i]),-7.575,y,z);star.rotation.y=Math.PI/2;star.rotation.z=i*.25;}
  // Quiet branded poster; only a small graphic canvas, no realistic textures.
  const poster=document.createElement('canvas');poster.width=512;poster.height=640;const ctx=poster.getContext('2d');ctx.fillStyle='#f4eee3';ctx.fillRect(0,0,512,640);ctx.fillStyle='#687963';ctx.beginPath();ctx.arc(256,236,88,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ece2d2';ctx.beginPath();ctx.arc(256,214,58,0,Math.PI*2);ctx.fill();ctx.fillStyle='#393e36';ctx.textAlign='center';ctx.font='32px Arial';ctx.fillText('SOFT THINGS',256,425);ctx.font='42px Arial';ctx.fillText('CAFÉ',256,484);ctx.font='18px Arial';ctx.fillText('a little place for little things.',256,540);
  const texture=new THREE.CanvasTexture(poster);texture.colorSpace=THREE.SRGBColorSpace;
  box(1.18,1.48,.05,-2.55,2.33,-2.84,pale);mesh(new THREE.PlaneGeometry(1.08,1.35),material('#ffffff',{map:texture}),-2.55,2.33,-2.805);
- for(const [x,y,c] of [[-.95,2.9,'#b1b9a3'],[-.38,2.9,'#d6bfa4']]){box(.4,.5,.06,x,y,-2.83,pale);box(.34,.44,.065,x,y,-2.79,material(c));}
+ for(const [x,url] of [[-.95,'collection/001/front.webp'],[-.38,'collection/002/front.webp']]){box(.4,.5,.06,x,2.9,-2.83,pale);box(.34,.44,.065,x,2.9,-2.79,wall);new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;mesh(new THREE.PlaneGeometry(.29,.38),material('#ffffff',{map:texture,transparent:true}),x,2.9,-2.75);renderer.render(scene,camera);});}
  // A small freestanding sign, with room for a figure beside it.
  box(.4,.5,.06,-1.76,.3,-.1,pale);box(.34,.44,.067,-1.76,.3,-.06,wall);
  for(let i=0;i<5;i++){const leaf=ball(.095,3.35+Math.sin(i)*.08,3.25-i*.17,-2.6,green);leaf.scale.set(.7,1.4,.55);}cylinder(.16,.24,3.35,3.52,-2.6,pot);
