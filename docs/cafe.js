@@ -43,6 +43,9 @@ function mount(){
  for(const x of [1.2,3.6])box(.07,2,.11,x,2.85,-2.84,pale);
  for(const y of [1.86,3.84])box(2.48,.07,.14,2.4,y,-2.84,pale);
  box(.045,1.98,.08,2.4,2.85,-2.84,pale);box(2.6,.09,.35,2.4,1.84,-2.75,cream);
+ // Half-open vintage curtains: softly pleated linen with muted rose trim.
+ const linen=material('#dfcbaa'),trim=material('#b98575');cylinder(.025,2.85,2.4,3.98,-2.68,pot).rotation.z=Math.PI/2;
+ for(const side of [-1,1]){const curtain=new THREE.BufferGeometry(),v=[],idx=[];const N=24,M=12;for(let row=0;row<=M;row++)for(let col=0;col<=N;col++){const u=col/N,t=row/M;const width=.63-.2*Math.sin(t*Math.PI);v.push(2.4+side*(1.22-u*width),3.9-t*1.98,-2.66+Math.cos(u*Math.PI*10)*.035);}for(let row=0;row<M;row++)for(let col=0;col<N;col++){const A=row*(N+1)+col;idx.push(A,A+N+1,A+N+2,A,A+N+2,A+1);}curtain.setAttribute('position',new THREE.Float32BufferAttribute(v,3));curtain.setIndex(idx);curtain.computeVertexNormals();mesh(curtain,material('#dfcbaa',{side:THREE.DoubleSide}),0,0,0);box(.47,.045,.07,2.4+side*.99,2.83,-2.64,trim);}
  // Raised lounge and the six short connecting steps.
  box(2.85,1.2,4.1,2.48,.6,-.85,cream);box(2.85,.06,4.1,2.48,1.23,-.85,material('#879368'));
  for(let i=0;i<6;i++)box(1.02,.2*(i+1),.3,2.92,.1*(i+1),2.85-i*.3,cream);
@@ -146,7 +149,10 @@ function mount(){
  for(const [x,url] of [[-.95,'collection/001/front.webp'],[-.38,'collection/002/front.webp']]){box(.4,.5,.06,x,2.9,-2.83,pale);box(.34,.44,.065,x,2.9,-2.79,wall);new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;mesh(new THREE.PlaneGeometry(.29,.38),material('#ffffff',{map:texture,transparent:true}),x,2.9,-2.75);renderer.render(scene,camera);});}
  // A small freestanding sign, with room for a figure beside it.
  box(.4,.5,.06,-1.76,.3,-.1,pale);box(.34,.44,.067,-1.76,.3,-.06,wall);
- for(let i=0;i<5;i++){const leaf=ball(.095,3.35+Math.sin(i)*.08,3.25-i*.17,-2.6,green);leaf.scale.set(.7,1.4,.55);}cylinder(.16,.24,3.35,3.52,-2.6,pot);
+ // Spider plant: narrow ribbon leaves arch out of a hanging pot.
+ cylinder(.16,.24,3.35,3.52,-2.6,pot);for(const dx of [-.1,.1])cylinder(.009,.46,3.35+dx,3.87,-2.6,pale);
+ for(let i=0;i<15;i++){const angle=i*2.4,length=.48+(i%4)*.1;const v=[],idx=[];for(let step=0;step<=16;step++){const t=step/16,r=.38*Math.sin(t*Math.PI/2),y=3.65+.15*Math.sin(t*Math.PI)-length*t*t,width=.026*Math.sin(Math.PI*t)**.5;const x=3.35+Math.cos(angle)*r,z=-2.6+Math.sin(angle)*r;for(const side of [-1,1])v.push(x+side*Math.sin(angle)*width,y,z-side*Math.cos(angle)*width);}for(let j=0;j<16;j++)idx.push(j*2,j*2+1,j*2+3,j*2,j*2+3,j*2+2);const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(v,3));geo.setIndex(idx);geo.computeVertexNormals();mesh(geo,material(i%3?'#66845a':'#a1b488',{side:THREE.DoubleSide}),0,0,0);}
+
  scene.add(new THREE.HemisphereLight(0xffe9cd,0x95816b,1.65));const light=new THREE.DirectionalLight(0xffdfb2,1.25);light.position.set(0,12,1);light.castShadow=true;light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-11,right:11,top:9,bottom:-9,near:.1,far:30});light.shadow.normalBias=.035;light.shadow.bias=-.00015;scene.add(light);
  const shadow=mesh(new THREE.PlaneGeometry(22,14),new THREE.ShadowMaterial({opacity:.075}),0,-.58,0,scene);shadow.rotation.x=-Math.PI/2;shadow.castShadow=false;
  let yaw=0,pitch=0;const target=new THREE.Vector3(-1.8,1.65,0);
