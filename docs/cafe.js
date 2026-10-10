@@ -114,6 +114,8 @@ function mount(){
  function dollPicture(url,x,y,z,lean=false,square=false){const frame=new THREE.Group();frame.position.set(x,y,z);root.add(frame);if(lean)frame.rotation.x=-.2;box(.68,square?.68:.83,.06,0,0,0,pale,frame);box(.6,square?.6:.75,.065,0,0,.015,wall,frame);new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;const art=new THREE.Mesh(new THREE.PlaneGeometry(.53,square?.53:.65),new THREE.MeshStandardMaterial({map:texture,transparent:true,roughness:1}));art.position.set(0,0,.06);frame.add(art);renderer.render(scene,camera);});}
  dollPicture('collection/001/front.webp',-6.15,1.99,-2.47,true);dollPicture('collection/002/front.webp',-5.2,1.91,-2.47,true,true);
  shelfDoll('collection/001/front.webp','泡面头');shelfDoll('collection/002/front.webp','the weekend');
+ // Restore the original curated display separately from future opt-in visitors.
+ import('./family-store.js?compact4').then(m=>m.familyMembers({summary:true})).then(members=>{for(const member of members.slice(0,4))shelfDoll(member.thumbnail||member.front,member.name,null,false,member.id);const bnaear=members.find(m=>/bnaear|banaer/i.test(m.name||''));if(bnaear)shelfDoll(bnaear.thumbnail||bnaear.front,bnaear.name,[-5.55,1.57,-2.23],false,bnaear.id+'-cabinet');}).catch(error=>console.warn('Original cafe display unavailable',error));
 
  // Two freestanding exhibition plinths and quiet labels frame a clear aisle.
  for(const [x,z,height] of [[-5.35,2.15,.88],[-6.65,2.2,1.13]]){box(.62,height,.62,x,height/2,z,wall);box(.67,.045,.67,x,height+.023,z,pale);box(.25,.12,.02,x,height-.18,z+.32,cream);}

@@ -45,3 +45,5 @@
 .cafe-photo-modal{width:min(94vw,1100px);padding:18px;border:0;border-radius:10px}.cafe-photo-modal::backdrop{background:#0008}.cafe-photo-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}.cafe-photo-view{height:65vh;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:15px 0;background:#faf8f4;touch-action:none}.cafe-photo-view img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center}.cafe-photo-view img[hidden]{display:none}.cafe-photo-modal button,.cafe-upload,.cafe-photos button{padding:8px 12px;border:1px solid #d5c9b7;background:white;border-radius:4px;cursor:pointer}.cafe-photos button{display:block;margin:8px 0}
 
 .cafe-drop-hint{position:absolute;z-index:3;pointer-events:none;background:#fffdf3ef;color:#6d5840;border:1px solid #ddceb5;border-radius:7px;padding:8px 12px;font:13px Arial;box-shadow:0 4px 15px #0001;max-width:250px}.cafe-drop-hint[hidden]{display:none}
+
+body:has(#cafe-page:not([hidden]))>.cloud-controls{display:none}
