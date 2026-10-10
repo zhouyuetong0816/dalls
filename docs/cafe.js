@@ -18,7 +18,7 @@ function mount(){
  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});
  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setClearColor(0xffffff,0);
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
- renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
+ renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.92;
  host.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','SOFT THINGS CAFÉ 三维场景');
  const root=new THREE.Group();scene.add(root);
  const material=(color,extras={})=>new THREE.MeshStandardMaterial({color,roughness:.95,...extras});
@@ -53,20 +53,27 @@ function mount(){
  function chair(x,z,level,angle=0){const g=new THREE.Group();g.position.set(x,level,z);g.rotation.y=angle;root.add(g);cylinder(.25,.09,0,.48,0,seat,g);for(const xx of [-.16,.16])for(const zz of [-.16,.16]){const leg=box(.048,.46,.048,xx,.23,zz,wood,g);leg.rotation.z=xx>0?-.06:.06;}for(const xx of [-.2,.2])box(.045,.58,.045,xx,.74,-.18,wood,g);box(.43,.28,.055,0,.9,-.18,pale,g);return g;}
  function cup(x,y,z){cylinder(.07,.105,x,y+.052,z,wall);cylinder(.054,.004,x,y+.107,z,material('#867261'));cylinder(.105,.014,x,y+.007,z,wall);const handle=mesh(new THREE.TorusGeometry(.045,.012,8,16),wall,x+.074,y+.066,z);handle.rotation.y=Math.PI/2;}
  function table(x,z,level,decor=true){cylinder(.58,.085,x,level+.88,z,pale);cylinder(.055,.8,x,level+.43,z,wood);cylinder(.28,.045,x,level+.04,z,wood);if(decor){cup(x-.18,level+.93,z+.05);cylinder(.12,.09,x+.18,level+.975,z+.1,cake);cylinder(.15,.015,x+.18,level+.935,z+.1,wall);cylinder(.055,.16,x+.05,level+1.01,z-.2,pot);cylinder(.009,.2,x+.05,level+1.17,z-.2,green);ball(.047,x+.05,level+1.28,z-.2,pink);}}
- table(-2.15,1.15,0);chair(-2.95,1.08,0,-Math.PI/2);chair(-1.9,2.05,0,Math.PI);
- table(.05,1.75,0);chair(-.78,1.73,0,-Math.PI/2);chair(.73,2.28,0,Math.PI*.75);
- table(2.45,-.45,1.2);chair(3.27,-.2,1.2,Math.PI/2);
+ function faceTable(x,z,level,tx,tz){const c=chair(x,z,level,Math.atan2(tx-x,tz-z));c.userData.table=[tx,tz];}
+ table(-2.15,1.15,0,false);cup(-2.35,.93,1.2);faceTable(-2.95,1.08,0,-2.15,1.15);faceTable(-1.9,2.05,0,-2.15,1.15);
+ table(.05,1.75,0,false);cup(-.18,.93,1.8);cup(.28,.93,1.8);box(.28,.035,.2,.05,.94,1.48,pale);faceTable(-.78,1.73,0,.05,1.75);faceTable(.73,2.28,0,.05,1.75);
+ table(2.45,-.45,1.2,false);cup(2.2,2.13,-.4);box(.26,.035,.32,2.65,2.14,-.65,material('#56776c'));cylinder(.055,.16,2.45,2.21,-.72,pot);ball(.065,2.45,2.36,-.72,pink);faceTable(3.27,-.2,1.2,2.45,-.45);
+ function cakeModel(x,y,z,flavor='strawberry',slice=false,scale=1){const g=new THREE.Group();root.add(g);g.position.set(x,y,z);g.scale.setScalar(scale);const color={strawberry:'#e7a39d',chocolate:'#694333',matcha:'#7e965a'}[flavor];const filling=material(color);cylinder(.23,.015,0,.008,0,wall,g);if(slice){const shape=new THREE.Shape();shape.moveTo(-.17,-.14);shape.lineTo(.19,-.14);shape.lineTo(-.17,.19);shape.closePath();for(let i=0;i<3;i++){const piece=mesh(new THREE.ExtrudeGeometry(shape,{depth:.055,bevelEnabled:true,bevelSize:.008,bevelThickness:.006,bevelSegments:2,steps:1}),i===1?filling:cake,0,.02+i*.06,0,g);piece.rotation.x=-Math.PI/2;}}else{cylinder(.19,.19,0,.115,0,cake,g);cylinder(.195,.04,0,.13,0,filling,g);cylinder(.195,.035,0,.225,0,filling,g);for(let i=0;i<5;i++){const a=i*Math.PI*2/5;ball(.033,Math.cos(a)*.13,.26,Math.sin(a)*.13,wall,g);}}
+ if(flavor==='strawberry'){for(const xx of [-.07,.05]){const berry=ball(.039,xx,slice?.25:.29,0,material('#ac4938'),g);berry.scale.set(.8,1.25,.8);}}else if(flavor==='chocolate'){box(.075,.055,.035,0,slice?.25:.28,0,material('#442b23'),g);}else{ball(.035,0,slice?.25:.28,0,material('#4e6f3d'),g);}g.userData={flavor,slice};return g;}
+ cakeModel(-1.98,.93,1.12,'strawberry',true,.8);cakeModel(.15,.93,1.95,'chocolate',true,.7);cakeModel(2.5,2.13,-.3,'matcha',true,.65);
  // Glass cabinet: restrained tinted panels, clean shelf and simple cakes.
  box(2.15,.7,.88,-.45,.39,-.85,wood);box(2.23,.07,.95,-.45,.775,-.85,pale);
  const glass=material('#d6e5df',{transparent:true,opacity:.2,depthWrite:false});
  box(2.15,.74,.025,-.45,1.17,-.385,glass);box(2.15,.74,.025,-.45,1.17,-1.31,glass);
  for(const x of [-1.54,.64])box(.035,.78,.93,x,1.16,-.85,pale);
  box(2.2,.03,.95,-.45,1.56,-.85,glass);box(2.08,.035,.84,-.45,1.11,-.85,cream);
- for(const y of [.87,1.2])for(const x of [-1.1,-.45,.2]){cylinder(.19,.13,x,y,-.83,cake);cylinder(.195,.03,x,y+.08,-.83,wall);ball(.035,x,y+.12,-.83,pink);}
- function plant(x,z,level,size=1){const g=new THREE.Group();g.position.set(x,level,z);g.scale.setScalar(size);root.add(g);cylinder(.23,.38,0,.19,0,pot,g,.17);cylinder(.16,.02,0,.39,0,material('#8f8774'),g);for(let i=0;i<7;i++){const a=i*Math.PI*2/7;const leaf=ball(.18,Math.cos(a)*.2,.62+(i%3)*.12,Math.sin(a)*.2,green,g);leaf.scale.set(.55,1.8,.8);leaf.rotation.z=Math.sin(a)*.5;}return g;}
+ const cakeSlots=[[-1.1,.81,-.83],[-.45,.81,-.83],[.2,.81,-.83],[-1.1,1.13,-.83],[-.45,1.13,-.83],[.2,1.13,-.83]];const cakeChoices=['strawberry','chocolate','matcha'];const cabinetCakes= cakeSlots.map((p,i)=>cakeModel(...p,cakeChoices[i%3],i>=3));
+ function replaceCake(index,flavor,slice){const old=cabinetCakes[index];root.remove(old);old.traverse(o=>{o.geometry?.dispose();});cabinetCakes[index]=cakeModel(...cakeSlots[index],flavor,slice);renderer.render(scene,camera);}
+ const controls=document.createElement('details');controls.className='cafe-cake-menu';controls.innerHTML='<summary>蛋糕柜 / Cake selection</summary><div><label>位置 <select data-slot>'+cakeSlots.map((_,i)=>`<option value="${i}">${i<3?'下层':'上层'} ${i%3+1}</option>`).join('')+'</select></label><label>蛋糕 <select data-flavor><option value="strawberry">草莓 / Strawberry</option><option value="chocolate">巧克力 / Chocolate</option><option value="matcha">抹茶 / Matcha</option></select></label><label>形状 <select data-shape><option value="whole">整蛋糕 / Whole</option><option value="slice">切块 / Slice</option></select></label></div>';page.append(controls);
+ const slot=controls.querySelector('[data-slot]'),flavor=controls.querySelector('[data-flavor]'),shape=controls.querySelector('[data-shape]');slot.onchange=()=>{const c=cabinetCakes[Number(slot.value)].userData;flavor.value=c.flavor;shape.value=c.slice?'slice':'whole';};flavor.onchange=shape.onchange=()=>replaceCake(Number(slot.value),flavor.value,shape.value==='slice');
+ function plant(x,z,level,size=1){const g=new THREE.Group();g.position.set(x,level,z);g.scale.setScalar(size);root.add(g);cylinder(.23,.38,0,.19,0,pot,g,.17);cylinder(.18,.02,0,.39,0,material('#574a36'),g);for(let i=0;i<7;i++){const a=i*2.4;const tip=new THREE.Vector3(Math.cos(a)*.3,.65+(i%3)*.18,Math.sin(a)*.3);const stem=new THREE.Vector3(0,.37,0),dir=tip.clone().sub(stem);const stalk=mesh(new THREE.CylinderGeometry(.012,.012,dir.length(),8),green,...stem.clone().add(tip).multiplyScalar(.5).toArray(),g);stalk.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());const leaf=ball(1,tip.x,tip.y,tip.z,green,g);leaf.scale.set(.13,.025,.27);leaf.rotation.set(.25,a,-.2);}return g;}
  plant(-3.35,-1.8,0,1.3);plant(1.35,1.4,0,.9);
  // Two pendant lights, supported from the surviving back walls.
- for(const [x,z,h] of [[-.35,-.9,3.5],[2.45,-.5,3.9]]){cylinder(.013,.9,x,h+.4,z,pot);mesh(new THREE.ConeGeometry(.25,.22,32,1,true),cream,x,h-.08,z);cylinder(.23,.02,x,h-.2,z,wall);}
+ for(const [x,z,h] of [[-.35,-.9,3.5],[2.45,-.5,3.9]]){cylinder(.013,.9,x,h+.4,z,pot);mesh(new THREE.ConeGeometry(.25,.22,32,1,true),cream,x,h-.08,z);cylinder(.23,.02,x,h-.2,z,material('#ffe2a2',{emissive:0xffbb55,emissiveIntensity:.45}));const glow=new THREE.PointLight(0xffc078,5,6,2);glow.position.set(x,h-.24,z);scene.add(glow);}
  // Quiet branded poster; only a small graphic canvas, no realistic textures.
  const poster=document.createElement('canvas');poster.width=512;poster.height=640;const ctx=poster.getContext('2d');ctx.fillStyle='#f4eee3';ctx.fillRect(0,0,512,640);ctx.fillStyle='#687963';ctx.beginPath();ctx.arc(256,236,88,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ece2d2';ctx.beginPath();ctx.arc(256,214,58,0,Math.PI*2);ctx.fill();ctx.fillStyle='#393e36';ctx.textAlign='center';ctx.font='32px Arial';ctx.fillText('SOFT THINGS',256,425);ctx.font='42px Arial';ctx.fillText('CAFÉ',256,484);ctx.font='18px Arial';ctx.fillText('a little place for little things.',256,540);
  const texture=new THREE.CanvasTexture(poster);texture.colorSpace=THREE.SRGBColorSpace;
@@ -75,7 +82,7 @@ function mount(){
  // A small freestanding sign, with room for a figure beside it.
  box(.4,.5,.06,-1.76,.3,-.1,pale);box(.34,.44,.067,-1.76,.3,-.06,wall);
  for(let i=0;i<5;i++){const leaf=ball(.095,3.35+Math.sin(i)*.08,3.25-i*.17,-2.6,green);leaf.scale.set(.7,1.4,.55);}cylinder(.16,.24,3.35,3.52,-2.6,pot);
- scene.add(new THREE.HemisphereLight(0xffffff,0xd9cebc,2.8));const light=new THREE.DirectionalLight(0xfff4df,3.1);light.position.set(-3,9,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:.1,far:30});light.shadow.normalBias=.035;light.shadow.bias=-.00015;scene.add(light);
+ scene.add(new THREE.HemisphereLight(0xffe4bc,0x685847,1.45));const light=new THREE.DirectionalLight(0xffd49b,1.7);light.position.set(-3,9,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);Object.assign(light.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:.1,far:30});light.shadow.normalBias=.035;light.shadow.bias=-.00015;scene.add(light);
  const shadow=mesh(new THREE.PlaneGeometry(14,12),new THREE.ShadowMaterial({opacity:.075}),0,-.58,0,scene);shadow.rotation.x=-Math.PI/2;shadow.castShadow=false;
  let yaw=0,pitch=0;const target=new THREE.Vector3(0,1.65,0);
  function cameraPose(){const angle=Math.PI/4+yaw,up=Math.PI/5+pitch;camera.position.set(Math.sin(angle)*14*Math.cos(up),target.y+14*Math.sin(up),Math.cos(angle)*14*Math.cos(up));camera.lookAt(target);camera.updateMatrixWorld();}
