@@ -2,11 +2,13 @@ import * as THREE from './vendor/three.module.js';
 // World anchors use the same scene coordinates as future doll placements.
 // Image-relative percentages are projected from the fixed reference camera.
 export const photoSpots = [
- {id:'photoSpot_01',name:'前方左侧咖啡桌',position:[-2.15,.91,1.15]},
- {id:'photoSpot_02',name:'前方右侧咖啡桌',position:[.05,.91,1.75]},
- {id:'photoSpot_03',name:'二楼沙发座位',position:[2.43,1.915,-2.02]},
- {id:'photoSpot_04',name:'楼梯旁的盆栽',position:[1.35,.55,1.4]},
- {id:'photoSpot_05',name:'蛋糕展示柜',position:[-.35,1.57,-.85]}
+ {id:'photoSpot_01',name:'椅子',position:[-2.95,.525,1.08]},
+ {id:'photoSpot_02',name:'咖啡桌',position:[.05,.93,1.75]},
+ {id:'photoSpot_03',name:'沙发',position:[2.43,1.915,-2.02]},
+ {id:'photoSpot_04',name:'展示架',position:[-7.28,2.055,1.55]},
+ {id:'photoSpot_05',name:'蛋糕陈列柜',position:[-.35,1.575,-.85]},
+ {id:'photoSpot_06',name:'展示柜',position:[-6.05,1.575,-.81]},
+ {id:'photoSpot_07',name:'展示架',position:[-5.35,.925,3.7]}
 ];
 const page=document.createElement('section');page.id='cafe-page';page.hidden=true;
 page.innerHTML='<div class="cafe-heading"><h1>SOFT THINGS CAFÉ</h1><p>a little place for little things.</p></div><div class="cafe-scene" aria-label="奶油色微缩咖啡厅，拖动可小幅调整视角"><div class="cafe-fallback" hidden>咖啡厅场景需要支持 WebGL 的浏览器。</div></div>';
@@ -110,7 +112,7 @@ function mount(){
  let cr=0,cg=0,cb=0,cn=0;for(let i=0;i<pixels.length;i+=4){if(pixels[i+3]>200&&pixels[i]+pixels[i+1]+pixels[i+2]>120){cr+=pixels[i];cg+=pixels[i+1];cb+=pixels[i+2];cn++;}}const sideColor=new THREE.Color().setRGB(cr/(cn||1)/255,cg/(cn||1)/255,cb/(cn||1)/255,THREE.SRGBColorSpace);const positions=[],uvs=[],indices=[],sideIndices=[];let maxY=0;const distance=new Float32Array(W*H);distance.fill(1000);for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x;if(!solid(x,y)){distance[i]=0;continue;}maxY=Math.max(maxY,y);distance[i]=Math.min(distance[i],x?distance[i-1]+1:1,y?distance[i-W]+1:1);}for(let y=H-1;y>=0;y--)for(let x=W-1;x>=0;x--){const i=y*W+x;distance[i]=Math.min(distance[i],x<W-1?distance[i+1]+1:1,y<H-1?distance[i+W]+1:1);}
  for(let pass=0;pass<4;pass++){const next=distance.slice();for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){const i=y*W+x;if(!solid(x,y))continue;let sum=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)sum+=distance[i+dy*W+dx];next[i]=sum/9;}distance.set(next);}
  for(const sign of [1,-1]){const offset=positions.length/3;for(let y=0;y<=H;y++)for(let x=0;x<=W;x++){const near=[];for(const dx of [-1,0])for(const dy of [-1,0])near.push(solid(x+dx,y+dy)?distance[(y+dy)*W+x+dx]:0);const d=Math.min(...near),t=Math.min(1,d/18);positions.push((x/W-.5)*w,(.5-y/H)*h,sign*.16*Math.sqrt(Math.max(0,1-(1-t)*(1-t))));uvs.push(x/W,1-y/H);}for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(!solid(x,y))continue;const A=offset+y*(W+1)+x,B=A+1,C=A+W+2,D=A+W+1;const target=distance[y*W+x]<18?sideIndices:indices;target.push(...(sign===1?[A,D,C,A,C,B]:[A,B,C,A,C,D]));}}
- const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geometry.setIndex([...indices,...sideIndices]);geometry.addGroup(0,indices.length,0);geometry.addGroup(indices.length,sideIndices.length,1);geometry.computeVertexNormals();figure.add(new THREE.Mesh(geometry,[new THREE.MeshStandardMaterial({map:texture,transparent:true,alphaTest:.035,roughness:1,side:THREE.DoubleSide}),new THREE.MeshStandardMaterial({color:sideColor,roughness:1,side:THREE.DoubleSide})]));figure.position.set(pos[0],pos[1]+(maxY/H-.5)*h,pos[2]);figure.rotation.y=wallMounted?0:Math.atan2(camera.position.x-pos[0],camera.position.z-(pos[2]+1.55));figure.name=name;figure.userData.memberId=memberId;figure.userData.familyDoll=true;figure.userData.movable=true;figure.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});shelfDolls.add(figure);renderer.render(scene,camera);});}
+ const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geometry.setIndex([...indices,...sideIndices]);geometry.addGroup(0,indices.length,0);geometry.addGroup(indices.length,sideIndices.length,1);geometry.computeVertexNormals();figure.add(new THREE.Mesh(geometry,[new THREE.MeshStandardMaterial({map:texture,transparent:true,alphaTest:.035,roughness:1,side:THREE.DoubleSide}),new THREE.MeshStandardMaterial({color:sideColor,roughness:1,side:THREE.DoubleSide})]));figure.position.set(pos[0],pos[1]+(maxY/H-.5)*h,pos[2]);figure.rotation.y=wallMounted?0:Math.atan2(camera.position.x-pos[0],camera.position.z-(pos[2]+1.55));figure.name=name;figure.userData.memberId=memberId;figure.userData.familyDoll=true;figure.userData.movable=true;figure.userData.homePosition=figure.position.toArray();figure.userData.homeRotation=figure.rotation.y;figure.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});shelfDolls.add(figure);renderer.render(scene,camera);});}
  function dollPicture(url,x,y,z,lean=false,square=false){const frame=new THREE.Group();frame.position.set(x,y,z);root.add(frame);if(lean)frame.rotation.x=-.2;box(.68,square?.68:.83,.06,0,0,0,pale,frame);box(.6,square?.6:.75,.065,0,0,.015,wall,frame);new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;const art=new THREE.Mesh(new THREE.PlaneGeometry(.53,square?.53:.65),new THREE.MeshStandardMaterial({map:texture,transparent:true,roughness:1}));art.position.set(0,0,.06);frame.add(art);renderer.render(scene,camera);});}
  dollPicture('collection/001/front.webp',-6.15,1.99,-2.47,true);dollPicture('collection/002/front.webp',-5.2,1.91,-2.47,true,true);
  shelfDoll('collection/001/front.webp','泡面头');shelfDoll('collection/002/front.webp','the weekend');
@@ -169,7 +171,7 @@ function mount(){
  canvas.ondblclick=()=>{yaw=pitch=0;resize();};
  new ResizeObserver(()=>{if(!page.hidden)resize();}).observe(host);renderScene=resize;
  page.photoSpots=photoSpots;page.cafeScene={scene,root,camera,photoSpots};
- import('./cafe-interaction.js?v=cafedrop26').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
+ import('./cafe-interaction.js?v=cafereset28').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
 }
 window.addEventListener('site-page-change',e=>{page.hidden=e.detail!=='cafe';if(!page.hidden){if(!mounted){try{mount();mounted=true;}catch(error){page.querySelector('.cafe-fallback').hidden=false;console.error(error);}}else renderScene();}});
 if(location.hash==='#cafe'){page.hidden=false;try{mount();mounted=true;}catch{page.querySelector('.cafe-fallback').hidden=false;}}

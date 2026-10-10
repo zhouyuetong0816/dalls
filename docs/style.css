@@ -47,3 +47,5 @@
 .cafe-drop-hint{position:absolute;z-index:3;pointer-events:none;background:#fffdf3ef;color:#6d5840;border:1px solid #ddceb5;border-radius:7px;padding:8px 12px;font:13px Arial;box-shadow:0 4px 15px #0001;max-width:250px}.cafe-drop-hint[hidden]{display:none}
 
 body:has(#cafe-page:not([hidden]))>.cloud-controls{display:none}
+
+.cafe-reset{margin-top:8px;background:white;border:1px solid #cbbba4;padding:7px 18px;border-radius:4px;color:#68563e;cursor:pointer;font:13px Arial}
