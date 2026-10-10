@@ -4,7 +4,7 @@ import * as THREE from './vendor/three.module.js';
 export const photoSpots = [
  {id:'photoSpot_01',name:'前方左侧咖啡桌',position:[-2.15,.91,1.15]},
  {id:'photoSpot_02',name:'前方右侧咖啡桌',position:[.05,.91,1.75]},
- {id:'photoSpot_03',name:'二层咖啡桌',position:[2.45,2.11,-.45]},
+ {id:'photoSpot_03',name:'二楼沙发座位',position:[2.43,1.915,-2.02]},
  {id:'photoSpot_04',name:'楼梯旁的盆栽',position:[1.35,.55,1.4]},
  {id:'photoSpot_05',name:'蛋糕展示柜',position:[-.35,1.57,-.85]}
 ];
@@ -76,7 +76,7 @@ function mount(){
  box(2.2,.03,.95,-.45,1.56,-.85,glass);box(2.08,.035,.84,-.45,1.11,-.85,cream);
  const cakeSlots=[[-1.1,.81,-.83],[-.45,.81,-.83],[.2,.81,-.83],[-1.1,1.13,-.83],[-.45,1.13,-.83],[.2,1.13,-.83]];const cakeChoices=['strawberry','chocolate','matcha'];const cabinetCakes= cakeSlots.map((p,i)=>cakeModel(...p,cakeChoices[i%3],i>=3));
  function replaceCake(index,flavor,slice){const old=cabinetCakes[index];root.remove(old);old.traverse(o=>{o.geometry?.dispose();});cabinetCakes[index]=cakeModel(...cakeSlots[index],flavor,slice);renderer.render(scene,camera);}
- const controls=document.createElement('details');controls.className='cafe-cake-menu';controls.innerHTML='<summary>蛋糕柜 / Cake selection</summary><div><label>位置 <select data-slot>'+cakeSlots.map((_,i)=>`<option value="${i}">${i<3?'下层':'上层'} ${i%3+1}</option>`).join('')+'</select></label><label>蛋糕 <select data-flavor><option value="strawberry">草莓 / Strawberry</option><option value="chocolate">巧克力 / Chocolate</option><option value="matcha">抹茶 / Matcha</option></select></label><label>形状 <select data-shape><option value="whole">整蛋糕 / Whole</option><option value="slice">切块 / Slice</option></select></label></div>';page.append(controls);
+ const controls=document.createElement('details');controls.className='cafe-cake-menu';controls.innerHTML='<summary>蛋糕柜 / Cake selection</summary><div><label>位置 <select data-slot>'+cakeSlots.map((_,i)=>`<option value="${i}">${i<3?'下层':'上层'} ${i%3+1}</option>`).join('')+'</select></label><label>蛋糕 <select data-flavor><option value="strawberry">草莓 / Strawberry</option><option value="chocolate">巧克力 / Chocolate</option><option value="matcha">抹茶 / Matcha</option></select></label><label>形状 <select data-shape><option value="whole">整蛋糕 / Whole</option><option value="slice">切块 / Slice</option></select></label></div>';// Cake options are no longer displayed.
  const slot=controls.querySelector('[data-slot]'),flavor=controls.querySelector('[data-flavor]'),shape=controls.querySelector('[data-shape]');slot.onchange=()=>{const c=cabinetCakes[Number(slot.value)].userData;flavor.value=c.flavor;shape.value=c.slice?'slice':'whole';};flavor.onchange=shape.onchange=()=>replaceCake(Number(slot.value),flavor.value,shape.value==='slice');
  function plant(x,z,level,size=1){const g=new THREE.Group();g.position.set(x,level,z);g.scale.setScalar(size);root.add(g);cylinder(.23,.38,0,.19,0,pot,g,.17);cylinder(.18,.02,0,.39,0,material('#574a36'),g);for(let i=0;i<7;i++){const a=i*2.4;const tip=new THREE.Vector3(Math.cos(a)*.3,.65+(i%3)*.18,Math.sin(a)*.3);const stem=new THREE.Vector3(0,.37,0),dir=tip.clone().sub(stem);const stalk=mesh(new THREE.CylinderGeometry(.012,.012,dir.length(),8),green,...stem.clone().add(tip).multiplyScalar(.5).toArray(),g);stalk.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());const leaf=ball(1,tip.x,tip.y,tip.z,green,g);leaf.scale.set(.13,.025,.27);leaf.rotation.set(.25,a,-.2);}return g;}
  plant(-3.35,-1.8,0,1.3);plant(1.35,1.4,0,.9);
@@ -167,7 +167,7 @@ function mount(){
  canvas.ondblclick=()=>{yaw=pitch=0;resize();};
  new ResizeObserver(()=>{if(!page.hidden)resize();}).observe(host);renderScene=resize;
  page.photoSpots=photoSpots;page.cafeScene={scene,root,camera,photoSpots};
- import('./cafe-interaction.js?v=cafeplay25').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
+ import('./cafe-interaction.js?v=cafedrop26').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
 }
 window.addEventListener('site-page-change',e=>{page.hidden=e.detail!=='cafe';if(!page.hidden){if(!mounted){try{mount();mounted=true;}catch(error){page.querySelector('.cafe-fallback').hidden=false;console.error(error);}}else renderScene();}});
 if(location.hash==='#cafe'){page.hidden=false;try{mount();mounted=true;}catch{page.querySelector('.cafe-fallback').hidden=false;}}
