@@ -1,3 +1,49 @@
-const header=document.querySelector('header');const process=document.querySelector('#nav');document.querySelector('#design-desk').prepend(process);const nav=document.createElement('nav');nav.id='site-nav';nav.innerHTML=['首页 / Home','商品 / Shop','创作 / Create','档案袋 / Family','咖啡店 / Cafe'].map((name,i)=>`<button data-page="${['home','shop','create','family','cafe'][i]}">${name}</button>`).join('');header.insertBefore(nav,header.querySelector('small'));header.querySelector('small').remove();const home=document.createElement('section');home.id='home-page';home.innerHTML='<span>SOFT THINGS</span><h1>让想象变柔软。<br><small>Make something soft.</small></h1><button data-page="create">开始创作 / Start creating →</button><button data-page="family">认识家人 / Meet the family →</button>';const shop=document.createElement('section');shop.id='shop-page';shop.innerHTML='<h1>商品 / Shop</h1><div class="shop-cards">'+['001','002'].map(id=>`<article><img src="collection/${id}/front.png?v=noodlebody1" alt="娃娃 ${id}"><h2>${id==='001'?'泡面头 / Noodle Head':'娃娃 '+id+' / Doll '+id}</h2><p>暂未开售 / Not available yet</p></article>`).join('')+'</div>';document.querySelector('.brand-showcase').before(home,shop);const family=document.querySelector('.brand-showcase');
-function show(page){home.hidden=page!=='home';shop.hidden=page!=='shop';document.querySelector('#design-desk').hidden=page!=='create';family.hidden=page!=='family';const cafe=document.querySelector('#cafe-page');if(cafe)cafe.hidden=page!=='cafe';nav.querySelectorAll('button').forEach(button=>button.classList.toggle('active',button.dataset.page===page));if(!(page==='family'&&location.hash.startsWith('#family/')))history.replaceState(null,'','#'+page);window.dispatchEvent(new CustomEvent('site-page-change',{detail:page}));window.dispatchEvent(new Event('resize'));window.scrollTo({top:0,behavior:'instant'});}
-document.addEventListener('click',e=>{const button=e.target.closest('[data-page]');if(button){if(button.dataset.page==='family')history.replaceState(null,'','#family');show(button.dataset.page);}});window.addEventListener('family-added',()=>show('family'));window.addEventListener('family-edit',()=>show('create'));const initialPage=location.hash.slice(1).split('/')[0];show(['home','shop','create','family','cafe'].includes(initialPage)?initialPage:'home');
+import {createGuide} from './guide-doll.js?v=guided2';
+const header=document.querySelector('header');
+const process=document.querySelector('#nav');document.querySelector('#design-desk').prepend(process);
+const nav=document.createElement('nav');nav.id='site-nav';
+nav.innerHTML=[['home','首页 / Home'],['about','品牌 / About'],['shop','商品 / Shop'],['create','创作 / Create'],['family','档案袋 / Archive'],['cafe','咖啡店 / Cafe']].map(([page,name])=>`<button data-page="${page}">${name}</button>`).join('');header.insertBefore(nav,header.querySelector('small'));header.querySelector('small')?.remove();
+const home=document.createElement('section');home.id='home-page';
+home.innerHTML='<span>SOFT THINGS</span><h1>soft things<span class="home-cn">让想象变柔软。</span></h1><div class="home-doll-group"><img class="home-doll" src="collection/002/front.webp" alt="the weekend"><img class="home-doll" data-guide-source src="collection/001/front.webp" alt="泡面头"></div><p class="home-invite">Wanna follow me?<small>要跟着我一起逛逛吗？</small></p><div class="home-choices"><button data-follow>YES, LET’S GO!<small>跟着娃娃探索 →</small></button><button data-free>EXPLORE MYSELF<small>我想自己逛逛</small></button></div>';
+// The existing home introduction becomes ABOUT; creation and archive remain intact.
+const about=document.createElement('section');about.id='about-page';about.innerHTML='<span>SOFT THINGS / ABOUT</span><h1>让想象变柔软。<br><small>Make something soft.</small></h1><button data-page="create">开始创作 / Start creating →</button><button data-page="family">认识家人 / Meet the family →</button>';
+const shop=document.createElement('section');shop.id='shop-page';shop.innerHTML='<h1>商品 / Shop</h1><div class="shop-cards">'+['001','002'].map(id=>`<article><img src="collection/${id}/front.png?v=noodlebody1" alt="娃娃 ${id}"><h2>${id==='001'?'泡面头 / Noodle Head':'娃娃 '+id+' / Doll '+id}</h2><p>暂未开售 / Not available yet</p></article>`).join('')+'</div>';
+document.querySelector('.brand-showcase').before(home,about,shop);
+const family=document.querySelector('.brand-showcase');let currentPage='home',activeTransition=null,guide;
+const scrollPositions=new Map();
+const aliases={archive:'family'};
+function parseRoute(hash){const raw=hash.slice(1).split('/')[0];return aliases[raw]||(['home','about','shop','create','family','cafe'].includes(raw)?raw:'home');}
+function pages(){return {home,about,shop,create:document.querySelector('#design-desk'),family,cafe:document.querySelector('#cafe-page')};}
+function notify(page){nav.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.body.dataset.sitePage=page;window.dispatchEvent(new CustomEvent('site-page-change',{detail:page}));window.dispatchEvent(new Event('resize'));}
+function route(page,{historyMode='push',hash=null,opening=false,animate=true}={}){
+ page=aliases[page]||page;if(!pages()[page])page='home';
+ if(activeTransition){if(historyMode==='none'){guide.cancel();}else return;}
+ if(page===currentPage){if(hash&&location.hash!==hash)history.replaceState(null,'',hash);notify(page);guide?.update();return;}
+ const nodes=pages(),outgoing=nodes[currentPage],incoming=nodes[page],old=currentPage;
+ scrollPositions.set(old,scrollY);const rect=outgoing.getBoundingClientRect();
+ const nextHash=hash||'#'+page;
+ if(historyMode!=='none')history[historyMode==='replace'?'replaceState':'pushState'](null,'',nextHash);
+ currentPage=page;
+ const canAnimate=animate&&guide?.enabled&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(!canAnimate){for(const [key,node] of Object.entries(nodes))if(node)node.hidden=key!==page;window.scrollTo({top:historyMode==='none'?(scrollPositions.get(page)||0):0,behavior:'instant'});notify(page);guide?.update();return;}
+ const stage=document.createElement('div');stage.className='guide-transition';stage.setAttribute('aria-hidden','true');
+ const from=document.createElement('div'),to=document.createElement('div');from.className=to.className='guide-page-frame';from.inert=to.inert=true;
+ const fromInner=document.createElement('div'),toInner=document.createElement('div');fromInner.className=toInner.className='guide-page-inner';
+ const fromMark=document.createComment('guide-page-home'),toMark=document.createComment('guide-page-home');outgoing.before(fromMark);incoming.before(toMark);
+ const focus=document.activeElement;focus?.blur();
+ // Keep the live page nodes: canvases, input values and listeners are never cloned.
+ stage.append(from,to);from.append(fromInner);to.append(toInner);document.body.append(stage);
+ const top=Math.max(0,header.getBoundingClientRect().bottom);stage.style.top=top+'px';
+ outgoing.hidden=false;incoming.hidden=false;fromInner.append(outgoing);toInner.append(incoming);
+ fromInner.style.transform=`translateY(${rect.top-outgoing.getBoundingClientRect().top}px)`;to.style.transform=`translateX(${innerWidth}px)`;
+ const previousOverflow=document.documentElement.style.overflow;document.documentElement.style.overflow='hidden';document.body.classList.add('guide-transitioning');nav.querySelectorAll('[data-page]').forEach(b=>b.disabled=true);
+ const finish=()=>{fromMark.replaceWith(outgoing);toMark.replaceWith(incoming);outgoing.hidden=true;incoming.hidden=false;fromInner.style.transform='';stage.remove();document.documentElement.style.overflow=previousOverflow;document.body.classList.remove('guide-transitioning');nav.querySelectorAll('[data-page]').forEach(b=>b.disabled=false);activeTransition=null;window.scrollTo({top:historyMode==='none'?(scrollPositions.get(page)||0):0,behavior:'instant'});window.dispatchEvent(new Event('resize'));incoming.setAttribute('tabindex','-1');incoming.focus({preventScroll:true});guide.update();};
+ activeTransition={finish};
+ try{notify(page);guide.travel({from,to,finish,opening});}catch(error){finish();console.warn('Guide transition ended safely',error);}
+}
+guide=createGuide({getPage:()=>currentPage,go:page=>route(page)});
+document.addEventListener('click',e=>{const button=e.target.closest('[data-page],[data-follow],[data-free]');if(!button)return;if(button.hasAttribute('data-follow')){guide.setEnabled(true);route('about',{opening:true});}else if(button.hasAttribute('data-free')){guide.setEnabled(false);route('about');}else route(button.dataset.page);});
+window.addEventListener('family-added',()=>route('family',{animate:false}));window.addEventListener('family-edit',()=>route('create',{animate:false}));
+function restoreRoute(){route(parseRoute(location.hash),{historyMode:'none',hash:location.hash,animate:false});}
+window.addEventListener('popstate',restoreRoute);window.addEventListener('hashchange',restoreRoute);
+const initialPage=parseRoute(location.hash);currentPage=initialPage;for(const [key,node] of Object.entries(pages()))if(node)node.hidden=key!==initialPage;notify(initialPage);guide.update();
