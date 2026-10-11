@@ -1,1 +1,92 @@
-{"photoSpot_01": [], "photoSpot_02": [], "photoSpot_03": [], "photoSpot_04": [], "photoSpot_05": [], "photoSpot_06": ["cafe-photos/bnaear.webp", "cafe-photos/cup-bear.webp", "cafe-photos/mountain-dog.webp"], "photoSpot_07": []}
+{
+  "photoSpot_01": [
+    {
+      "src": "cafe-photos/mountain-cup-chair.webp",
+      "dolls": [
+        "山狗星扣",
+        "杯子熊"
+      ]
+    }
+  ],
+  "photoSpot_02": [
+    {
+      "src": "cafe-photos/cup-noodle-table.webp",
+      "dolls": [
+        "杯子熊",
+        "泡面头"
+      ]
+    },
+    {
+      "src": "cafe-photos/xixi-bnaear-table.webp",
+      "dolls": [
+        "xixi",
+        "Bnaear"
+      ]
+    },
+    {
+      "src": "cafe-photos/weekend-table.webp",
+      "dolls": [
+        "the weekend"
+      ]
+    }
+  ],
+  "photoSpot_03": [
+    {
+      "src": "cafe-photos/noodle-xixi-sofa.webp",
+      "dolls": [
+        "泡面头",
+        "xixi"
+      ]
+    },
+    {
+      "src": "cafe-photos/weekend-xixi-sofa.webp",
+      "dolls": [
+        "the weekend",
+        "xixi"
+      ]
+    }
+  ],
+  "photoSpot_04": [],
+  "photoSpot_05": [],
+  "photoSpot_06": [
+    {
+      "src": "cafe-photos/bnaear.webp",
+      "dolls": [
+        "Bnaear"
+      ]
+    },
+    {
+      "src": "cafe-photos/cup-bear.webp",
+      "dolls": [
+        "杯子熊"
+      ]
+    },
+    {
+      "src": "cafe-photos/mountain-dog.webp",
+      "dolls": [
+        "山狗星扣"
+      ]
+    },
+    {
+      "src": "cafe-photos/koala-cabinet.webp",
+      "dolls": [
+        "KoalaBear"
+      ]
+    },
+    {
+      "src": "cafe-photos/weekend-cabinet.webp",
+      "dolls": [
+        "the weekend"
+      ]
+    }
+  ],
+  "photoSpot_07": [
+    {
+      "src": "cafe-photos/mountain-koala-plinth.webp",
+      "dolls": [
+        "山狗星扣",
+        "KoalaBear"
+      ]
+    }
+  ]
+}

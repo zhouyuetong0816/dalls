@@ -8,7 +8,7 @@ export const photoSpots = [
  {id:'photoSpot_04',name:'展示架',position:[-7.28,2.055,1.55]},
  {id:'photoSpot_05',name:'蛋糕陈列柜',position:[-.35,1.575,-.85]},
  {id:'photoSpot_06',name:'展示柜',position:[-6.05,1.575,-.81]},
- {id:'photoSpot_07',name:'展示架',position:[-5.35,.925,3.7]}
+ {id:'photoSpot_07',name:'展示架',position:[-5.35,.925,3.7],extraPositions:[[-6.65,1.175,3.75]]}
 ];
 const page=document.createElement('section');page.id='cafe-page';page.hidden=true;
 page.innerHTML='<div class="cafe-heading"><h1>SOFT THINGS CAFÉ</h1><p>a little place for little things.</p></div><div class="cafe-scene" aria-label="奶油色微缩咖啡厅，拖动可小幅调整视角"><div class="cafe-fallback" hidden>咖啡厅场景需要支持 WebGL 的浏览器。</div></div>';
@@ -117,7 +117,7 @@ function mount(){
  dollPicture('collection/001/front.webp',-6.15,1.99,-2.47,true);dollPicture('collection/002/front.webp',-5.2,1.91,-2.47,true,true);
  shelfDoll('collection/001/front.webp','泡面头');shelfDoll('collection/002/front.webp','the weekend');
  // Restore the original curated display separately from future opt-in visitors.
- import('./family-store.js?compact4').then(m=>m.familyMembers({summary:true})).then(members=>{for(const member of members.slice(0,4))shelfDoll(member.thumbnail||member.front,member.name,null,false,member.id);const bnaear=members.find(m=>/bnaear|banaer/i.test(m.name||''));if(bnaear)shelfDoll(bnaear.thumbnail||bnaear.front,bnaear.name,[-5.55,1.57,-2.23],false,bnaear.id+'-cabinet');}).catch(error=>console.warn('Original cafe display unavailable',error));
+ import('./family-store.js?compact4').then(m=>m.familyMembers({summary:true})).then(members=>{for(const member of members.slice(0,4))shelfDoll(member.thumbnail||member.front,member.name,null,false,member.id);const xixi=members.find(m=>/^xixi$/i.test(m.name||''));if(xixi&&!members.slice(0,4).includes(xixi))shelfDoll(xixi.thumbnail||xixi.front,xixi.name,[-6.75,1.57,-2.23],false,xixi.id);const bnaear=members.find(m=>/bnaear|banaer/i.test(m.name||''));if(bnaear)shelfDoll(bnaear.thumbnail||bnaear.front,bnaear.name,[-5.55,1.57,-2.23],false,bnaear.id+'-cabinet');}).catch(error=>console.warn('Original cafe display unavailable',error));
 
  // Two freestanding exhibition plinths and quiet labels frame a clear aisle.
  for(const [x,z,height] of [[-5.35,2.15,.88],[-6.65,2.2,1.13]]){box(.62,height,.62,x,height/2,z,wall);box(.67,.045,.67,x,height+.023,z,pale);box(.25,.12,.02,x,height-.18,z+.32,cream);}
@@ -171,7 +171,7 @@ function mount(){
  canvas.ondblclick=()=>{yaw=pitch=0;resize();};
  new ResizeObserver(()=>{if(!page.hidden)resize();}).observe(host);renderScene=resize;
  page.photoSpots=photoSpots;page.cafeScene={scene,root,camera,photoSpots};
- import('./cafe-interaction.js?v=cafealbum31').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
+ import('./cafe-interaction.js?v=cafealbums32').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
 }
 window.addEventListener('site-page-change',e=>{page.hidden=e.detail!=='cafe';if(!page.hidden){if(!mounted){try{mount();mounted=true;}catch(error){page.querySelector('.cafe-fallback').hidden=false;console.error(error);}}else renderScene();}});
 if(location.hash==='#cafe'){page.hidden=false;try{mount();mounted=true;}catch{page.querySelector('.cafe-fallback').hidden=false;}}
