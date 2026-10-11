@@ -171,7 +171,7 @@ function mount(){
  canvas.ondblclick=()=>{yaw=pitch=0;resize();};
  new ResizeObserver(()=>{if(!page.hidden)resize();}).observe(host);renderScene=resize;
  page.photoSpots=photoSpots;page.cafeScene={scene,root,camera,photoSpots};
- import('./cafe-interaction.js?v=cafeins30').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
+ import('./cafe-interaction.js?v=cafealbum31').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
 }
 window.addEventListener('site-page-change',e=>{page.hidden=e.detail!=='cafe';if(!page.hidden){if(!mounted){try{mount();mounted=true;}catch(error){page.querySelector('.cafe-fallback').hidden=false;console.error(error);}}else renderScene();}});
 if(location.hash==='#cafe'){page.hidden=false;try{mount();mounted=true;}catch{page.querySelector('.cafe-fallback').hidden=false;}}
