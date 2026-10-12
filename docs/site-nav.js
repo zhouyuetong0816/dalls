@@ -1,5 +1,5 @@
 import {createShop} from './shop-page.js?v=shopstars1';
-import {aboutContent} from './about-content.js?v=snootabout1';
+import {aboutContent} from './about-content.js?v=aboutsoft2';
 import {createGuide} from './guide-doll.js?v=archivecafe4';
 const header=document.querySelector('header');
 const process=document.querySelector('#nav');document.querySelector('#design-desk').prepend(process);
