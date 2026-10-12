@@ -1,0 +1,4 @@
+body[data-site-page="create"]{background:#faf9f5 url("assets/create-stripes.png") repeat;background-size:736px 414px}
+body[data-site-page="create"]>header{background:#fff}
+body[data-site-page="create"] #design-desk{background:transparent;min-height:calc(100svh - 104px)}
+body[data-site-page="create"] #desk>.tools{background:rgba(255,255,255,.9);padding:18px;border-radius:12px}
