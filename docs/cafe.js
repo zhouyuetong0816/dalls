@@ -11,7 +11,7 @@ export const photoSpots = [
  {id:'photoSpot_07',name:'展示架',position:[-5.35,.925,3.7],extraPositions:[[-6.65,1.175,3.75]]}
 ];
 const page=document.createElement('section');page.id='cafe-page';page.hidden=true;
-page.innerHTML='<div class="cafe-heading"><h1>SNOOT CLUB CAFÉ</h1><p>a little place for little things.</p></div><div class="cafe-scene" aria-label="奶油色微缩咖啡厅，拖动可小幅调整视角"><div class="cafe-fallback" hidden>咖啡厅场景需要支持 WebGL 的浏览器。</div></div>';
+page.innerHTML='<div class="cafe-heading"><h1>SNOOT CLUB CAFÉ</h1><p>a little place for little things.</p><p class="cafe-help"><span>拖动娃娃，自由摆放。</span><span>出现地点提示时松手，即可查看对应照片。</span><span>拖动空白处调整视角，点「归位」恢复摆放。</span></p></div><div class="cafe-scene" aria-label="奶油色微缩咖啡厅，拖动可小幅调整视角"><div class="cafe-fallback" hidden>咖啡厅场景需要支持 WebGL 的浏览器。</div></div>';
 document.querySelector('#home-page').before(page);
 let mounted=false,renderScene;
 function mount(){

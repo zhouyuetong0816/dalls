@@ -1,6 +1,6 @@
 import {createShop} from './shop-page.js?v=shopstars1';
 import {aboutContent} from './about-content.js?v=snootabout1';
-import {createGuide} from './guide-doll.js?v=guideorder3';
+import {createGuide} from './guide-doll.js?v=archivecafe4';
 const header=document.querySelector('header');
 const process=document.querySelector('#nav');document.querySelector('#design-desk').prepend(process);
 const nav=document.createElement('nav');nav.id='site-nav';

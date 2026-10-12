@@ -1,0 +1,9 @@
+body[data-site-page="family"]{background:#fff8eb url("assets/archive-checks.png") repeat;background-size:735px 490px}
+body[data-site-page="family"]>header{background:#fff}
+body[data-site-page="family"] .brand-showcase{background:transparent;min-height:calc(100svh - 144px)}
+body[data-site-page="family"] .family-tile{background:rgba(255,255,255,.88);border-radius:16px;padding:12px}
+body[data-site-page="family"] .family-tile span{margin:12px 0}
+body[data-site-page="family"] .doll-card{background:rgba(255,255,255,.94);padding:24px;border-radius:18px}
+#cafe-page .cafe-help{max-width:850px;margin:16px auto 6px;color:#74695d;font-size:12px;line-height:1.9;letter-spacing:.02em}
+.cafe-help span{display:inline-block;margin:0 8px}
+@media(max-width:700px){body[data-site-page="family"] .doll-card{padding:14px}.cafe-help span{display:block;margin:0}}
