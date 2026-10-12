@@ -1,3 +1,4 @@
+import {createShop} from './shop-page.js?v=shopstars1';
 import {aboutContent} from './about-content.js?v=snootabout1';
 import {createGuide} from './guide-doll.js?v=homewide2';
 const header=document.querySelector('header');
@@ -10,7 +11,7 @@ const confetti=home.querySelector('.home-confetti');for(let i=0;i<22;i++){const 
 
 // The existing home introduction becomes ABOUT; creation and archive remain intact.
 const about=document.createElement('section');about.id='about-page';about.innerHTML=aboutContent;
-const shop=document.createElement('section');shop.id='shop-page';shop.innerHTML='<h1>商品 / Shop</h1><div class="shop-cards">'+['001','002'].map(id=>`<article><img src="collection/${id}/front.png?v=noodlebody1" alt="娃娃 ${id}"><h2>${id==='001'?'泡面头 / Noodle Head':'娃娃 '+id+' / Doll '+id}</h2><p>暂未开售 / Not available yet</p></article>`).join('')+'</div>';
+const shop=createShop();
 document.querySelector('.brand-showcase').before(home,about,shop);
 const family=document.querySelector('.brand-showcase');let currentPage='home',activeTransition=null,guide;
 const scrollPositions=new Map();

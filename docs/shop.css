@@ -1,0 +1,13 @@
+body[data-site-page=shop]{background:#f8dfe5 url('assets/shop-stars.svg') repeat;background-size:860px 760px}
+#shop-page{isolation:isolate;position:relative;width:100%;max-width:none;margin:0;padding:44px 28px 80px;min-height:calc(100svh - 104px);background:#f8dfe5 url('assets/shop-stars.svg') repeat;background-size:860px 760px;overflow:hidden;color:#8e6058}
+.shop-wrap{width:100%;max-width:1000px;margin:auto}.shop-heading{text-align:center;margin-bottom:30px}#shop-page .shop-heading h1{font-size:28px;line-height:1.4;margin:0;font-weight:400!important;letter-spacing:.045em;color:#8e6058}
+#shop-page .shop-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;align-items:start}
+.shop-card{position:relative;min-width:0;padding:10px 10px 13px;border:1px solid #fff7f7;border-radius:16px;background:#fffdfb}
+.shop-photo{aspect-ratio:1;display:grid;place-items:center;background:#f4f0eb;border-radius:10px;overflow:hidden}.shop-photo img{width:100%;height:100%;object-fit:contain;padding:13px;background:transparent;border-radius:0;display:block}
+#shop-page .shop-card-title{display:flex;align-items:center;gap:4px;font-size:11.5px;line-height:1.5;font-weight:400!important;color:#784f46;margin:11px 2px 8px;min-height:18px}.shop-card-title span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.shop-bear-icon{width:14px;height:16px;flex:none}
+.shop-availability{display:inline-block;margin-left:2px;padding:3px 11px;border-radius:20px;background:#93665d;color:#fffdfc;font-size:9px;letter-spacing:.02em;line-height:1.35;white-space:nowrap}.shop-hot{position:absolute;left:-7px;top:-10px;padding:4px 10px;background:#efa2b8;color:#87494e;font-size:8px;letter-spacing:.12em;clip-path:polygon(0 0,100% 0,86% 50%,100% 100%,0 100%,13% 50%)}
+body[data-site-page=shop] .guide-next{border:1px solid #966b60;background:#fffdf9;color:#8e6058;border-radius:22px}body[data-site-page=shop] .guide-next:hover{background:#fff0f5;color:#8e6058}
+@media(max-width:1000px) and (min-width:761px){#shop-page .shop-cards{grid-template-columns:repeat(3,minmax(0,1fr))}.shop-wrap{max-width:790px}}
+@media(max-width:760px){#shop-page{padding:32px 16px 80px;background-size:660px 584px}#shop-page .shop-heading h1{font-size:24px}.shop-heading{margin-bottom:25px}#shop-page .shop-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 14px}.shop-card{padding:8px 8px 12px;border-radius:14px}.shop-photo{border-radius:9px}.shop-photo img{padding:9px}#shop-page .shop-card-title{font-size:10.5px;margin:10px 0 7px;gap:3px}.shop-availability{font-size:8px;padding:3px 8px;margin-left:0}.shop-bear-icon{width:12px;height:14px}}
+
+body[data-site-page=shop]>header{background:#fff}
