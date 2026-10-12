@@ -1,12 +1,13 @@
+import {aboutContent} from './about-content.js?v=snootabout1';
 import {createGuide} from './guide-doll.js?v=guided2';
 const header=document.querySelector('header');
 const process=document.querySelector('#nav');document.querySelector('#design-desk').prepend(process);
 const nav=document.createElement('nav');nav.id='site-nav';
 nav.innerHTML=[['home','首页 / Home'],['about','品牌 / About'],['shop','商品 / Shop'],['create','创作 / Create'],['family','档案袋 / Archive'],['cafe','咖啡店 / Cafe']].map(([page,name])=>`<button data-page="${page}">${name}</button>`).join('');header.insertBefore(nav,header.querySelector('small'));header.querySelector('small')?.remove();
 const home=document.createElement('section');home.id='home-page';
-home.innerHTML='<span>SOFT THINGS</span><h1>soft things<span class="home-cn">让想象变柔软。</span></h1><div class="home-doll-group"><img class="home-doll" src="collection/002/front.webp" alt="the weekend"><img class="home-doll" data-guide-source src="collection/001/front.webp" alt="泡面头"></div><p class="home-invite">Wanna follow me?<small>要跟着我一起逛逛吗？</small></p><div class="home-choices"><button data-follow>YES, LET’S GO!<small>跟着娃娃探索 →</small></button><button data-free>EXPLORE MYSELF<small>我想自己逛逛</small></button></div>';
+home.innerHTML='<span>Same Snoot, Different Souls.</span><h1>SNOOT CLUB<span class="home-cn">嘴筒子俱乐部</span></h1><div class="home-doll-group"><img class="home-doll" src="collection/002/front.webp" alt="the weekend"><img class="home-doll" data-guide-source src="collection/001/front.webp" alt="泡面头"></div><p class="home-invite">Wanna follow me?<small>要跟着我一起逛逛吗？</small></p><div class="home-choices"><button data-follow>YES, LET’S GO!<small>跟着娃娃探索 →</small></button><button data-free>EXPLORE MYSELF<small>我想自己逛逛</small></button></div>';
 // The existing home introduction becomes ABOUT; creation and archive remain intact.
-const about=document.createElement('section');about.id='about-page';about.innerHTML='<span>SOFT THINGS / ABOUT</span><h1>让想象变柔软。<br><small>Make something soft.</small></h1><button data-page="create">开始创作 / Start creating →</button><button data-page="family">认识家人 / Meet the family →</button>';
+const about=document.createElement('section');about.id='about-page';about.innerHTML=aboutContent;
 const shop=document.createElement('section');shop.id='shop-page';shop.innerHTML='<h1>商品 / Shop</h1><div class="shop-cards">'+['001','002'].map(id=>`<article><img src="collection/${id}/front.png?v=noodlebody1" alt="娃娃 ${id}"><h2>${id==='001'?'泡面头 / Noodle Head':'娃娃 '+id+' / Doll '+id}</h2><p>暂未开售 / Not available yet</p></article>`).join('')+'</div>';
 document.querySelector('.brand-showcase').before(home,about,shop);
 const family=document.querySelector('.brand-showcase');let currentPage='home',activeTransition=null,guide;

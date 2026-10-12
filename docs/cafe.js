@@ -11,7 +11,7 @@ export const photoSpots = [
  {id:'photoSpot_07',name:'展示架',position:[-5.35,.925,3.7],extraPositions:[[-6.65,1.175,3.75]]}
 ];
 const page=document.createElement('section');page.id='cafe-page';page.hidden=true;
-page.innerHTML='<div class="cafe-heading"><h1>SOFT THINGS CAFÉ</h1><p>a little place for little things.</p></div><div class="cafe-scene" aria-label="奶油色微缩咖啡厅，拖动可小幅调整视角"><div class="cafe-fallback" hidden>咖啡厅场景需要支持 WebGL 的浏览器。</div></div>';
+page.innerHTML='<div class="cafe-heading"><h1>SNOOT CLUB CAFÉ</h1><p>a little place for little things.</p></div><div class="cafe-scene" aria-label="奶油色微缩咖啡厅，拖动可小幅调整视角"><div class="cafe-fallback" hidden>咖啡厅场景需要支持 WebGL 的浏览器。</div></div>';
 document.querySelector('#home-page').before(page);
 let mounted=false,renderScene;
 function mount(){
@@ -21,7 +21,7 @@ function mount(){
  renderer.setPixelRatio(Math.min(Math.max(devicePixelRatio,2),3));renderer.setClearColor(0xffffff,0);
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
  renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.94;
- host.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','SOFT THINGS CAFÉ 三维场景');
+ host.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','SNOOT CLUB CAFÉ 三维场景');
  const root=new THREE.Group();scene.add(root);
  const material=(color,extras={})=>new THREE.MeshStandardMaterial({color,roughness:.95,...extras});
  const cream=material('#eee6d8'),wall=material('#f5efe5'),wood=material('#ae713d'),pale=material('#c6965a'),green=material('#536c44'),pot=material('#986340'),stone=material('#ded2be'),cake=material('#e8c99a'),pink=material('#caa998'),mustard=material('#d6b149'),seat=material('#aa5038');
@@ -147,7 +147,7 @@ function mount(){
  starSpots.forEach(([x,y,z],i)=>{const star=mesh(starGeometry,material(starColors[i%5]),x,y,z);star.rotation.z=(i*1.7)%1-.5;star.scale.setScalar(.8+(i%3)*.18);});
  for(const [z,y,i] of [[.15,3.6,0],[2.6,3.45,1],[3.6,2.55,2],[4,3.6,3]]){const star=mesh(starGeometry,material(starColors[i]),-7.575,y,z);star.rotation.y=Math.PI/2;star.rotation.z=i*.25;}
  // Quiet branded poster; only a small graphic canvas, no realistic textures.
- const poster=document.createElement('canvas');poster.width=512;poster.height=640;const ctx=poster.getContext('2d');ctx.fillStyle='#f4eee3';ctx.fillRect(0,0,512,640);ctx.fillStyle='#687963';ctx.beginPath();ctx.arc(256,236,88,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ece2d2';ctx.beginPath();ctx.arc(256,214,58,0,Math.PI*2);ctx.fill();ctx.fillStyle='#393e36';ctx.textAlign='center';ctx.font='32px Arial';ctx.fillText('SOFT THINGS',256,425);ctx.font='42px Arial';ctx.fillText('CAFÉ',256,484);ctx.font='18px Arial';ctx.fillText('a little place for little things.',256,540);
+ const poster=document.createElement('canvas');poster.width=512;poster.height=640;const ctx=poster.getContext('2d');ctx.fillStyle='#f4eee3';ctx.fillRect(0,0,512,640);ctx.fillStyle='#687963';ctx.beginPath();ctx.arc(256,236,88,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ece2d2';ctx.beginPath();ctx.arc(256,214,58,0,Math.PI*2);ctx.fill();ctx.fillStyle='#393e36';ctx.textAlign='center';ctx.font='400 32px "Source Han Sans"';ctx.fillText('SNOOT CLUB',256,425);ctx.font='300 42px "Source Han Sans"';ctx.fillText('CAFÉ',256,484);ctx.font='300 18px "Source Han Sans"';ctx.fillText('a little place for little things.',256,540);
  const texture=new THREE.CanvasTexture(poster);texture.colorSpace=THREE.SRGBColorSpace;
  box(1.18,1.48,.05,-2.55,2.33,-2.84,pale);mesh(new THREE.PlaneGeometry(1.08,1.35),material('#ffffff',{map:texture}),-2.55,2.33,-2.805);
  for(const [x,url] of [[-.95,'collection/001/front.webp'],[-.38,'collection/002/front.webp']]){box(.4,.5,.06,x,2.9,-2.83,pale);box(.34,.44,.065,x,2.9,-2.79,wall);new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;mesh(new THREE.PlaneGeometry(.29,.38),material('#ffffff',{map:texture,transparent:true}),x,2.9,-2.75);renderer.render(scene,camera);});}
@@ -171,7 +171,7 @@ function mount(){
  canvas.ondblclick=()=>{yaw=pitch=0;resize();};
  new ResizeObserver(()=>{if(!page.hidden)resize();}).observe(host);renderScene=resize;
  page.photoSpots=photoSpots;page.cafeScene={scene,root,camera,photoSpots};
- import('./cafe-interaction.js?v=cafealbums32').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
+ import('./cafe-interaction.js?v=snootabout1').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
 }
 window.addEventListener('site-page-change',e=>{page.hidden=e.detail!=='cafe';if(!page.hidden){if(!mounted){try{mount();mounted=true;}catch(error){page.querySelector('.cafe-fallback').hidden=false;console.error(error);}}else renderScene();}});
 if(location.hash==='#cafe'){page.hidden=false;try{mount();mounted=true;}catch{page.querySelector('.cafe-fallback').hidden=false;}}
