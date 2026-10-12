@@ -1,5 +1,5 @@
 import {guideFrame,GUIDE_TIMING,GUIDE_ASSET} from './guide-motion.js?v=guided2';
-const stops=['home','about','shop','family','create'];
+const stops=['home','about','shop','create','family'];
 const labels={home:'HOME',about:'ABOUT',shop:'SHOP',family:'ARCHIVE',create:'CREATE',cafe:'CAFÉ'};
 export function createGuide({getPage,go}){
  let enabled=false;try{enabled=sessionStorage.getItem('soft-things-follow')==='on';}catch{}
