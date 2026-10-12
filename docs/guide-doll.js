@@ -22,7 +22,8 @@ export function createGuide({getPage,go}){
  let completed=false,startTime=null;
  const width=innerWidth,restX=innerWidth<760?10:24;
  const homeDoll=document.querySelector('.home-doll[data-guide-source]');
- const homeRect=opening&&homeDoll?homeDoll.getBoundingClientRect():null;
+ let homeRect=opening&&homeDoll?homeDoll.getBoundingClientRect():null;
+ const familyPhoto=document.querySelector('.home-family-photo');if(opening&&familyPhoto){const r=familyPhoto.getBoundingClientRect(),ratio=familyPhoto.naturalWidth/familyPhoto.naturalHeight||1.6;const h=Math.min(r.height,r.width/ratio),w=h*ratio;homeRect={left:r.left+(r.width-w)/2+w*.35,bottom:r.bottom-h+h*.74,width:w*.17,height:h*.27};}
  const startX=homeRect?Math.max(restX,Math.min(width*.49+restX,homeRect.left)):restX;
  const baseBottom=innerWidth<760?18:24;
  const startBottom=homeRect?Math.max(baseBottom,innerHeight-homeRect.bottom):baseBottom;
