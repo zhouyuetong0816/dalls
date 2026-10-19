@@ -1,4 +1,6 @@
-// One vote per doll in this browser; no invented public totals.
+import {archiveMembers} from './archive-members.js?v=rank2';
+// Example popularity plus one optional vote per browser.
+export function likeTotal(id){return (archiveMembers.find(m=>m.id===id)?.likes||0)+read('like',id);}
 const prefix='snoot-reactions-v1:';
 const heart='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>';
 function read(kind,id){try{const n=Number(localStorage.getItem(prefix+kind+':'+id));return Number.isInteger(n)&&n>=0&&n<=(kind==='rating'?5:1)?n:0;}catch{return 0;}}
@@ -16,7 +18,7 @@ export function createRating(id,name){
 }
 export function createLike(id,name){
  const box=document.createElement('div');box.className='doll-like';const button=document.createElement('button');button.type='button';button.className='doll-like-button';button.innerHTML=heart;const count=document.createElement('span');button.append(count);const note=document.createElement('small');note.className='reaction-note';note.setAttribute('role','status');
- function render(){const value=read('like',id);button.setAttribute('aria-pressed',String(!!value));button.setAttribute('aria-label',(value?'取消点赞':'点赞')+' '+name);count.textContent=value+' 赞';button.classList.toggle('filled',!!value);note.textContent='此浏览器的点赞';}
+ function render(){const value=read('like',id);button.setAttribute('aria-pressed',String(!!value));button.setAttribute('aria-label',(value?'取消点赞':'点赞')+' '+name);count.textContent=likeTotal(id).toLocaleString()+' 赞';button.classList.toggle('filled',!!value);note.textContent=archiveMembers.some(m=>m.id===id)?'示例人气 · 可点赞':'此浏览器的点赞';}
  button.addEventListener('click',()=>{if(write('like',id,read('like',id)?0:1))render();else note.textContent='无法保存，请允许浏览器本地存储后重试';});box.append(button,note);render();observe(box,'like',id,render);return box;
 }
 export function decorateFamilyTile(tile){const wrapper=document.createElement('div');wrapper.className='family-social-card';tile.replaceWith(wrapper);wrapper.append(tile,createLike(tile.dataset.memberId,tile.querySelector('img')?.alt||'娃娃'));return wrapper;}

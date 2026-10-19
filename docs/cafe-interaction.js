@@ -1,6 +1,6 @@
 import {photosForDoll} from './cafe-photo-rules.js?v=snootabout1';
 import * as THREE from './vendor/three.module.js';
-import {familyMembers} from './family-store.js?compact4';
+import {familyMembers} from './family-store.js?rank2';
 import {canManage,setCafeMembership} from './shared-family.js?cafeplay25';
 export function attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}){
  const status=document.createElement('span');let refreshing=false;const hint=document.createElement('div');hint.className='cafe-drop-hint';hint.hidden=true;host.append(hint);
