@@ -14,6 +14,7 @@ export const archiveMembers=[
   {
     "id": "ffe7602c192542c3bd0077ed9069d3fb",
     "name": "杯子熊",
+    "backup": "archive-backups/cup-bear.json",
     "src": "assets/shop/cup-bear.webp",
     "likes": 1128
   },
@@ -38,6 +39,7 @@ export const archiveMembers=[
   {
     "id": "8c560b2a-a833-42ba-bb5e-638324a2cc70",
     "name": "xixi",
+    "backup": "archive-backups/xixi.json",
     "src": "assets/shop/xixi.webp",
     "likes": 748
   }
