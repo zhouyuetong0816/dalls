@@ -1,4 +1,4 @@
-import {photosForDoll} from './cafe-photo-rules.js?v=snootabout1';
+import {photosForDoll} from './cafe-photo-rules.js?v=cafedolls5';
 import * as THREE from './vendor/three.module.js';
 import {familyMembers} from './family-store.js?archivefix1';
 import {canManage,setCafeMembership} from './shared-family.js?cafeplay25';
