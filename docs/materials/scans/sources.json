@@ -1,0 +1,125 @@
+{
+  "license": "CC0-1.0",
+  "licenseUrl": "https://polyhaven.com/license",
+  "assets": [
+    {
+      "asset": "ribbed_corduroy",
+      "channel": "Diffuse",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/ribbed_corduroy/ribbed_corduroy_diff_1k.jpg",
+      "file": "ribbed_corduroy-Diffuse.jpg",
+      "bytes": 777770,
+      "sha256": "4ca8faa90670d9ac921bc0d8a7edebbe6cd807078fa2ba0a5362c962206f70fe"
+    },
+    {
+      "asset": "ribbed_corduroy",
+      "channel": "nor_gl",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/ribbed_corduroy/ribbed_corduroy_nor_gl_1k.jpg",
+      "file": "ribbed_corduroy-nor_gl.jpg",
+      "bytes": 1028011,
+      "sha256": "cbf7ca6506678e40dd8388be8402e900e375c7c35fe069874367433d7f8cc773"
+    },
+    {
+      "asset": "ribbed_corduroy",
+      "channel": "Rough",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/ribbed_corduroy/ribbed_corduroy_rough_1k.jpg",
+      "file": "ribbed_corduroy-Rough.jpg",
+      "bytes": 1064469,
+      "sha256": "a1194b25eb9d96ea17c39afb67217a82a4a204290c84180958765ea821a7a579"
+    },
+    {
+      "asset": "ribbed_corduroy",
+      "channel": "Displacement",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/ribbed_corduroy/ribbed_corduroy_disp_1k.jpg",
+      "file": "ribbed_corduroy-Displacement.jpg",
+      "bytes": 809390,
+      "sha256": "d7c8389680d33b1f1a76e823507f2707054b76301935bd584a64088f14d62828"
+    },
+    {
+      "asset": "curly_teddy_natural",
+      "channel": "Diffuse",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_diff_1k.jpg",
+      "file": "curly_teddy_natural-Diffuse.jpg",
+      "bytes": 673494,
+      "sha256": "3e524df3f6b35bfd87b71ed6a1e2d0c96797e55ec4c1a5b2f7c4332b635a1d79"
+    },
+    {
+      "asset": "curly_teddy_natural",
+      "channel": "nor_gl",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_nor_gl_1k.jpg",
+      "file": "curly_teddy_natural-nor_gl.jpg",
+      "bytes": 576152,
+      "sha256": "a6cea84bddf31c9d4643a25a09c3ec8fa8884e3c3e2d8ac291623e3f702159b8"
+    },
+    {
+      "asset": "curly_teddy_natural",
+      "channel": "Rough",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_rough_1k.jpg",
+      "file": "curly_teddy_natural-Rough.jpg",
+      "bytes": 812202,
+      "sha256": "b6e3c3eba019ec5d97b690c97fc602891d29de2428b536c0cc8b814e7c23520b"
+    },
+    {
+      "asset": "curly_teddy_natural",
+      "channel": "Displacement",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/curly_teddy_natural/curly_teddy_natural_disp_1k.jpg",
+      "file": "curly_teddy_natural-Displacement.jpg",
+      "bytes": 346134,
+      "sha256": "4019693d1f698891b4a1cf9501a1edb05f7c8ae37957e0c3803b93027373b6aa"
+    },
+    {
+      "asset": "cotton_jersey",
+      "channel": "Diffuse",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cotton_jersey/cotton_jersey_diff_1k.jpg",
+      "file": "cotton_jersey-Diffuse.jpg",
+      "bytes": 581360,
+      "sha256": "0f1b790e4087223275aaa6fdffdd46a556a26d2af72cd811acf72ba9c21ec1f6"
+    },
+    {
+      "asset": "cotton_jersey",
+      "channel": "nor_gl",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cotton_jersey/cotton_jersey_nor_gl_1k.jpg",
+      "file": "cotton_jersey-nor_gl.jpg",
+      "bytes": 678670,
+      "sha256": "9b79709806511b62567fb007ff61009c3b194bb0d0821fbaee3faf1b2bff0318"
+    },
+    {
+      "asset": "cotton_jersey",
+      "channel": "Rough",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cotton_jersey/cotton_jersey_rough_1k.jpg",
+      "file": "cotton_jersey-Rough.jpg",
+      "bytes": 865264,
+      "sha256": "89bed18f5c3f03fc7b4c2382446891629716278e521e06e8b7f6c8f02dd22590"
+    },
+    {
+      "asset": "cotton_jersey",
+      "channel": "Displacement",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cotton_jersey/cotton_jersey_disp_1k.jpg",
+      "file": "cotton_jersey-Displacement.jpg",
+      "bytes": 877257,
+      "sha256": "9a7811526bcf2c55ff4fc5ce3e3d4a1ee0ad2c6885197a1b823660fb63e17fb7"
+    }
+  ],
+  "webOptimization": {
+    "resolution": "1024 × 1024",
+    "format": "JPEG",
+    "quality": {
+      "normal": 88,
+      "other": 82
+    },
+    "note": "Web copies optimized from the original CC0 downloads; original download hashes retained in source entries."
+  },
+  "webFileSha256": {
+    "cotton_jersey-Diffuse.jpg": "33c4d992f1b40e699c3f522a4402c89ddbe60b761852edd2a81da23f61780ecb",
+    "cotton_jersey-Rough.jpg": "d8c141f36ff9aec3729c8e9c0eba57cdf659af15bff3fe61d5fc53bb010fbc61",
+    "ribbed_corduroy-nor_gl.jpg": "0bcc162540d3426714303e5ae174368d2bdacc2e828aa42f88c467ff53b6d01b",
+    "cotton_jersey-nor_gl.jpg": "27e5b00dce39a044401e87e73c1b7b85c9085c915cdf8014e0422a266254a40a",
+    "curly_teddy_natural-nor_gl.jpg": "1c03d976e9b7390709637ee6d39204f994f4f5db2de028d9f3ea730c4eed63d8",
+    "ribbed_corduroy-Displacement.jpg": "9de6afdf6b3f9a99adf5f1128b8d8459a27e90da3e455b7af5556ad1e7bf7261",
+    "ribbed_corduroy-Rough.jpg": "cabd66d5ade6df583a91de70459890d28fce7b531f776dc3fcc5f7c3cc5281d4",
+    "curly_teddy_natural-Rough.jpg": "928f5a5e03aed360c8a4352dd41502797fb7c49f917ed7fa8a9f690714eb27b7",
+    "curly_teddy_natural-Displacement.jpg": "abe14a410bff3c724012ebae31dbe41c7b9e1b2f733b94ad72046a683d3100c6",
+    "curly_teddy_natural-Diffuse.jpg": "6751f5339c25a27f9fe2650f01dbf1f7eb70cff91bfb01f439d82b0482a6b649",
+    "ribbed_corduroy-Diffuse.jpg": "f225da0741f108db6dee6726f20b43ce813d18e79e4d1686c57d3c7d5bd2eefe",
+    "cotton_jersey-Displacement.jpg": "9ea533faddeb818c9b6e98353937207adb745280bbe0363a61845fbd17bd5338"
+  }
+}
