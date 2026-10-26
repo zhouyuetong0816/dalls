@@ -1,5 +1,5 @@
 import { sketchToPlush } from './ai-adapter.js?v=holes1';
-import { PlushView } from './plush3d.js?v=alphapreview1';
+import { PlushView } from './plush3d.js?v=closedseam1';
 import { FinalRender } from './final-render.js?compact4';
 import {loadDesign,saveDesign,savedDesigns,downloadDesign,validDesign} from './design-storage.js?v=familyedit1';
 import {faceSettings,setEyeSpacing} from './face-settings.js?v=facecustom1';

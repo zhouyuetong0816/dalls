@@ -6,7 +6,7 @@ import {updateFamilyRender,updateFamilyPreview} from './family-store.js?archivef
 import {restoreArchive} from './archive-edit.js';
 import {matchesArchive} from './archive-state.js';
 import {familyMembers,removeFamilyMember,rememberFamilyMember} from './family-store.js?archivefix1';
-import {PlushView} from './plush3d.js?v=alphapreview1';
+import {PlushView} from './plush3d.js?v=closedseam1';
 import {loadDesign,savedDesigns} from './design-storage.js?v=recover1';
 import * as THREE from './vendor/three.module.js';
 if(!localStorage.getItem('plush-001-noodle-name-v1')){localStorage.setItem('plush-name-001','泡面头');localStorage.setItem('plush-001-noodle-name-v1','1');}

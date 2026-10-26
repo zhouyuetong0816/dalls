@@ -26,9 +26,43 @@ export function buildSilhouette(strokes,aspect=1,holes=[]){
  const unit=3.7/Math.max(x1-x0,y1-y0),cx=(x0+x1)/2,cy=(y0+y1)/2;
  return {inflationVersion:2,N,mask:Array.from(mask),dist:Array.from(dist),unit,cx,cy,bounds:{x0,x1,y0,y1},face:{x:(faceX-cx)*unit,y:(cy-faceY)*unit,width:Math.max(.45,Math.min(1.4,best*unit*.42))},method};
 }
-const softProfiles=new WeakMap();
-function softProfile(form){let cached=softProfiles.get(form);if(cached)return cached;const n=form.N,peak=Math.max(1,...form.dist);let heights=Float32Array.from(form.dist,(d,i)=>{if(!form.mask[i])return 0;const t=Math.max(0,Math.min(1,d/peak));return Math.sqrt(Math.max(0,1-(1-t)*(1-t)));});for(let pass=0;pass<5;pass++){const next=new Float32Array(heights);for(let y=1;y<n-1;y++)for(let x=1;x<n-1;x++){const i=y*n+x;if(!form.mask[i]||form.dist[i]<=1.5)continue;let sum=heights[i]*4,weight=4;for(const j of [i-1,i+1,i-n,i+n])if(form.mask[j]){sum+=heights[j];weight++;}next[i]=sum/weight;}heights=next;}softProfiles.set(form,heights);return heights;}
-export function surfaceZ(form,x,y,fill=65){const fx=x/form.unit+form.cx,fy=form.cy-y/form.unit,gx=Math.round(fx),gy=Math.round(fy);if(gx<0||gy<0||gx>=form.N||gy>=form.N)return null;const i=gy*form.N+gx;if(!form.mask[i])return null;if(form.inflationVersion===2){const profile=softProfile(form),x0=Math.max(0,Math.min(form.N-1,Math.floor(fx))),y0=Math.max(0,Math.min(form.N-1,Math.floor(fy))),x1=Math.min(form.N-1,x0+1),y1=Math.min(form.N-1,y0+1),tx=Math.max(0,Math.min(1,fx-x0)),ty=Math.max(0,Math.min(1,fy-y0));const height=(profile[y0*form.N+x0]*(1-tx)+profile[y0*form.N+x1]*tx)*(1-ty)+(profile[y1*form.N+x0]*(1-tx)+profile[y1*form.N+x1]*tx)*ty;const amount=Math.max(0,Math.min(100,Number(fill)||0))/100;return (.08+amount*1.2)*height;}return (.16+fill*.0055)*Math.sqrt(Math.min(1,form.dist[i]*form.unit/.5));}
+// The two fabric panels share exactly the same closed rim. Stitches never hold open geometry together.
+const shellCache=new WeakMap();
+export function closedShellTopology(form){
+ let cached=shellCache.get(form);if(cached)return cached;
+ const n=form.N,vertices=Array.from({length:n*n},(_,id)=>({x:id%n,y:Math.floor(id/n),h:0})),raw=[],edges=new Map(),cells=new Map();
+ const key=(a,b)=>a<b?a+':'+b:b+':'+a;
+ const add=(a,b,c,cell)=>{raw.push({ids:[a,b,c],cell});for(const [u,v] of [[a,b],[b,c],[c,a]]){const k=key(u,v),e=edges.get(k);if(e)e.count++;else edges.set(k,{a:u,b:v,count:1});}};
+ for(let y=0;y<n-1;y++)for(let x=0;x<n-1;x++){const a=y*n+x,b=a+1,c=a+n,d=c+1;if(form.mask[a]&&form.mask[b]&&form.mask[c])add(a,b,c,a*2);if(form.mask[b]&&form.mask[d]&&form.mask[c])add(b,d,c,a*2+1);}
+ const rim=new Set(),boundary=[];for(const e of edges.values())if(e.count===1){rim.add(e.a);rim.add(e.b);boundary.push(e);}
+ const dist=new Float32Array(n*n);dist.fill(n*2);for(let i=0;i<dist.length;i++)if(!form.mask[i]||rim.has(i))dist[i]=0;
+ for(let y=0;y<n;y++)for(let x=0;x<n;x++){const i=y*n+x;if(x)dist[i]=Math.min(dist[i],dist[i-1]+1);if(y)dist[i]=Math.min(dist[i],dist[i-n]+1);if(x&&y)dist[i]=Math.min(dist[i],dist[i-n-1]+Math.SQRT2);if(x<n-1&&y)dist[i]=Math.min(dist[i],dist[i-n+1]+Math.SQRT2);}
+ for(let y=n-1;y>=0;y--)for(let x=n-1;x>=0;x--){const i=y*n+x;if(x<n-1)dist[i]=Math.min(dist[i],dist[i+1]+1);if(y<n-1)dist[i]=Math.min(dist[i],dist[i+n]+1);if(x<n-1&&y<n-1)dist[i]=Math.min(dist[i],dist[i+n+1]+Math.SQRT2);if(x&&y<n-1)dist[i]=Math.min(dist[i],dist[i+n-1]+Math.SQRT2);}
+ const peak=Math.max(1,...dist.filter((_,i)=>form.mask[i]));const profile=d=>{const t=Math.max(0,Math.min(1,d/peak));return Math.sqrt(Math.max(0,1-(1-t)*(1-t)));};
+ let heights=Float32Array.from(dist,(d,i)=>form.mask[i]?profile(d):0);
+ for(let pass=0;pass<5;pass++){const next=new Float32Array(heights);for(let y=1;y<n-1;y++)for(let x=1;x<n-1;x++){const i=y*n+x;if(!form.mask[i]||rim.has(i))continue;let sum=heights[i]*4,weight=4;for(const j of [i-1,i+1,i-n,i+n])if(form.mask[j]){sum+=heights[j];weight++;}next[i]=sum/weight;}heights=next;}
+ for(let i=0;i<heights.length;i++)vertices[i].h=heights[i];
+ // Split only pinched interior edges. This preserves narrow limbs and avoids coincident front/back triangles at tips.
+ for(const e of edges.values())if(e.count===2&&rim.has(e.a)&&rim.has(e.b)){const a=vertices[e.a],b=vertices[e.b];e.mid=vertices.length;vertices.push({x:(a.x+b.x)/2,y:(a.y+b.y)/2,h:profile(.35)});}
+ const triangles=[];for(const t of raw){const poly=[];for(let j=0;j<3;j++){const a=t.ids[j],b=t.ids[(j+1)%3];poly.push(a);const mid=edges.get(key(a,b)).mid;if(mid!==undefined)poly.push(mid);}
+  let faces;if(poly.length>3||poly.every(i=>vertices[i].h===0)){const pts=poly.map(i=>vertices[i]),center=vertices.length;vertices.push({x:t.ids.reduce((s,i)=>s+vertices[i].x,0)/3,y:t.ids.reduce((s,i)=>s+vertices[i].y,0)/3,h:Math.max(profile(.2),pts.reduce((s,p)=>s+p.h,0)/pts.length)});faces=poly.map((a,j)=>[center,a,poly[(j+1)%poly.length]]);}else faces=[t.ids];triangles.push(...faces);cells.set(t.cell,faces);
+ }
+ const outgoing=new Map();for(const e of boundary){const a=outgoing.get(e.a)||[];a.push(e);outgoing.set(e.a,a);}const used=new Set(),loops=[];
+ for(const start of boundary){if(used.has(start))continue;const loop=[];let e=start;while(e&&!used.has(e)){used.add(e);loop.push(e.a);if(e.b===start.a)break;e=(outgoing.get(e.b)||[]).find(next=>!used.has(next));}if(e&&e.b===start.a&&loop.length>=3)loops.push(loop);}
+ cached={vertices,triangles,cells,loops,rim};shellCache.set(form,cached);return cached;
+}
+function shellAmount(form,fill){const amount=Math.max(0,Math.min(100,Number(fill)||0));return form.inflationVersion===2?.08+amount*.012:.16+amount*.0055;}
+export function surfaceZ(form,x,y,fill=65){
+ const fx=x/form.unit+form.cx,fy=form.cy-y/form.unit,n=form.N;if(fx<0||fy<0||fx>n-1||fy>n-1)return null;
+ const mesh=closedShellTopology(form),rx=Math.round(fx),ry=Math.round(fy),amount=shellAmount(form,fill);
+ if(Math.abs(fx-rx)<1e-8&&Math.abs(fy-ry)<1e-8)return form.mask[ry*n+rx]?mesh.vertices[ry*n+rx].h*amount:null;
+ const ix=Math.min(n-2,Math.floor(fx)),iy=Math.min(n-2,Math.floor(fy));
+ const candidates=[(iy*n+ix)*2+(fx-ix+fy-iy>1?1:0)];if(Math.abs(fx-rx)<1e-8||Math.abs(fy-ry)<1e-8)for(let yy=Math.max(0,iy-1);yy<=Math.min(n-2,iy+1);yy++)for(let xx=Math.max(0,ix-1);xx<=Math.min(n-2,ix+1);xx++)candidates.push((yy*n+xx)*2,(yy*n+xx)*2+1);
+ for(const cell of candidates)for(const tri of mesh.cells.get(cell)||[]){const [a,b,c]=tri.map(i=>mesh.vertices[i]),den=(b.y-c.y)*(a.x-c.x)+(c.x-b.x)*(a.y-c.y),u=((b.y-c.y)*(fx-c.x)+(c.x-b.x)*(fy-c.y))/den,v=((c.y-a.y)*(fx-c.x)+(a.x-c.x)*(fy-c.y))/den,w=1-u-v;if(u>=-1e-7&&v>=-1e-7&&w>=-1e-7)return Math.max(0,(a.h*u+b.h*v+c.h*w)*amount);}
+ return null;
+}
+export function shellVertexZ(form,vertex,fill=65){return vertex.h*shellAmount(form,fill);}
+
 export function regionAt(form,gx,gy){if(form.customMask?.[Math.round(gy)*form.N+Math.round(gx)])return 'custom';const b=form.bounds,u=(gx-b.x0)/(b.x1-b.x0),v=(gy-b.y0)/(b.y1-b.y0);return v<.24&&(u<.25||u>.75)?'ears':v>.84?'feet':v>.42&&v<.8&&(u<.2||u>.8)?'arms':'body';}
 
 export function carveHoles(mask,ink,seeds,size){for(const seed of seeds){const x=Math.round(seed.x),y=Math.round(seed.y);if(x<0||y<0||x>=size||y>=size)throw Error('镂空标记需要位于闭合轮廓内部。');const start=y*size+x;if(!mask[start]||ink[start])throw Error('请点击把手内部的空白处，不要点在线条上。');const visited=new Set([start]),queue=[start];for(let q=0;q<queue.length;q++){const i=queue[q],cx=i%size,cy=Math.floor(i/size);for(const j of [cx>0?i-1:-1,cx<size-1?i+1:-1,cy>0?i-size:-1,cy<size-1?i+size:-1])if(j>=0&&!ink[j]&&!visited.has(j)){if(!mask[j])throw Error('镂空区域没有闭合，请先补齐把手内圈的线条。');visited.add(j);queue.push(j);}}if(queue.length>mask.reduce((a,b)=>a+b,0)*.45)throw Error('这块区域太大，请点击把手内圈的空白处。');for(const i of queue)mask[i]=0;}return mask;}
