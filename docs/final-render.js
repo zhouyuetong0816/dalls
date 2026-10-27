@@ -1,6 +1,6 @@
-import {joinPreviewFamily} from './family-store.js?archivefix1';
-import {designForAI,designSignature} from './design-spec.js?v=freepaint1';
-import {prepareFabricAssets} from './fabric-library.js?v=freepaint1';
+import {joinPreviewFamily} from './family-store.js?xyzface1';
+import {designForAI,designSignature} from './design-spec.js?v=xyzface1';
+import {prepareFabricAssets} from './fabric-library.js?v=xyzface1';
 export class FinalRender{
  constructor(state,{save,getView}){Object.assign(this,{state,save,getView,background:'transparent',signature:'',image:'',busy:false});}
  attach(container){this.container=container;this.refresh();prepareFabricAssets().then(()=>{if(container.isConnected){this.getView()?.rebuild();this.signature='';this.refresh();}});}
