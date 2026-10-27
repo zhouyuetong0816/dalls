@@ -8,11 +8,10 @@ export const FABRICS=[
  {id:'粗条灯芯绒',label:'粗条灯芯绒',en:'WIDE CORDUROY',kind:'widecord',pile:2,length:.015,density:3400,sheen:.85,ribWidth:7},
  {id:'棉布',label:'普通棉布',en:'PLAIN COTTON',kind:'cotton',pile:0,length:0,density:0,sheen:.3},
  {id:'棉针织',label:'棉针织',en:'COTTON JERSEY',kind:'jersey',pile:0,length:0,density:0,sheen:.4,asset:'cotton_jersey'},
- {id:'牛仔布',label:'牛仔布',en:'DENIM',kind:'denim',pile:0,length:0,density:0,sheen:.25},
  {id:'毛毡',label:'毛毡',en:'FELT',kind:'felt',pile:1,length:.01,density:2000,sheen:.45},
  {id:'针织',label:'粗针织',en:'KNIT',kind:'knit',pile:0,length:0,density:0,sheen:.4}
 ];
-export const fabricProfile=m=>FABRICS.find(f=>f.id===m.fabric)||FABRICS[0];
+export const fabricProfile=m=>FABRICS.find(f=>f.id===(m.fabric==='牛仔布'?'棉布':m.fabric))||FABRICS[0];
 const sources=new Map(),canvasCache=new Map();let revision=0;
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export function prepareFabricAssets(){return Promise.all(['ribbed_corduroy','curly_teddy_natural','cotton_jersey'].map(loadAsset));}

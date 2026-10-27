@@ -63,7 +63,7 @@ export function surfaceZ(form,x,y,fill=65){
 }
 export function shellVertexZ(form,vertex,fill=65){return vertex.h*shellAmount(form,fill);}
 
-export function regionAt(form,gx,gy){if(form.customMask?.[Math.round(gy)*form.N+Math.round(gx)])return 'custom';const b=form.bounds,u=(gx-b.x0)/(b.x1-b.x0),v=(gy-b.y0)/(b.y1-b.y0);return v<.24&&(u<.25||u>.75)?'ears':v>.84?'feet':v>.42&&v<.8&&(u<.2||u>.8)?'arms':'body';}
+export function regionAt(form,gx,gy){if(form.manualMaterialRegions){const i=Math.round(gy)*form.N+Math.round(gx);const parts=form.materialRegions||[];for(let n=parts.length-1;n>=0;n--)if(parts[n].mask?.[i])return parts[n].id;return 'body';}if(form.customMask?.[Math.round(gy)*form.N+Math.round(gx)])return 'custom';const b=form.bounds,u=(gx-b.x0)/(b.x1-b.x0),v=(gy-b.y0)/(b.y1-b.y0);return v<.24&&(u<.25||u>.75)?'ears':v>.84?'feet':v>.42&&v<.8&&(u<.2||u>.8)?'arms':'body';}
 
 export function carveHoles(mask,ink,seeds,size){for(const seed of seeds){const x=Math.round(seed.x),y=Math.round(seed.y);if(x<0||y<0||x>=size||y>=size)throw Error('镂空标记需要位于闭合轮廓内部。');const start=y*size+x;if(!mask[start]||ink[start])throw Error('请点击把手内部的空白处，不要点在线条上。');const visited=new Set([start]),queue=[start];for(let q=0;q<queue.length;q++){const i=queue[q],cx=i%size,cy=Math.floor(i/size);for(const j of [cx>0?i-1:-1,cx<size-1?i+1:-1,cy>0?i-size:-1,cy<size-1?i+size:-1])if(j>=0&&!ink[j]&&!visited.has(j)){if(!mask[j])throw Error('镂空区域没有闭合，请先补齐把手内圈的线条。');visited.add(j);queue.push(j);}}if(queue.length>mask.reduce((a,b)=>a+b,0)*.45)throw Error('这块区域太大，请点击把手内圈的空白处。');for(const i of queue)mask[i]=0;}return mask;}
 

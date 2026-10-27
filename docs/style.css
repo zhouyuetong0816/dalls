@@ -66,3 +66,4 @@ body:has(#cafe-page:not([hidden]))>.cloud-controls{display:none}
 @media(max-width:760px){#tools:has(.fabric-grid){width:100%;flex-basis:auto;max-height:none;}#desk:has(.fabric-grid)>.preview{position:relative;top:auto;}.fabric-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
 
 .fabric-card.active span{color:#563d43!important;}.fabric-card.active small{color:#8b6972!important;}
+.material-selection-box{position:absolute;border:1.5px dashed #b36683;background:#e9a7c933;pointer-events:none;z-index:5;box-sizing:border-box;}.manual-region-tools{border:1px solid #ead2dd;border-radius:10px;padding:12px;margin:12px 0;background:#fff9fb;}.manual-region-tools input{box-sizing:border-box;width:100%;font:inherit;font-size:13px;padding:8px;border:1px solid #ddced4;}.manual-region-tools button{font-size:12px;margin:4px 3px 0 0;}

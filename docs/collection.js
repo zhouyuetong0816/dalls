@@ -1,12 +1,12 @@
 import {archiveMembers} from './archive-members.js?v=archivefix1';
 import {createLike,decorateFamilyTile,likeTotal} from './doll-reactions.js?v=rank2';
 import {cloudEnabled,canManage,loadSharedMember} from './shared-family.js?archivefix1';
-import {FinalRender} from './final-render.js?fabriclab1';
+import {FinalRender} from './final-render.js?manualparts1';
 import {updateFamilyRender,updateFamilyPreview} from './family-store.js?archivefix1';
 import {restoreArchive} from './archive-edit.js';
 import {matchesArchive} from './archive-state.js';
 import {familyMembers,removeFamilyMember,rememberFamilyMember} from './family-store.js?archivefix1';
-import {PlushView} from './plush3d.js?v=fabriclab1';
+import {PlushView} from './plush3d.js?v=manualparts1';
 import {loadDesign,savedDesigns} from './design-storage.js?v=recover1';
 import * as THREE from './vendor/three.module.js';
 if(!localStorage.getItem('plush-001-noodle-name-v1')){localStorage.setItem('plush-name-001','泡面头');localStorage.setItem('plush-001-noodle-name-v1','1');}
