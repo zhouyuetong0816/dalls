@@ -1,4 +1,4 @@
-import {createRating} from './doll-reactions.js?v=rank2';
+import {createRating} from './doll-reactions.js?v=archiveaudit2';
 export const shopProducts=[
  {id:'001',name:'泡面头 / Noodle Head',image:'collection/001/front.webp',status:'sold-out'},
  {id:'002',name:'娃娃 002 / Doll 002',image:'collection/002/front.webp',status:'sold-out'},

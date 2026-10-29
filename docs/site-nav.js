@@ -1,4 +1,4 @@
-import {createShop} from './shop-page.js?v=hearts1';
+import {createShop} from './shop-page.js?v=archiveaudit2';
 import {aboutContent} from './about-content.js?v=aboutsoft2';
 import {createGuide} from './guide-doll.js?v=archivecafe4';
 const header=document.querySelector('header');

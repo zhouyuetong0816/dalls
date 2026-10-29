@@ -1,4 +1,4 @@
-import {archiveMembers} from './archive-members.js?v=rank2';
+import {archiveMembers} from './archive-members.js?v=archiveaudit2';
 // Example popularity plus one optional vote per browser.
 export function likeTotal(id){return (archiveMembers.find(m=>m.id===id)?.likes||0)+read('like',id);}
 const prefix='snoot-reactions-v1:';

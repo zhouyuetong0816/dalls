@@ -1,4 +1,4 @@
-import {archiveMembers} from './archive-members.js?v=archivefix1';
+import {archiveMembers} from './archive-members.js?v=archiveaudit2';
 import * as THREE from './vendor/three.module.js';
 // World anchors use the same scene coordinates as future doll placements.
 // Image-relative percentages are projected from the fixed reference camera.
@@ -180,7 +180,7 @@ function mount(){
  canvas.ondblclick=()=>{yaw=pitch=0;resize();};
  new ResizeObserver(()=>{if(!page.hidden)resize();}).observe(host);renderScene=resize;
  page.photoSpots=photoSpots;page.cafeScene={scene,root,camera,photoSpots};
- import('./cafe-interaction.js?v=archiveaudit1').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
+ import('./cafe-interaction.js?v=archiveaudit2').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
 }
 window.addEventListener('site-page-change',e=>{page.hidden=e.detail!=='cafe';if(!page.hidden){if(!mounted){try{mount();mounted=true;}catch(error){page.querySelector('.cafe-fallback').hidden=false;console.error(error);}}else renderScene();}});
 if(location.hash==='#cafe'){page.hidden=false;try{mount();mounted=true;}catch{page.querySelector('.cafe-fallback').hidden=false;}}

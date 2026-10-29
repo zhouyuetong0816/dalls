@@ -1,4 +1,4 @@
-import {joinPreviewFamily} from './family-store.js?v=archiveaudit1';
+import {joinPreviewFamily} from './family-store.js?v=archiveaudit2';
 import {designForAI,designSignature} from './design-spec.js?v=xyzface1';
 import {prepareFabricAssets} from './fabric-library.js?v=xyzface1';
 export class FinalRender{

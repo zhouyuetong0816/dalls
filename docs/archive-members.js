@@ -20,18 +20,21 @@ export const archiveMembers=[
   },
   {
     "id": "b193675d-53b5-4c02-aa22-9eaa3db04bd2",
+    "backup": "archive-backups/bnaear.json",
     "name": "Bnaear",
     "src": "assets/shop/bnaear.webp",
     "likes": 1056
   },
   {
     "id": "43188f6c-bb58-4b62-8172-23cb5dc34b34",
+    "backup": "archive-backups/koala.json",
     "name": "KoalaBear",
     "src": "assets/shop/koala.webp",
     "likes": 892
   },
   {
     "id": "bbbaf213-9d21-4c25-9309-8721b73711cc",
+    "backup": "archive-backups/mountain-dog.json",
     "name": "山狗星扣",
     "src": "assets/shop/mountain-dog.webp",
     "likes": 836
