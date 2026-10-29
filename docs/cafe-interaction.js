@@ -1,7 +1,7 @@
 import {photosForDoll} from './cafe-photo-rules.js?v=cafedolls5';
 import * as THREE from './vendor/three.module.js';
-import {familyMembers} from './family-store.js?archivefix1';
-import {canManage,setCafeMembership} from './shared-family.js?cafeplay25';
+import {familyMembers} from './family-store.js?v=archiveaudit1';
+import {canManage,setCafeMembership} from './shared-family.js?v=archiveaudit1';
 export function attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}){
  const status=document.createElement('span');let refreshing=false;const hint=document.createElement('div');hint.className='cafe-drop-hint';hint.hidden=true;host.append(hint);
  const reset=document.createElement('button');reset.className='cafe-reset';reset.textContent='归位';page.querySelector('.cafe-heading').append(reset);
