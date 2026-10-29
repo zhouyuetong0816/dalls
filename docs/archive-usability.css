@@ -17,10 +17,13 @@ body[data-site-page="family"] .history-preview{height:clamp(170px,23vw,250px)}
 body[data-site-page="family"] .history-preview>img{height:100%;max-height:100%;width:100%;object-fit:contain}
 body[data-site-page="family"] .sheet article>p{font-size:11px;line-height:1.7}
 @media(max-width:700px){body[data-site-page="family"] .doll-card{padding:16px}body[data-site-page="family"] .collection-stage{height:280px;max-height:35svh;margin-top:6px}body[data-site-page="family"] .sheet{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}body[data-site-page="family"] .history-preview{height:180px}body[data-site-page="family"] .sheet h3{font-size:14px}}
-body[data-site-page="family"] .archive-detail-hero{display:grid;grid-template-columns:minmax(160px,220px) minmax(0,1fr);gap:22px;align-items:center;margin-bottom:8px}
+body[data-site-page="family"] .archive-detail-hero{position:relative;display:block;padding-top:76px;margin-bottom:8px}
+body[data-site-page="family"] .archive-detail-meta{position:absolute;left:0;top:0;max-width:260px;z-index:1}
 body[data-site-page="family"] .archive-detail-meta h2{font-size:clamp(26px,3vw,40px);font-weight:300;margin:0 0 12px}
 body[data-site-page="family"] .archive-detail-meta .family-detail-note{font-size:11px;line-height:1.7;margin:0 0 12px}
 body[data-site-page="family"] .archive-detail-meta .doll-like{margin:8px 0}
-body[data-site-page="family"] .archive-detail-hero .collection-stage{height:300px;max-height:34vh;min-height:240px;margin:0 auto;width:min(100%,560px)}
+body[data-site-page="family"] .archive-detail-hero .collection-stage{height:340px;max-height:40vh;min-height:260px;margin:0 auto;width:min(100%,500px)}
+body[data-site-page="family"] .sheet{border-top:1px solid #d8d1cb;padding-top:18px}
+body[data-site-page="family"] .sheet article{border-top:0;padding-top:0}
 body[data-site-page="family"] .collection-actions{justify-content:flex-end}
-@media(max-width:700px){body[data-site-page="family"] .archive-detail-hero{grid-template-columns:1fr;gap:4px}body[data-site-page="family"] .archive-detail-hero .collection-stage{height:260px;max-height:34svh;min-height:210px}body[data-site-page="family"] .collection-actions{justify-content:flex-start}}
+@media(max-width:700px){body[data-site-page="family"] .archive-detail-hero{padding-top:0}body[data-site-page="family"] .archive-detail-meta{position:static;max-width:none;margin-bottom:8px}body[data-site-page="family"] .archive-detail-hero .collection-stage{height:260px;max-height:34svh;min-height:210px}body[data-site-page="family"] .collection-actions{justify-content:flex-start}}

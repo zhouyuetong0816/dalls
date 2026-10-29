@@ -11,14 +11,14 @@ export function createRating(id,name){
  const group=document.createElement('div');group.className='rating-hearts';group.setAttribute('role','radiogroup');group.setAttribute('aria-label',name+'的评分');
  const note=document.createElement('small');note.className='reaction-note';note.setAttribute('role','status');
  const buttons=[];
- function render(){const value=read('rating',id);buttons.forEach((b,i)=>{b.classList.toggle('filled',i<value);b.setAttribute('aria-checked',String(i+1===value));b.tabIndex=i===(value?value-1:0)?0:-1;});note.textContent=value?'你的评分 '+value+' / 5':'点亮小心心，留下评分';}
- function select(value){if(write('rating',id,value))render();else note.textContent='无法保存，请允许浏览器本地存储后重试';}
+ function render(){const value=read('rating',id);buttons.forEach((b,i)=>{b.classList.toggle('filled',i<value);b.setAttribute('aria-checked',String(i+1===value));b.tabIndex=i===(value?value-1:0)?0:-1;});note.textContent='';note.hidden=true;}
+ function select(value){if(write('rating',id,value))render();else {note.hidden=false;note.textContent='无法保存，请允许浏览器本地存储后重试';};}
  for(let score=1;score<=5;score++){const b=document.createElement('button');b.type='button';b.className='rating-heart';b.innerHTML=heart;b.setAttribute('role','radio');b.setAttribute('aria-label',score+' 颗心');b.addEventListener('click',()=>select(score));b.addEventListener('keydown',e=>{let n;if(['ArrowRight','ArrowDown'].includes(e.key))n=score===5?1:score+1;else if(['ArrowLeft','ArrowUp'].includes(e.key))n=score===1?5:score-1;else if(e.key==='Home')n=1;else if(e.key==='End')n=5;else return;e.preventDefault();select(n);buttons[n-1].focus();});buttons.push(b);group.append(b);}
  box.append(group,note);render();observe(box,'rating',id,render);return box;
 }
 export function createLike(id,name){
  const box=document.createElement('div');box.className='doll-like';const button=document.createElement('button');button.type='button';button.className='doll-like-button';button.innerHTML=heart;const count=document.createElement('span');button.append(count);const note=document.createElement('small');note.className='reaction-note';note.setAttribute('role','status');
- function render(){const value=read('like',id);button.setAttribute('aria-pressed',String(!!value));button.setAttribute('aria-label',(value?'取消点赞':'点赞')+' '+name);count.textContent=likeTotal(id).toLocaleString()+' 赞';button.classList.toggle('filled',!!value);note.textContent=archiveMembers.some(m=>m.id===id)?'示例人气 · 可点赞':'此浏览器的点赞';}
- button.addEventListener('click',()=>{if(write('like',id,read('like',id)?0:1))render();else note.textContent='无法保存，请允许浏览器本地存储后重试';});box.append(button,note);render();observe(box,'like',id,render);return box;
+ function render(){const value=read('like',id);button.setAttribute('aria-pressed',String(!!value));button.setAttribute('aria-label',(value?'取消点赞':'点赞')+' '+name);count.textContent=likeTotal(id).toLocaleString()+' 赞';button.classList.toggle('filled',!!value);note.textContent='';note.hidden=true;}
+ button.addEventListener('click',()=>{if(write('like',id,read('like',id)?0:1))render();else {note.hidden=false;note.textContent='无法保存，请允许浏览器本地存储后重试';};});box.append(button,note);render();observe(box,'like',id,render);return box;
 }
 export function decorateFamilyTile(tile){const wrapper=document.createElement('div');wrapper.className='family-social-card';tile.replaceWith(wrapper);wrapper.append(tile,createLike(tile.dataset.memberId,tile.querySelector('img')?.alt||'娃娃'));return wrapper;}

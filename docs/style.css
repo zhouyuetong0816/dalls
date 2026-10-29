@@ -68,3 +68,14 @@ body:has(#cafe-page:not([hidden]))>.cloud-controls{display:none}
 .fabric-card.active span{color:#563d43!important;}.fabric-card.active small{color:#8b6972!important;}
 .material-selection-box{position:absolute;border:1.5px dashed #b36683;background:#e9a7c933;pointer-events:none;z-index:5;box-sizing:border-box;}.manual-region-tools{border:1px solid #ead2dd;border-radius:10px;padding:12px;margin:12px 0;background:#fff9fb;}.manual-region-tools input{box-sizing:border-box;width:100%;font:inherit;font-size:13px;padding:8px;border:1px solid #ddced4;}.manual-region-tools button{font-size:12px;margin:4px 3px 0 0;}
 .xyz-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:9px 0 12px;}.xyz-fields label{font-size:12px!important;margin:0!important;font-weight:400;}.xyz-fields input{display:block;width:100%;box-sizing:border-box;padding:8px 5px;font-family:inherit;font-size:12px;border:1px solid #d9d2ca;background:#fff;border-radius:5px;margin-top:5px;}.xyz-fields .axis-x{color:#c74b4b;}.xyz-fields .axis-y{color:#47864a;}.xyz-fields .axis-z{color:#4276bd;}
+/* Compact creation controls; preview only the active material on the doll. */
+body[data-site-page="create"] .tools{width:290px;flex:0 0 290px;padding:18px;background:#fffdfbf2;border:1px solid #eee5e0;border-radius:12px}
+body[data-site-page="create"] .tools h3{font-size:18px;margin:0 0 16px}
+body[data-site-page="create"] .tools label{font-size:12px;margin-top:12px}
+body[data-site-page="create"] .tools .chips{gap:5px;margin:8px 0}
+body[data-site-page="create"] .tools .chips button{padding:7px 9px;font-size:11px}
+body[data-site-page="create"] .tools details{margin-top:14px;padding-top:12px}
+body[data-site-page="create"] .tools details>summary{padding:3px 0;font-size:12px}
+body[data-site-page="create"] #desk>.preview{position:sticky;top:80px}
+body[data-site-page="create"] .intro p:empty,body[data-site-page="create"] footer span:empty{display:none}
+@media(max-width:760px){body[data-site-page="create"] .tools{width:100%;flex-basis:auto}body[data-site-page="create"] #desk>.preview{position:relative;top:auto}}
