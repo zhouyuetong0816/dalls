@@ -28,6 +28,10 @@ export function buildSilhouette(strokes,aspect=1,holes=[]){
 }
 // The two fabric panels share exactly the same closed rim. Stitches never hold open geometry together.
 const shellCache=new WeakMap();
+// Taubin boundary smoothing: remove pixel stairs while keeping each closed loop,
+// including handle holes. Movement is capped in the caller's coordinate units.
+export function smoothBoundaryLoops(vertices,loops,limit=.6,passes=5){const ids=[...new Set(loops.flat())],original=new Map(ids.map(i=>[i,{x:vertices[i].x,y:vertices[i].y}]));for(let pass=0;pass<passes;pass++)for(const weight of [.45,-.47]){const next=new Map();for(const loop of loops)for(let j=0;j<loop.length;j++){const id=loop[j],p=vertices[id],a=vertices[loop[(j+loop.length-1)%loop.length]],b=vertices[loop[(j+1)%loop.length]],o=original.get(id);let x=p.x+weight*((a.x+b.x)/2-p.x),y=p.y+weight*((a.y+b.y)/2-p.y),dx=x-o.x,dy=y-o.y,len=Math.hypot(dx,dy);if(len>limit){x=o.x+dx*limit/len;y=o.y+dy*limit/len;}next.set(id,{x,y});}for(const [id,p] of next){vertices[id].x=p.x;vertices[id].y=p.y;}}return vertices;}
+
 export function closedShellTopology(form){
  let cached=shellCache.get(form);if(cached)return cached;
  const n=form.N,vertices=Array.from({length:n*n},(_,id)=>({x:id%n,y:Math.floor(id/n),h:0})),raw=[],edges=new Map(),cells=new Map();
@@ -49,16 +53,16 @@ export function closedShellTopology(form){
  }
  const outgoing=new Map();for(const e of boundary){const a=outgoing.get(e.a)||[];a.push(e);outgoing.set(e.a,a);}const used=new Set(),loops=[];
  for(const start of boundary){if(used.has(start))continue;const loop=[];let e=start;while(e&&!used.has(e)){used.add(e);loop.push(e.a);if(e.b===start.a)break;e=(outgoing.get(e.b)||[]).find(next=>!used.has(next));}if(e&&e.b===start.a&&loop.length>=3)loops.push(loop);}
- cached={vertices,triangles,cells,loops,rim};shellCache.set(form,cached);return cached;
+ smoothBoundaryLoops(vertices,loops);cached={vertices,triangles,cells,loops,rim};shellCache.set(form,cached);return cached;
 }
 function shellAmount(form,fill){const amount=Math.max(0,Math.min(100,Number(fill)||0));return form.inflationVersion===2?.08+amount*.012:.16+amount*.0055;}
 export function surfaceZ(form,x,y,fill=65){
  const fx=x/form.unit+form.cx,fy=form.cy-y/form.unit,n=form.N;if(fx<0||fy<0||fx>n-1||fy>n-1)return null;
  const mesh=closedShellTopology(form),rx=Math.round(fx),ry=Math.round(fy),amount=shellAmount(form,fill);
- if(Math.abs(fx-rx)<1e-8&&Math.abs(fy-ry)<1e-8)return form.mask[ry*n+rx]?mesh.vertices[ry*n+rx].h*amount:null;
+ if(Math.abs(fx-rx)<1e-8&&Math.abs(fy-ry)<1e-8&&form.mask[ry*n+rx]){const p=mesh.vertices[ry*n+rx];if(p.x===rx&&p.y===ry)return p.h*amount;}
  const ix=Math.min(n-2,Math.floor(fx)),iy=Math.min(n-2,Math.floor(fy));
- const candidates=[(iy*n+ix)*2+(fx-ix+fy-iy>1?1:0)];if(Math.abs(fx-rx)<1e-8||Math.abs(fy-ry)<1e-8)for(let yy=Math.max(0,iy-1);yy<=Math.min(n-2,iy+1);yy++)for(let xx=Math.max(0,ix-1);xx<=Math.min(n-2,ix+1);xx++)candidates.push((yy*n+xx)*2,(yy*n+xx)*2+1);
- for(const cell of candidates)for(const tri of mesh.cells.get(cell)||[]){const [a,b,c]=tri.map(i=>mesh.vertices[i]),den=(b.y-c.y)*(a.x-c.x)+(c.x-b.x)*(a.y-c.y),u=((b.y-c.y)*(fx-c.x)+(c.x-b.x)*(fy-c.y))/den,v=((c.y-a.y)*(fx-c.x)+(a.x-c.x)*(fy-c.y))/den,w=1-u-v;if(u>=-1e-7&&v>=-1e-7&&w>=-1e-7)return Math.max(0,(a.h*u+b.h*v+c.h*w)*amount);}
+ const candidates=[];for(let yy=Math.max(0,iy-1);yy<=Math.min(n-2,iy+1);yy++)for(let xx=Math.max(0,ix-1);xx<=Math.min(n-2,ix+1);xx++)candidates.push((yy*n+xx)*2,(yy*n+xx)*2+1);
+ for(const cell of candidates)for(const tri of mesh.cells.get(cell)||[]){const [a,b,c]=tri.map(i=>mesh.vertices[i]),den=(b.y-c.y)*(a.x-c.x)+(c.x-b.x)*(a.y-c.y),u=((b.y-c.y)*(fx-c.x)+(c.x-b.x)*(fy-c.y))/den,v=((c.y-a.y)*(fx-c.x)+(a.x-c.x)*(fy-c.y))/den,w=1-u-v;if(u>=-1e-7&&v>=-1e-7&&w>=-1e-7){const value=Math.max(0,(a.h*u+b.h*v+c.h*w)*amount);return value<1e-8?0:value;}}
  return null;
 }
 export function shellVertexZ(form,vertex,fill=65){return vertex.h*shellAmount(form,fill);}

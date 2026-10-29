@@ -1,10 +1,10 @@
 import {prepareManualRegions,regionEntries,regionName,addManualRegion,undoRegion} from './manual-regions.js?v=xyzface1';
 import {FABRICS,fabricProfile} from './fabric-library.js?v=xyzface1';
-import {scheduleMaterialPreviews,stopMaterialPreviews} from './material-previews.js?v=seamsall1';
-import { sketchToPlush } from './ai-adapter.js?v=holes1';
-import { PlushView } from './plush3d.js?v=seamsall1';
+import {scheduleMaterialPreviews,stopMaterialPreviews} from './material-previews.js?v=processedit1';
+import { sketchToPlush } from './ai-adapter.js?v=processedit1';
+import { PlushView } from './plush3d.js?v=processedit1';
 import { FinalRender } from './final-render.js?v=seamsall1';
-import {loadDesign,saveDesign,savedDesigns,downloadDesign,validDesign} from './design-storage.js?v=familyedit1';
+import {loadDesign,saveDesign,savedDesigns,downloadDesign,validDesign,backupBeforeArchiveEdit} from './design-storage.js?v=processedit1';
 import {faceSettings,setEyeSpacing,moveEye} from './face-settings.js?v=xyzface1';
 const steps=['草稿 / Sketch','白胚 / Form','面料 / Material','装饰 / Craft','成品 / Finish'];
 const titles=['Sketch something.','Make your drawing soft.','Feel the fabric.','A little of your own.','Meet your little one.'];
@@ -63,6 +63,8 @@ render();
 
 function resetCreation(){for(const k of Object.keys(state))delete state[k];Object.assign(state,structuredClone(blankCreation));state.freshCreation=true;state.step=0;holeMode=false;render();persist();}
 window.addEventListener('family-added',resetCreation);
-window.addEventListener('family-edit',e=>{const draft=structuredClone(e.detail);for(const k of Object.keys(state))delete state[k];Object.assign(state,structuredClone(blankCreation),draft);state.mats.custom??={...state.mats.body};delete state.finalRender;delete state.pendingRender;state.step=0;holeMode=false;restoreSketchPreview();render();persist();if(draft.recoveredArchive)$('#note').textContent='从已保存模型恢复的轮廓 / Outline recovered from saved model';});
+let archiveResumeBusy=false;
+window.addEventListener('family-edit',async e=>{if(archiveResumeBusy)return;archiveResumeBusy=true;try{const draft=structuredClone(e.detail);await backupBeforeArchiveEdit(key,state);for(const k of Object.keys(state))delete state[k];Object.assign(state,structuredClone(blankCreation),draft);state.mats.custom??={...state.mats.body};delete state.finalRender;delete state.pendingRender;state.step=state.form?.mask?Math.max(0,Math.min(4,Math.trunc(Number(draft.step)||0))):0;holeMode=false;restoreSketchPreview();render();persist();window.dispatchEvent(new Event('family-edit-ready'));$('#note').textContent=(draft.archiveOrigin?'已从“'+draft.archiveOrigin.name+'”的'+['草稿','白胚','面料','装饰与缝线','成品'][state.step]+'载入可编辑草稿。':'已载入可编辑草稿。')+(draft.recoveredArchive?' 此轮廓由已保存模型恢复。':'');}catch(error){const note=document.querySelector('.doll-card:not([hidden]) .archive-resume-status')||$('#note');if(note)note.textContent=error.message;}finally{archiveResumeBusy=false;}});
+
 
 document.addEventListener('change',e=>{if(!/^(face|part)-[xyz]$/.test(e.target.id)||e.target.value==='')return;const view=views.find(v=>v.canTransform?.()),p=view?.getTransformPosition?.(),axis=e.target.id.at(-1),value=Number(e.target.value);if(!p||!Number.isFinite(value))return;p[axis]=value;view.setTransformPosition(p);updateFaceTools();updateEditor();persist();});

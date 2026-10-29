@@ -1,0 +1,6 @@
+// Four archive cards map to the editable workshop stages. Final Plush resumes at
+// Craft, where the finished doll's decorations and seams can actually be changed.
+import {regionAt} from './shape.js?v=processedit1';
+export const archiveStageLabels=['草稿','白胚','面料','装饰与缝线'];
+function preserveArchivedPanels(draft){const f=draft.form;if(f.manualMaterialRegions)return;const panels=[];for(const key of ['ears','arms','feet','custom']){const frontMask=f.mask.map((v,i)=>v&&regionAt(f,i%f.N,Math.floor(i/f.N),1)===key?1:0);if(!frontMask.some(Boolean))continue;const id='archive_panel_'+key;draft.mats[id]=structuredClone(draft.mats[key]||draft.mats.body);panels.push({id,name:'原存档选区 '+(panels.length+1),frontMask,backMask:Array.from(frontMask),undo:[]});}f.materialRegions=panels;f.manualMaterialRegions=true;f.materialRegionFaces=2;}
+export function draftFromArchive(source,stage,origin){const step=Number(stage);if(!Number.isInteger(step)||step<0||step>3)throw Error('请选择有效的制作步骤。');if(!source?.form?.mask||!source.mats||!source.craft)throw Error('这只娃娃的制作参数尚未完整加载，请稍后重试。');const draft=structuredClone(source);preserveArchivedPanels(draft);draft.step=step;draft.selected=null;draft.selectionMode='view';draft.editFace='front';draft.freshCreation=false;draft.archiveOrigin={...origin,stage:step};delete draft.finalRender;delete draft.pendingRender;return draft;}

@@ -1,4 +1,4 @@
-import {PlushView} from './plush3d.js?v=seamsall1';
+import {PlushView} from './plush3d.js?v=processedit1';
 import {FABRICS,prepareFabricAssets} from './fabric-library.js?v=xyzface1';
 let token=0,timer,view,host;const cache=new Map();
 export function stopMaterialPreviews(){token++;clearTimeout(timer);if(view){view.destroy();view=null;}host?.remove();host=null;}

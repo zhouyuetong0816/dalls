@@ -47,7 +47,7 @@ function route(page,{historyMode='push',hash=null,opening=false,animate=true}={}
 }
 guide=createGuide({getPage:()=>currentPage,go:page=>route(page)});
 document.addEventListener('click',e=>{const button=e.target.closest('[data-page],[data-follow],[data-free]');if(!button)return;if(button.hasAttribute('data-follow')){guide.setEnabled(true);route('about',{opening:true});}else if(button.hasAttribute('data-free')){guide.setEnabled(false);route('about');}else route(button.dataset.page);});
-window.addEventListener('family-added',()=>route('family',{animate:false}));window.addEventListener('family-edit',()=>route('create',{animate:false}));
+window.addEventListener('family-added',()=>route('family',{animate:false}));window.addEventListener('family-edit-ready',()=>route('create',{animate:false}));
 function restoreRoute(){route(parseRoute(location.hash),{historyMode:'none',hash:location.hash,animate:false});}
 window.addEventListener('popstate',restoreRoute);window.addEventListener('hashchange',restoreRoute);
 const initialPage=parseRoute(location.hash);currentPage=initialPage;for(const [key,node] of Object.entries(pages()))if(node)node.hidden=key!==initialPage;notify(initialPage);guide.update();
