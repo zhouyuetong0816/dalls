@@ -2,7 +2,7 @@ import {prepareManualRegions,regionEntries,regionName,addManualRegion,undoRegion
 import {FABRICS,fabricProfile} from './fabric-library.js?v=xyzface1';
 import { sketchToPlush } from './ai-adapter.js?v=processedit1';
 import { PlushView } from './plush3d.js?v=archivefabric2';
-import { FinalRender } from './final-render.js?v=necklace1';
+import { FinalRender } from './final-render.js?v=builtinsave1';
 import {loadDesign,saveDesign,savedDesigns,downloadDesign,validDesign,backupBeforeArchiveEdit} from './design-storage.js?v=processedit1';
 import {faceSettings,setEyeSpacing,moveEye} from './face-settings.js?v=xyzface1';
 const steps=['草稿 / Sketch','白胚 / Form','面料 / Material','装饰 / Craft','成品 / Finish'];
@@ -66,3 +66,5 @@ window.addEventListener('family-edit',async e=>{if(archiveResumeBusy)return;arch
 
 
 document.addEventListener('change',e=>{if(!/^(face|part)-[xyz]$/.test(e.target.id)||e.target.value==='')return;const view=views.find(v=>v.canTransform?.()),p=view?.getTransformPosition?.(),axis=e.target.id.at(-1),value=Number(e.target.value);if(!p||!Number.isFinite(value))return;p[axis]=value;view.setTransformPosition(p);updateFaceTools();updateEditor();persist();});
+
+window.addEventListener('family-updated',e=>{if(state.archiveOrigin?.id===e.detail.id){state.archiveOrigin={...state.archiveOrigin,name:e.detail.name};saveDesign(key,state).catch(()=>{});}});
