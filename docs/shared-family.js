@@ -17,7 +17,7 @@ export async function signUpAccount(email,password){const current=storedSession(
 export async function signInAdmin(email,password){const data=await request('/auth/v1/token?grant_type=password',{method:'POST',body:{email,password}});data.expires_at=Date.now()/1000+(data.expires_in||3600);localStorage.setItem(sessionKey,JSON.stringify(data));if(!await isAdmin())throw Error('此账户不是网站管理员，请先完成管理员设置。');return data;}
 export function signOutAdmin(){localStorage.removeItem(sessionKey);}
 export async function isAdmin(){if(!await cloudEnabled()||!storedSession()?.access_token)return false;const s=await session();const data=await request('/rest/v1/site_admins?select=user_id&user_id=eq.'+encodeURIComponent(s.user.id),{token:s.access_token});return data.length===1;}
-export async function canManage(member){if(member?._localOnly&&!member._shared)return true;if(!await cloudEnabled())return local();const s=await session();return member._owner===s.user.id||await isAdmin();}
+export async function canManage(member){if(member?._localOnly&&!member._shared)return true;if(!await cloudEnabled())return local();if(!storedSession()?.access_token)return false;const s=await session();return member._owner===s.user.id||await isAdmin();}
 const payloadCache=new Map();
 function metadata(row){return {_shared:true,_owner:row.owner_id,_revision:row.revision,_path:row.object_path};}
 async function publicObject(path){const c=await cloudConfig();const {response,text}=await timedFetch(c.url+'/storage/v1/object/public/family-designs/'+path,{},20000);if(!response.ok)throw Error('作品数据暂时无法读取，请刷新重试。');return JSON.parse(text);}
