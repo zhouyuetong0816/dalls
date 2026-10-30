@@ -1,7 +1,9 @@
+import {watchMemberArtwork} from './member-artwork.js?v=sitefreeze1';
+import {archiveMembers} from './archive-members.js?v=necklace1';
 import {createRating} from './doll-reactions.js?v=necklace1';
 export const shopProducts=[
  {id:'001',name:'项链熊 / Necklace Bear',image:'collection/001/front.webp?v=necklace1',status:'sold-out'},
- {id:'002',name:'娃娃 002 / Doll 002',image:'collection/002/front.webp',status:'sold-out'},
+ {id:'002',name:'The Weekend',image:'collection/002/front.webp',status:'sold-out'},
  {id:'cup-bear',name:'杯子熊',image:'assets/shop/cup-bear.webp',status:'sold-out'},
  {id:'bnaear',name:'Bnaear',image:'assets/shop/bnaear.webp',status:'sold-out'},
  {id:'koala',name:'KoalaBear',image:'assets/shop/koala.webp',status:'sold-out'},
@@ -17,9 +19,10 @@ export function createShop(){
   const card=document.createElement('article');card.className='shop-card';card.dataset.productId=product.id;
   if(product.status==='hot'){const flag=document.createElement('span');flag.className='shop-hot';flag.textContent='HOT';card.append(flag);}
   const frame=document.createElement('div');frame.className='shop-photo';const photo=document.createElement('img');photo.src=product.image;photo.alt=product.name;photo.loading=i<4?'eager':'lazy';photo.decoding='async';frame.append(photo);
-  const title=document.createElement('h2');title.className='shop-card-title';title.innerHTML=i===0?noodles:bear;const name=document.createElement('span');name.textContent=product.name;title.append(name);
+  const title=document.createElement('h2');title.className='shop-card-title';title.innerHTML=bear;const name=document.createElement('span');name.textContent=product.name;title.append(name);
   const availability=document.createElement('span');availability.className='shop-availability';availability.dataset.status=product.status;availability.textContent=product.status==='hot'?'热卖中 · HOT':'SOLD OUT · 已售罄';
   card.append(frame,title,availability,createRating(product.id,product.name));grid.append(card);
  }
+ watchMemberArtwork(member=>{const index=archiveMembers.findIndex(m=>m.id===member.id);if(index<0)return;const product=shopProducts[index],card=grid.querySelector(`[data-product-id="${product.id}"]`);if(!card)return;card.querySelector('img').src=member.front;card.querySelector('img').alt=member.name;if(member.id!=='001'||member.name!=='项链熊')card.querySelector('.shop-card-title span').textContent=member.name;});
  return page;
 }

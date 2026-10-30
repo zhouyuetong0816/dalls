@@ -1,3 +1,4 @@
+import {watchMemberArtwork} from './member-artwork.js?v=sitefreeze1';
 import {guideFrame,GUIDE_TIMING,GUIDE_ASSET} from './guide-motion.js?v=necklace1';
 const stops=['home','about','shop','create','family','cafe'];
 const labels={home:'HOME',about:'ABOUT',shop:'SHOP',family:'ARCHIVE',create:'CREATE',cafe:'CAFÉ'};
@@ -6,7 +7,7 @@ export function createGuide({getPage,go}){
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const layer=document.createElement('aside');layer.className='guide-layer';layer.setAttribute('aria-label','娃娃向导');
  layer.innerHTML=`<div class="guide-anchor"><button class="guide-doll" aria-label="轻轻跳一下"><img src="${GUIDE_ASSET}" alt="项链熊向导" draggable="false"></button><span class="guide-bubble" role="status" hidden>Here we are!</span><button class="guide-next"></button></div>`;
- document.body.append(layer);
+ document.body.append(layer);watchMemberArtwork(member=>{if(member.id==='001'){const image=layer.querySelector('img');image.src=member.front;image.alt=member.name+'向导';}});
  const anchor=layer.querySelector('.guide-anchor'),doll=layer.querySelector('.guide-doll'),bubble=layer.querySelector('.guide-bubble'),next=layer.querySelector('.guide-next');
  const toggle=document.createElement('button');toggle.className='guide-mode';toggle.setAttribute('aria-pressed',String(enabled));document.querySelector('#site-nav').append(toggle);
  let state='IDLE',inFlight=null,bubbleTimer,frameId;
