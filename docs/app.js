@@ -1,7 +1,7 @@
 import {prepareManualRegions,regionEntries,regionName,addManualRegion,undoRegion} from './manual-regions.js?v=xyzface1';
 import {FABRICS,fabricProfile} from './fabric-library.js?v=xyzface1';
 import { sketchToPlush } from './ai-adapter.js?v=processedit1';
-import { PlushView } from './plush3d.js?v=cleanpanels1';
+import { PlushView } from './plush3d.js?v=archivefabric2';
 import { FinalRender } from './final-render.js?v=seamsall1';
 import {loadDesign,saveDesign,savedDesigns,downloadDesign,validDesign,backupBeforeArchiveEdit} from './design-storage.js?v=processedit1';
 import {faceSettings,setEyeSpacing,moveEye} from './face-settings.js?v=xyzface1';

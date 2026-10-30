@@ -1,6 +1,6 @@
 import {smoothBoundaryLoops} from './shape.js?v=processedit1';
 import * as THREE from './vendor/three.module.js';
-import {PlushView} from './plush3d.js?v=cleanpanels1';
+import {PlushView} from './plush3d.js?v=archivefabric2';
 const cache=new WeakMap();
 export function sealArchivedScene(scene){
  if(cache.has(scene))return cache.get(scene);
