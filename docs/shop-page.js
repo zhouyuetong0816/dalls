@@ -1,6 +1,6 @@
-import {createRating} from './doll-reactions.js?v=cleanpanels1';
+import {createRating} from './doll-reactions.js?v=necklace1';
 export const shopProducts=[
- {id:'001',name:'泡面头 / Noodle Head',image:'collection/001/front.webp',status:'sold-out'},
+ {id:'001',name:'项链熊 / Necklace Bear',image:'collection/001/front.webp?v=necklace1',status:'sold-out'},
  {id:'002',name:'娃娃 002 / Doll 002',image:'collection/002/front.webp',status:'sold-out'},
  {id:'cup-bear',name:'杯子熊',image:'assets/shop/cup-bear.webp',status:'sold-out'},
  {id:'bnaear',name:'Bnaear',image:'assets/shop/bnaear.webp',status:'sold-out'},

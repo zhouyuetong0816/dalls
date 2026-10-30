@@ -2,7 +2,7 @@ import {prepareManualRegions,regionEntries,regionName,addManualRegion,undoRegion
 import {FABRICS,fabricProfile} from './fabric-library.js?v=xyzface1';
 import { sketchToPlush } from './ai-adapter.js?v=processedit1';
 import { PlushView } from './plush3d.js?v=archivefabric2';
-import { FinalRender } from './final-render.js?v=seamsall1';
+import { FinalRender } from './final-render.js?v=necklace1';
 import {loadDesign,saveDesign,savedDesigns,downloadDesign,validDesign,backupBeforeArchiveEdit} from './design-storage.js?v=processedit1';
 import {faceSettings,setEyeSpacing,moveEye} from './face-settings.js?v=xyzface1';
 const steps=['草稿 / Sketch','白胚 / Form','面料 / Material','装饰 / Craft','成品 / Finish'];

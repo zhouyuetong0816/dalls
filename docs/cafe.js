@@ -1,4 +1,4 @@
-import {archiveMembers} from './archive-members.js?v=archiveaudit2';
+import {archiveMembers} from './archive-members.js?v=necklace1';
 import * as THREE from './vendor/three.module.js';
 // World anchors use the same scene coordinates as future doll placements.
 // Image-relative percentages are projected from the fixed reference camera.
@@ -115,7 +115,7 @@ function mount(){
  for(const sign of [1,-1]){const offset=positions.length/3;for(let y=0;y<=H;y++)for(let x=0;x<=W;x++){const near=[];for(const dx of [-1,0])for(const dy of [-1,0])near.push(solid(x+dx,y+dy)?distance[(y+dy)*W+x+dx]:0);const d=Math.min(...near),t=Math.min(1,d/18);positions.push((x/W-.5)*w,(.5-y/H)*h,sign*.16*Math.sqrt(Math.max(0,1-(1-t)*(1-t))));uvs.push(x/W,1-y/H);}for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(!solid(x,y))continue;const A=offset+y*(W+1)+x,B=A+1,C=A+W+2,D=A+W+1;const target=distance[y*W+x]<18?sideIndices:indices;target.push(...(sign===1?[A,D,C,A,C,B]:[A,B,C,A,C,D]));}}
  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geometry.setIndex([...indices,...sideIndices]);geometry.addGroup(0,indices.length,0);geometry.addGroup(indices.length,sideIndices.length,1);geometry.computeVertexNormals();figure.add(new THREE.Mesh(geometry,[new THREE.MeshStandardMaterial({map:texture,transparent:true,alphaTest:.035,roughness:1,side:THREE.DoubleSide}),new THREE.MeshStandardMaterial({color:sideColor,roughness:1,side:THREE.DoubleSide})]));figure.position.set(pos[0],pos[1]+(maxY/H-.5)*h,pos[2]);figure.rotation.y=wallMounted?0:Math.atan2(camera.position.x-pos[0],camera.position.z-(pos[2]+1.55));figure.name=name;figure.userData.memberId=memberId;figure.userData.familyDoll=true;figure.userData.movable=true;figure.userData.homePosition=figure.position.toArray();figure.userData.homeRotation=figure.rotation.y;figure.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});shelfDolls.add(figure);pendingShelfMembers.delete(memberId);renderer.render(scene,camera);},undefined,error=>{pendingShelfMembers.delete(memberId);console.warn('咖啡店娃娃图片暂时未加载：'+name,error);});}
  function dollPicture(url,x,y,z,lean=false,square=false){const frame=new THREE.Group();frame.position.set(x,y,z);root.add(frame);if(lean)frame.rotation.x=-.2;box(.68,square?.68:.83,.06,0,0,0,pale,frame);box(.6,square?.6:.75,.065,0,0,.015,wall,frame);new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;const art=new THREE.Mesh(new THREE.PlaneGeometry(.53,square?.53:.65),new THREE.MeshStandardMaterial({map:texture,transparent:true,roughness:1}));art.position.set(0,0,.06);frame.add(art);renderer.render(scene,camera);});}
- dollPicture('collection/001/front.webp',-6.15,1.99,-2.47,true);dollPicture('collection/002/front.webp',-5.2,1.91,-2.47,true,true);
+ dollPicture('collection/001/front.webp?v=necklace1',-6.15,1.99,-2.47,true);dollPicture('collection/002/front.webp',-5.2,1.91,-2.47,true,true);
  // Curated brand dolls are site assets, never dependent on a live cloud index.
  const curatedPlacements={
   '001':[-7.28,2.055,-1.15],
@@ -140,7 +140,7 @@ function mount(){
  // Low vintage display table leaves a clear passage through the room.
  const ovalTable=new THREE.Group();ovalTable.position.set(-5.85,0,.1);ovalTable.scale.set(.7,1.18,.7);ovalTable.rotation.y=Math.PI/2;root.add(ovalTable);const top=cylinder(1,.12,0,.91,0,material('#65856d'),ovalTable);top.scale.set(1.45,1,.65);for(const x of [-.95,.95]){cylinder(.075,.84,x,.44,0,wood,ovalTable);const foot=cylinder(.3,.055,x,.04,0,wood,ovalTable);foot.scale.z=.7;}
  function postcard(url,x,z,angle){const card=box(.4,.012,.28,x,.982,z,wall,ovalTable);card.rotation.y=angle;new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;const print=new THREE.Mesh(new THREE.PlaneGeometry(.35,.23),new THREE.MeshStandardMaterial({map:texture,transparent:true,roughness:1}));print.rotation.set(-Math.PI/2,0,angle);print.position.set(x,.99,z);ovalTable.add(print);renderer.render(scene,camera);});}
- postcard('collection/001/front.webp',-.7,-.18,.16);postcard('collection/002/front.webp',-.25,.12,-.25);postcard('collection/001/front.webp',.25,-.23,-.12);
+ postcard('collection/001/front.webp?v=necklace1',-.7,-.18,.16);postcard('collection/002/front.webp',-.25,.12,-.25);postcard('collection/001/front.webp?v=necklace1',.25,-.23,-.12);
  box(.3,.05,.24,.8,1,0,pale,ovalTable);box(.27,.012,.21,.8,1.033,0,wall,ovalTable);cylinder(.07,.16,.35,1.06,.2,pot,ovalTable);ball(.055,.35,1.21,.2,pink,ovalTable);for(const [x,z,c] of [[-.85,.24,'#d3ac86'],[.05,.25,'#8ca09b'],[.95,-.22,'#c6a69b']])ball(.06,x,1.035,z,material(c),ovalTable);
 
  plant(-7.1,1.9,0,.85);
@@ -159,7 +159,7 @@ function mount(){
  const poster=document.createElement('canvas');poster.width=512;poster.height=640;const ctx=poster.getContext('2d');ctx.fillStyle='#f4eee3';ctx.fillRect(0,0,512,640);ctx.fillStyle='#687963';ctx.beginPath();ctx.arc(256,236,88,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ece2d2';ctx.beginPath();ctx.arc(256,214,58,0,Math.PI*2);ctx.fill();ctx.fillStyle='#393e36';ctx.textAlign='center';ctx.font='400 32px "Source Han Sans"';ctx.fillText('SNOOT CLUB',256,425);ctx.font='300 42px "Source Han Sans"';ctx.fillText('CAFÉ',256,484);ctx.font='300 18px "Source Han Sans"';ctx.fillText('a little place for little things.',256,540);
  const texture=new THREE.CanvasTexture(poster);texture.colorSpace=THREE.SRGBColorSpace;
  box(1.18,1.48,.05,-2.55,2.33,-2.84,pale);mesh(new THREE.PlaneGeometry(1.08,1.35),material('#ffffff',{map:texture}),-2.55,2.33,-2.805);
- for(const [x,url] of [[-.95,'collection/001/front.webp'],[-.38,'collection/002/front.webp']]){box(.4,.5,.06,x,2.9,-2.83,pale);box(.34,.44,.065,x,2.9,-2.79,wall);new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;mesh(new THREE.PlaneGeometry(.29,.38),material('#ffffff',{map:texture,transparent:true}),x,2.9,-2.75);renderer.render(scene,camera);});}
+ for(const [x,url] of [[-.95,'collection/001/front.webp?v=necklace1'],[-.38,'collection/002/front.webp']]){box(.4,.5,.06,x,2.9,-2.83,pale);box(.34,.44,.065,x,2.9,-2.79,wall);new THREE.TextureLoader().load(url,texture=>{texture.colorSpace=THREE.SRGBColorSpace;mesh(new THREE.PlaneGeometry(.29,.38),material('#ffffff',{map:texture,transparent:true}),x,2.9,-2.75);renderer.render(scene,camera);});}
  // A small freestanding sign, with room for a figure beside it.
  box(.4,.5,.06,-1.76,.3,-.1,pale);box(.34,.44,.067,-1.76,.3,-.06,wall);
  // Spider plant: narrow ribbon leaves arch out of a hanging pot.
@@ -180,7 +180,7 @@ function mount(){
  canvas.ondblclick=()=>{yaw=pitch=0;resize();};
  new ResizeObserver(()=>{if(!page.hidden)resize();}).observe(host);renderScene=resize;
  page.photoSpots=photoSpots;page.cafeScene={scene,root,camera,photoSpots};
- import('./cafe-interaction.js?v=seamsall1').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
+ import('./cafe-interaction.js?v=necklace1').then(m=>m.attachCafe({page,host,scene,root,camera,renderer,photoSpots,shelfDoll,shelfDolls,resize}));
 }
 window.addEventListener('site-page-change',e=>{page.hidden=e.detail!=='cafe';if(!page.hidden){if(!mounted){try{mount();mounted=true;}catch(error){page.querySelector('.cafe-fallback').hidden=false;console.error(error);}}else renderScene();}});
 if(location.hash==='#cafe'){page.hidden=false;try{mount();mounted=true;}catch{page.querySelector('.cafe-fallback').hidden=false;}}

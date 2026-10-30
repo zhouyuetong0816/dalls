@@ -1,5 +1,5 @@
 export const GUIDE_TIMING={turn:400,walk:1800,stop:2200,total:2600};
-export const GUIDE_ASSET='collection/001/front.webp';
+export const GUIDE_ASSET='collection/001/front.webp?v=necklace1';
 export function guideFrame(elapsed,width,startX=24,restX=24,timing=GUIDE_TIMING){
  const t=Math.max(0,Math.min(elapsed,timing.total));
  let progress=0,speed=0,state='LEAVING';

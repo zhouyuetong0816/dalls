@@ -1,9 +1,10 @@
 export const archiveMembers=[
   {
     "id": "001",
-    "name": "泡面头",
-    "src": "collection/001/front.webp",
-    "likes": 1286
+    "name": "项链熊",
+    "src": "collection/001/front.webp?v=necklace1",
+    "likes": 1286,
+    "backup": "archive-backups/necklace-bear.json"
   },
   {
     "id": "002",
