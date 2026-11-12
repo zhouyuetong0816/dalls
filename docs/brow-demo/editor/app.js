@@ -1,7 +1,7 @@
 import {prepareManualRegions,regionEntries,regionName,addManualRegion,undoRegion} from './manual-regions.js?v=facelab1';
 import {FABRICS,fabricProfile} from './fabric-library.js?v=facelab1';
 import { sketchToPlush } from './ai-adapter.js?v=facelab1';
-import {PlushView,faceLabTools,readPreset,installFaceLab} from './face-lab.js?v=facefit2';
+import {PlushView,faceLabTools,readPreset,installFaceLab} from './face-lab.js?v=browposition1';
 import { FinalRender } from './final-render.js?v=facelab1';
 import {loadDesign,saveDesign,savedDesigns,downloadDesign,validDesign,backupBeforeArchiveEdit} from './design-storage.js?v=facelab1';
 import {faceSettings,setEyeSpacing,moveEye} from './face-settings.js?v=facelab1';
