@@ -11,6 +11,14 @@ const format=(id,value)=>id==='browTilt'?(value===0?'水平':(value>0?'向内 ':
 export function faceLabTools(state){const values=faceLabSettings(state);const sliders=(start,end)=>fields.slice(start,end).map(([id,label,min,max,step])=>`<div class="lab-slider"><label for="lab-${id}">${label}<output>${format(id,values[id])}</output></label><input id="lab-${id}" data-face-lab="${id}" aria-label="${label}" type="range" min="${min}" max="${max}" step="${step}" value="${values[id]}"></div>`).join('');return `<section class="face-lab-tools"><details open><summary>豆豆眉 <small>BROWS</small></summary>${sliders(0,6)}<div class="range-caption"><span>向外倾斜</span><span>向内倾斜</span></div>${sliders(11,13)}</details><details open><summary>嘴筒轮廓 <small>SNOOT</small></summary>${sliders(6,11)}<div class="range-caption"><span>椭圆</span><span>圆角方形</span></div></details><button type="button" data-reset-face-lab>还原眉毛与嘴筒形状</button></section>`;}
 function pairedBrowPose(settings,w,eyeX,eyeY,sign){return {width:settings.browWidth*w,height:settings.browHeight*w,x:eyeX+settings.browGroupX*w+sign*settings.browSpacing*w/2,y:eyeY+(settings.browLift+settings.browGroupY)*w,angle:sign*settings.browTilt*Math.PI/180};}
 
+function fitBrowPair(settings,w,eyeX,eyeY,hasSurface){
+ const base={...settings,browLift:.12,browGroupX:0,browGroupY:0},poses=t=>[-1,1].map(sign=>{const a=pairedBrowPose(base,w,eyeX,eyeY,sign),b=pairedBrowPose(settings,w,eyeX,eyeY,sign);return {...b,x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};});
+ const valid=t=>poses(t).every(p=>{const c=Math.cos(p.angle),s=Math.sin(p.angle);return [[0,0],[-.5,-.5],[-.5,.5],[.5,-.5],[.5,.5]].every(([u,v])=>hasSurface(p.x+u*p.width*c-v*p.height*s,p.y+u*p.width*s+v*p.height*c));});
+ if(!valid(0))return poses(1);
+ let lo=0,hi=1;for(let i=1;i<=32;i++){const t=i/32;if(!valid(t)){hi=t;for(let j=0;j<10;j++){const mid=(lo+hi)/2;if(valid(mid))lo=mid;else hi=mid;}return poses(lo);}lo=t;}
+ return poses(1);
+}
+
 function roundedBean(width,height,roundness,depth){
  const geometry=new THREE.SphereGeometry(1,48,32),positions=geometry.attributes.position;
  // A smooth, shallow plastic bean; no extruded vertical walls.
@@ -24,11 +32,13 @@ export class PlushView extends OriginalPlushView{
  reshape(muzzle.geometry,power);muzzle.scale.copy(scale);muzzle.rotation.z=angle;for(const shell of this.muzzleFur?.children||[]){reshape(shell.geometry,power);shell.scale.copy(scale);shell.rotation.z=angle;}
  for(const object of this.faceGroup.children){const part=object.userData.facePart;if(['nose','leftEye','rightEye'].includes(part)){const free=part==='nose'?this.state.expression.nose.freeZ:this.state.expression.eyes.freeZ;if(!free)object.position.z+=surface(object.position.x,object.position.y,scale,power,true)-surface(object.position.x,object.position.y,oldScale);}else if(part==='mouth'&&!this.state.expression.mouth.freeZ){const p=object.geometry.getAttribute('position');for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i);p.setZ(i,p.getZ(i)+surface(x,y,scale,power,true)-surface(x,y,oldScale));}p.needsUpdate=true;object.geometry.computeVertexNormals();}}
  const eyes=this.faceGroup.children.filter(o=>['leftEye','rightEye'].includes(o.userData.facePart)),w=this.state.form.face.width;const eyeX=eyes.reduce((s,o)=>s+o.position.x,0)/2,eyeY=eyes.reduce((s,o)=>s+o.position.y,0)/2;this.eyeCenter.set(eyeX,eyeY,eyes.reduce((s,o)=>s+o.position.z,0)/2);
- const skin=(x,y)=>{const dx=x-center.x,dy=y-center.y,xx=(dx*cos+dy*sin)/scale.x,yy=(-dx*sin+dy*cos)/scale.y,inside=Math.pow(Math.abs(xx),2/power)+Math.pow(Math.abs(yy),2/power)<=1;return inside?surface(x,y,scale,power,true):(this.fabricSurface(x,y,1)??center.z);};
+ const onMuzzle=(x,y)=>{const dx=x-center.x,dy=y-center.y,xx=(dx*cos+dy*sin)/scale.x,yy=(-dx*sin+dy*cos)/scale.y;return Math.pow(Math.abs(xx),2/power)+Math.pow(Math.abs(yy),2/power)<=1;};
+ const poses=fitBrowPair(settings,w,eyeX,eyeY,(x,y)=>onMuzzle(x,y)||this.fabricSurface(x,y,1)!==null);
  for(const [i,sign] of [[0,-1],[1,1]]){
-  const {width,height,x:wantedX,y:wantedY,angle}=pairedBrowPose(settings,w,eyeX,eyeY,sign),c=Math.cos(angle),s=Math.sin(angle),marginX=(Math.abs(c)*width+Math.abs(s)*height)/2+w*.012,marginY=(Math.abs(s)*width+Math.abs(c)*height)/2+w*.012,dx=wantedX-center.x,dy=wantedY-center.y,lx=Math.max(-Math.max(0,scale.x-marginX)*.85,Math.min(Math.max(0,scale.x-marginX)*.85,dx*cos+dy*sin)),limitY=Math.max(0,scale.y*Math.pow(Math.max(0,1-Math.pow((Math.abs(lx)+marginX)/scale.x,2/power)),power/2)-marginY),ly=Math.max(-limitY,Math.min(limitY,-dx*sin+dy*cos)),x=center.x+lx*cos-ly*sin,y=center.y+lx*sin+ly*cos,z=skin(x,y),geometry=roundedBean(width,height,settings.browRound,w*.018),positions=geometry.attributes.position;
-  // Fit every vertex to the face instead of placing a flat block in front of it.
-  for(let j=0;j<positions.count;j++){const px=positions.getX(j)*c-positions.getY(j)*s,py=positions.getX(j)*s+positions.getY(j)*c;positions.setXYZ(j,px,py,skin(x+px,y+py)-z+positions.getZ(j)+w*.004);}
+  const {width,height,x,y,angle}=poses[i],c=Math.cos(angle),s=Math.sin(angle),useMuzzle=onMuzzle(x,y),skin=(px,py)=>Math.max(useMuzzle?surface(px,py,scale,power,true):-Infinity,this.fabricSurface(px,py,1)??this.fabricSurface(x,y,1)??center.z),z=skin(x,y),geometry=roundedBean(width,height,settings.browRound,w*.018),positions=geometry.attributes.position;
+  // Keep the small plastic part smooth as its centre crosses the muzzle rim.
+  const epsilon=w*.01,gradient=(a,b)=>THREE.MathUtils.clamp((a-b)/(2*epsilon),-1.5,1.5),slopeX=gradient(skin(x+epsilon,y),skin(x-epsilon,y)),slopeY=gradient(skin(x,y+epsilon),skin(x,y-epsilon));
+  for(let j=0;j<positions.count;j++){const px=positions.getX(j)*c-positions.getY(j)*s,py=positions.getX(j)*s+positions.getY(j)*c;const tangent=slopeX*px+slopeY*py,offset=Math.max(this.fabricSurface(x+px,y+py,1)===null?-Infinity:this.fabricSurface(x+px,y+py,1)-z,THREE.MathUtils.clamp(skin(x+px,y+py)-z,tangent-w*.01,tangent+w*.01));positions.setXYZ(j,px,py,offset+positions.getZ(j)+w*.004);}
   geometry.computeVertexNormals();geometry.computeBoundingSphere();const brow=new THREE.Mesh(geometry,new THREE.MeshPhysicalMaterial({color:'#080808',roughness:.8,specularIntensity:.05,clearcoat:0,metalness:0}));brow.position.set(x,y,z);brow.userData.browPart=i?'rightBrow':'leftBrow';brow.castShadow=true;this.faceGroup.add(brow);
  }
  this.faceGroup.updateMatrixWorld(true);this.updateFurOccluders();this.updateTransformGizmo();
