@@ -1,23 +1,24 @@
+import {createPark} from './amusement-park/view.js?v=park3';
 import {createShop} from './shop-page.js?v=sitefreeze1';
 import {aboutContent} from './about-content.js?v=aboutsoft2';
-import {createGuide} from './guide-doll.js?v=sitefreeze1';
+import {createGuide} from './guide-doll.js?v=park3';
 const header=document.querySelector('header');
 const process=document.querySelector('#nav');document.querySelector('#design-desk').prepend(process);
 const nav=document.createElement('nav');nav.id='site-nav';
-nav.innerHTML=[['home','首页 / Home'],['about','品牌 / About'],['shop','商品 / Shop'],['create','创作 / Create'],['family','档案袋 / Archive'],['cafe','咖啡店 / Cafe']].map(([page,name])=>`<button data-page="${page}">${name}</button>`).join('');header.insertBefore(nav,header.querySelector('small'));header.querySelector('small')?.remove();
+nav.innerHTML=[['home','首页 / Home'],['about','品牌 / About'],['shop','商品 / Shop'],['create','创作 / Create'],['family','档案袋 / Archive'],['cafe','咖啡店 / Cafe'],['park','游乐园 / Park']].map(([page,name])=>`<button data-page="${page}">${name}</button>`).join('');header.insertBefore(nav,header.querySelector('small'));header.querySelector('small')?.remove();
 const home=document.createElement('section');home.id='home-page';
 home.innerHTML='<img class="home-family-photo" src="assets/home-family.webp" alt="嘴筒子俱乐部六只毛绒朋友的全家福" fetchpriority="high"><div class="home-confetti" aria-hidden="true"></div><div class="home-hero-copy"><h1>SNOOT CLUB<span class="home-cn">嘴筒子俱乐部</span></h1><div class="home-choices"><button data-follow>YES, LET’S GO!<small>跟着娃娃探索 →</small></button><button data-free>EXPLORE MYSELF<small>我想自己逛逛</small></button></div></div>';
 const confetti=home.querySelector('.home-confetti');for(let i=0;i<22;i++){const piece=document.createElement('i');piece.className=i%3===0?'confetti-star':'confetti-paper';piece.style.cssText=`--x:${(i*37+9)%100}%;--delay:${-i*.93}s;--duration:${16+i%6*3}s;--size:${5+i%4*2}px;--drift:${i%2?-28:34}px;--tone:${['#e593ae','#d5b78a','#d6d2c9','#89a7bb','#f2bec6'][i%5]}`;confetti.append(piece);}
 
 // The existing home introduction becomes ABOUT; creation and archive remain intact.
 const about=document.createElement('section');about.id='about-page';about.innerHTML=aboutContent;
-const shop=createShop();
-document.querySelector('.brand-showcase').before(home,about,shop);
+const shop=createShop();const park=createPark();
+document.querySelector('.brand-showcase').before(home,about,shop,park);
 const family=document.querySelector('.brand-showcase');let currentPage='home',activeTransition=null,guide;
 const scrollPositions=new Map();
 const aliases={archive:'family'};
-function parseRoute(hash){const raw=hash.slice(1).split('/')[0];return aliases[raw]||(['home','about','shop','create','family','cafe'].includes(raw)?raw:'home');}
-function pages(){return {home,about,shop,create:document.querySelector('#design-desk'),family,cafe:document.querySelector('#cafe-page')};}
+function parseRoute(hash){const raw=hash.slice(1).split('/')[0];return aliases[raw]||(['home','about','shop','create','family','cafe','park'].includes(raw)?raw:'home');}
+function pages(){return {home,about,shop,create:document.querySelector('#design-desk'),family,cafe:document.querySelector('#cafe-page'),park};}
 function notify(page){nav.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.body.dataset.sitePage=page;window.dispatchEvent(new CustomEvent('site-page-change',{detail:page}));window.dispatchEvent(new Event('resize'));}
 function route(page,{historyMode='push',hash=null,opening=false,animate=true}={}){
  page=aliases[page]||page;if(!pages()[page])page='home';

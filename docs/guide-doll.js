@@ -1,7 +1,7 @@
 import {watchMemberArtwork} from './member-artwork.js?v=sitefreeze1';
 import {guideFrame,GUIDE_TIMING,GUIDE_ASSET} from './guide-motion.js?v=necklace1';
-const stops=['home','about','shop','create','family','cafe'];
-const labels={home:'HOME',about:'ABOUT',shop:'SHOP',family:'ARCHIVE',create:'CREATE',cafe:'CAFÉ'};
+const stops=['home','about','shop','create','family','cafe','park'];
+const labels={home:'HOME',about:'ABOUT',shop:'SHOP',family:'ARCHIVE',create:'CREATE',cafe:'CAFÉ',park:'PARK'};
 export function createGuide({getPage,go}){
  let enabled=false;try{enabled=sessionStorage.getItem('soft-things-follow')==='on';}catch{}
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');

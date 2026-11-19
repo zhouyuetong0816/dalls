@@ -1,5 +1,2 @@
-const images={original:{src:'original.webp?v=park2',alt:'同一全景视角下，小猫仍坐在秋千上的原场景',caption:'00 / 原来的小猫秋千'},close:{src:'close.webp?v=park2',alt:'The Weeknd 毛绒娃娃坐在原来的小猫秋千上，近景画面',caption:'02 / 秋千近景'},wide:{src:'wide.webp?v=park2',alt:'按参考截图方向展示的游乐园全景，The Weeknd 替换小猫坐在秋千上',caption:'01 / 秋千上的新朋友'}};
-const scene=document.querySelector('#scene'),caption=document.querySelector('#caption'),error=document.querySelector('#error'),dialog=document.querySelector('#lightbox'),large=document.querySelector('#large');
-scene.addEventListener('error',()=>error.hidden=false);scene.addEventListener('load',()=>error.hidden=true);
-for(const button of document.querySelectorAll('[data-view]'))button.addEventListener('click',()=>{const image=images[button.dataset.view];scene.src=image.src;scene.alt=image.alt;caption.textContent=image.caption;for(const other of document.querySelectorAll('[data-view]'))other.setAttribute('aria-pressed',String(other===button));});
-document.querySelector('#expand').addEventListener('click',()=>{large.src=scene.src;large.alt=scene.alt;dialog.showModal();});document.querySelector('#dismiss').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
+import {createPark} from './view.js?v=park3';
+document.querySelector('#park-mount').replaceWith(createPark());
