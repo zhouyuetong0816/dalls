@@ -1,6 +1,7 @@
 import * as THREE from '../vendor/three.module.js';
 // Shell/fin adaptation of piellardj/fur-threejs. See CREDITS.md for source attribution.
-export function noiseTexture(){const t=new THREE.TextureLoader().load(new URL('./resources/strand-noise.png',import.meta.url).href,()=>window.dispatchEvent(new Event('shell-noise-ready')));t.wrapS=t.wrapT=THREE.RepeatWrapping;t.minFilter=THREE.LinearMipmapLinearFilter;t.magFilter=THREE.LinearFilter;return t;}
+export async function noiseTexture(){const t=await new THREE.TextureLoader().loadAsync(new URL('./resources/strand-noise.png',import.meta.url).href);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.minFilter=THREE.LinearMipmapLinearFilter;t.magFilter=THREE.LinearFilter;return t;}
+
 let white;
 function whiteTexture(){if(!white){white=new THREE.DataTexture(new Uint8Array([255,255,255,255]),1,1,THREE.RGBAFormat);white.colorSpace=THREE.SRGBColorSpace;white.needsUpdate=true;}return white;}
 export function finGeometry(source){const p=source.getAttribute('position'),n=source.getAttribute('normal'),uv=source.getAttribute('uv'),index=source.index,edges=new Set(),ps=[],ns=[],us=[],hs=[];const key=i=>[p.getX(i),p.getY(i),p.getZ(i),uv.getX(i),uv.getY(i)].map(v=>Math.round(v*1e5)).join(',');const add=(i,h)=>{ps.push(p.getX(i),p.getY(i),p.getZ(i));ns.push(n.getX(i),n.getY(i),n.getZ(i));us.push(uv.getX(i),uv.getY(i));hs.push(h);};const at=i=>index?index.getX(i):i,count=index?index.count:p.count;
@@ -19,7 +20,7 @@ uniform sampler2D uNoise,uColor;uniform float uDensity,uSoftness,uFin,uMuzzle;
 uniform vec3 uCenters[5],uRadii[5];
 varying vec2 vUv;varying vec3 vNormalFur,vView,vPoint;varying float vLevel;
 void main(){
- for(int i=0;i<5;i++){if(uMuzzle>.5&&i<4)continue;vec3 d=vPoint-uCenters[i];vec3 r=max(uRadii[i],vec3(.001));if(dot(d.xy/r.xy,d.xy/r.xy)<.98&&d.z>-r.z)discard;}
+ for(int i=0;i<5;i++){if(uMuzzle>.5&&i==0)continue;vec3 d=vPoint-uCenters[i];vec3 r=max(uRadii[i],vec3(.001));if(i>0)r.xy*=.94;if(dot(d.xy/r.xy,d.xy/r.xy)<.98&&d.z>-r.z)discard;}
  vec4 noise=texture2D(uNoise,vUv*uDensity);float strand=max(.008,noise.r);float t=vLevel/strand;if(t>=1.)discard;
  float alpha=pow(max(0.,1.-t),uSoftness);vec3 N=normalize(vNormalFur);if(alpha<.008)discard;
  vec3 light=normalize(vec3(1.,.2,1.));float dotLight=dot(N,light);float diffuse=.8+.1*(.5+.5*dotLight)+.1*pow(max(0.,dotLight),6.);float rootShade=.7+.3*.9*t*t;float strandShade=noise.g;vec3 color=texture2D(uColor,vUv).rgb*diffuse*rootShade*strandShade;

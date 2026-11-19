@@ -1,11 +1,11 @@
-import {FurDollView,readDoll,settings} from './model.js?v=shelltwo2';
+import {FurDollView,readDoll,settings} from './model.js?v=shelltwo3';
 settings.white=new URLSearchParams(location.search).get('white')==='1';document.querySelector('#white').checked=settings.white;
 const views=new Map(),status=document.querySelector('#status'),fps=document.querySelector('#fps'),rotate=document.querySelector('#rotate');let turning=false,lastTime=0,frames=0,frameStart=0,next=0;
 function sync(){document.querySelector('#length-out').textContent=settings.length<.065?'短绒':settings.length<.125?'蓬松':'长绒';document.querySelector('#density-out').textContent=settings.density.toFixed(1);document.querySelector('#comb-out').textContent=Math.round(settings.comb*100)+'%';for(const view of views.values())view.updateStudy();}
 for(const key of ['length','density','comb'])document.querySelector('#'+key).addEventListener('input',e=>{settings[key]=Number(e.target.value);for(const button of document.querySelectorAll('[data-preset]'))button.classList.remove('active');cancelAnimationFrame(next);next=requestAnimationFrame(sync);});
 const presets={short:{length:.045,density:16,comb:.25},soft:{length:.10,density:12,comb:.5},long:{length:.1375,density:12,comb:.5}};
 for(const button of document.querySelectorAll('[data-preset]'))button.onclick=()=>{Object.assign(settings,presets[button.dataset.preset]);for(const key of ['length','density','comb'])document.querySelector('#'+key).value=settings[key];for(const b of document.querySelectorAll('[data-preset]'))b.classList.toggle('active',b===button);sync();};
-window.addEventListener('shell-noise-ready',sync);document.querySelector('#white').onchange=e=>{settings.white=e.target.checked;sync();};
+document.querySelector('#white').onchange=e=>{settings.white=e.target.checked;sync();};
 document.querySelector('#quality').onchange=e=>{settings.layers=Number(e.target.value);sync();};document.querySelector('#mode').onchange=e=>{settings.mode=e.target.value;sync();};
 rotate.onclick=()=>{turning=!turning;rotate.setAttribute('aria-pressed',String(turning));};
 for(const button of document.querySelectorAll('[data-doll]'))button.onclick=()=>{const view=views.get(button.dataset.doll);if(!view)return;view.focus(button.dataset.detail==='true');for(const b of document.querySelectorAll(`[data-doll="${button.dataset.doll}"]`))b.setAttribute('aria-pressed',String(b===button));};

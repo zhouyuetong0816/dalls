@@ -11,3 +11,5 @@ Independent experimental page for SNOOT CLUB; no archive, account, or database w
 - Two separate WebGL views render on interaction, or continuously while auto-rotation is enabled. Frame rate depends on the device, view size and quality. The study is not a path-traced/offline render and does not claim photographic equivalence.
 
 Shared runtime: existing `../vendor/three.module.js`, `../plush3d.js`, archive-resume modules, fonts and material generation. Three.js copyright/license stays at `../vendor/THREE-LICENSE.txt`.
+
+The strand texture is fully awaited before either WebGL model is constructed; the page does not present a ready state using a placeholder noise texture.
