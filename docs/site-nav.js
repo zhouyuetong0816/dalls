@@ -1,4 +1,4 @@
-import {createPark} from './amusement-park/view.js?v=park3';
+import {createPark} from './amusement-park/view.js?v=worlds2';
 import {createShop} from './shop-page.js?v=sitefreeze1';
 import {aboutContent} from './about-content.js?v=aboutsoft2';
 import {createGuide} from './guide-doll.js?v=park3';
