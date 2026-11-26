@@ -1,4 +1,4 @@
-const asset=name=>new URL(name+'?v=worlds2',import.meta.url).href;
+const asset=name=>new URL(name+'?v=orbit2',import.meta.url).href;
 export function mountThemes(page,stopFull){
  const layer=document.createElement('div');layer.className='mini-world';layer.hidden=true;
  layer.innerHTML='<div class="mini-backdrop"></div><canvas class="mini-sky" aria-hidden="true"></canvas><img class="mini-model" alt=""><span class="mini-loading" role="status" hidden>场景正在加载…</span>';
@@ -25,7 +25,7 @@ export function mountThemes(page,stopFull){
  function choose(key){
   selected=key;stopFull();page.dataset.world=key;layer.hidden=key==='full';world.hidden=key!=='full';backdrop.hidden=key!=='full';
   for(const b of nav.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.world===key));
-  if(key==='full'){status.textContent='点击娃娃玩耍，点击秋千荡起来。';animate();return;}
+  if(key==='full'){status.textContent='拖动换角度 · 滚轮或双指缩放 · 点击娃娃和秋千玩耍';animate();return;}
   loading.hidden=false;image.src=asset(key+'-foreground.webp');image.alt=key==='space'?'原秋千、陨石坑星球、绿色外星人与金属飞船':'原大象滑梯、杯子熊、水草与珊瑚';back.style.backgroundImage='url("'+asset(key+'-background.webp')+'")';
   status.textContent=key==='space'?'太空秋千 · 蓝色星光在闪烁':'海底大象 · 泡泡正在缓缓上升';animate();
  }
